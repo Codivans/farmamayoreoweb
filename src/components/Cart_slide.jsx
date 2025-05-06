@@ -9,7 +9,7 @@ export const Cart_slide = ({showCart, setShowCart}) => {
 
   const { productosCarrito, vaciarCarrito, deleteProductoCart, productDeliting, importeCart } = useContext(ContextoCarrito);
   const cartRef = useRef(null);
-  const imagenDefault = (e) => e.target.src =  'https://farmaprontoneza.com/image/predeterminada.jpg';
+  const imagenDefault = (e) => e.target.src =  'https://farmacias2web.com/imagenes/predeterminada.jpg';
 
   useEffect(() => {
     const handleClickOutside = (event) => {
@@ -42,7 +42,7 @@ export const Cart_slide = ({showCart, setShowCart}) => {
                 return(
                   <div className={`row_cart animate__animated ${productDeliting === item.codigo ? 'animate__bounceOutLeft' : ''}`} >
                     <div className='img_product_cart'>
-                      <img loading="lazy" onError={imagenDefault} src={`https://farmaprontoneza.com/image/${item.codigo}.jpg`}/>
+                      <img loading="lazy" onError={imagenDefault} src={`https://farmacias2web.com/imagenes/${item.codigo}.jpg`}/>
                     </div>
                     <div className='description_product_cart'>
                       <span>{item.codigo}</span><br />

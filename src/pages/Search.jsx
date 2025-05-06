@@ -3,7 +3,6 @@ import { useParams } from 'react-router-dom';
 import { Header_principal } from '../components/Header_principal'
 import { Flag_Header } from '../components/Flag_Header'
 import { Card_product } from '../components/Card_product'
-import productos from '../data/products_carrousel'
 import Pagination from './../components/Pagination';
 import searchCatalog from '../hooks/searchCatalog';
 

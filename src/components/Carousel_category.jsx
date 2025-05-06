@@ -10,6 +10,7 @@ import 'swiper/css/free-mode';
 import 'swiper/css/pagination';
 import { FreeMode, Pagination, Autoplay, Navigation } from 'swiper/modules';
 import { Card_product } from './Card_product';
+import { Link } from 'react-router-dom';
 
 export const Carousel_category = () => {
 
@@ -46,9 +47,9 @@ export const Carousel_category = () => {
 
   return (
     <div className='container_products_category'>
-        <div className='img_category'>
+        <Link className='img_category' to='/shop'>
             <img src={imgPleca} />
-        </div>
+        </Link>
         <div className='container_carousel_category'>
             <Swiper
                 slidesPerView={Math.floor(widthContainer / 220)}

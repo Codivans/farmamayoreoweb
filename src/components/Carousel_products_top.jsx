@@ -1,6 +1,8 @@
 import React, { useState, useEffect } from 'react';
 import { Swiper, SwiperSlide } from 'swiper/react';
-import productos from './../data/products_carrousel';
+// import productos from './../data/products_carrousel';
+import { doc, getDoc } from "firebase/firestore";
+import { db } from "./../firebase/firebaseConfig"; // Ajusta según tu ruta
 
 
 // Import Swiper styles
@@ -11,6 +13,50 @@ import { FreeMode, Pagination, Autoplay, Navigation } from 'swiper/modules';
 import { Card_product } from './Card_product';
 
 export const Carousel_products_top = () => {
+
+    const [productos, setProductos] = useState([]);
+    const [loading, setLoading] = useState(true);
+    const [error, setError] = useState(null);
+
+    useEffect(() => {
+        const obtenerCatalogoTopCompleto = async () => {
+          try {
+            const refTop = doc(db, "catalogo", "catalogo_top");
+            const refCompleto = doc(db, "catalogo", "farmaMayoreo");
+    
+            const [topSnap, completoSnap] = await Promise.all([
+              getDoc(refTop),
+              getDoc(refCompleto),
+            ]);
+    
+            if (topSnap.exists() && completoSnap.exists()) {
+              const topArray = topSnap.data().catalogo;
+              const completoArray = completoSnap.data().catalogo;
+    
+              const mapaCompleto = new Map(
+                completoArray.map((prod) => [prod.codigo, prod])
+              );
+    
+              const resultado = topArray
+                .map((itemTop) => mapaCompleto.get(itemTop.codigo))
+                .filter((item) => item !== undefined);
+    
+              setProductos(resultado);
+            } else {
+              throw new Error("Uno o ambos documentos no existen");
+            }
+          } catch (err) {
+            console.error("Error obteniendo catálogo top:", err);
+            setError(err);
+          } finally {
+            setLoading(false);
+          }
+        };
+    
+        obtenerCatalogoTopCompleto();
+      }, []);
+
+
 
     // Define el estado para almacenar el tamaño de la ventana
     const [windowSize, setWindowSize] = useState({
@@ -36,7 +82,7 @@ export const Carousel_products_top = () => {
         };
     }, []); // El array vacío asegura que se ejecute solo una vez al montar
 
-    let widthContainer = windowSize.width * .80
+    let widthContainer = windowSize.width * .90
     let widthCardAuto = (widthContainer / 6) - 10
     let countCards = Math.floor(widthContainer / widthCardAuto)
     let grapZiseCards = widthCardAuto * countCards
@@ -60,7 +106,7 @@ export const Carousel_products_top = () => {
             className="mySwiper"
         >
         {
-            productos.map((item) => <SwiperSlide style={{ width: `${widthCardAuto}px !important` }} key={item.CODIGO}>
+            productos.map((item) => <SwiperSlide  key={item.codigo}>
                                         <Card_product widthCard={widthCardAuto} item={item} />
                                     </SwiperSlide>)
         }

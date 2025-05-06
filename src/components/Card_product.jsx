@@ -7,7 +7,7 @@ import { Link } from 'react-router-dom';
 export const Card_product = ({widthCardAuto, item}) => {
 
     const imagenDefault = (e) =>{
-      e.target.src =  'https://farmaprontoneza.com/image/predeterminada.jpg' 
+      e.target.src =  'https://farmacias2web.com/imagenes/predeterminada.jpg' 
     }
 
     const { addProductoCart, removeProductCart, productosCarrito } = useContext(ContextoCarrito);
@@ -17,7 +17,7 @@ export const Card_product = ({widthCardAuto, item}) => {
   return (
     <div className='card_product' style={{ width: `${widthCardAuto}px !important` }}>
         <div className='card_header'>
-          <img loading="lazy" onError={imagenDefault} src={`https://farmaprontoneza.com/image/${item.codigo}.jpg`} />
+          <img loading="lazy" onError={imagenDefault} src={`https://farmacias2web.com/imagenes/${item.codigo}.jpg`} />
         </div>
         <div className='card_body'>
           <Link to={`/search/laboratorio/${item.laboratorio}`} className='laboratorio_item'>{item.laboratorio}</Link>

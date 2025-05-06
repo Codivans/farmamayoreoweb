@@ -9,6 +9,7 @@ import { TiUser } from "react-icons/ti";
 import { Flag_Header } from './Flag_Header';
 import { Formulario_session } from './Formulario_session';
 import { useAuth } from '../context/AuthContext';
+import { MenuFamilias } from './MenuFamilias';
 
 export const Header_principal = () => {
     const [searchTerm, setSearchTerm] = useState('');
@@ -67,7 +68,8 @@ export const Header_principal = () => {
         </div>
 
         <div id='header_bottom'>
-            <nav id='nav_header'>
+            <MenuFamilias />
+            {/* <nav id='nav_header'>
                 <ul>
                     <li><Link to='/search/familia/medicamento'>Medicamento</Link> </li>
                     <li><Link to='/search/familia/bebes'>Bebes</Link> </li>
@@ -77,7 +79,7 @@ export const Header_principal = () => {
                     <li><Link to='/search/familia/suplementos'>Suplementos</Link> </li>
                     <li><Link to='/search/familia/sexualidad'>Sexualidad</Link> </li>
                 </ul>
-            </nav>
+            </nav> */}
         </div>
         {
             showCart && <Cart_slide showCart={showCart} setShowCart={setShowCart}/>
