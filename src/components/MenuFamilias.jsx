@@ -52,8 +52,8 @@ export const MenuFamilias = () => {
             <Link to={`/search/familia/${item.familia}`}>{item.familia}</Link>
             <ul>
                 {
-                    item.departamentos.map((item) =>(
-                        <li>
+                    item.departamentos.map((item, index) =>(
+                        <li key={index}>
                             <Link to={`/search/familia/${item}`}>{item}</Link>
                         </li>
                     ))

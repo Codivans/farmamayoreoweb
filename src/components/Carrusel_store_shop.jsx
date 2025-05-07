@@ -1,7 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { Swiper, SwiperSlide } from 'swiper/react';
-import productos from './../data/products_carrousel';
-import imgPortada from './../assets/portada.jpg';
+import imgPortada from './../assets/portada_nivea.jpg';
 
 // Import Swiper styles
 import 'swiper/css';
@@ -10,7 +9,7 @@ import 'swiper/css/pagination';
 import { FreeMode, Pagination, Autoplay, Navigation } from 'swiper/modules';
 import { Card_product } from './Card_product';
 
-export const Carousel_store = () => {
+export const Carrusel_store_shop = ({productos}) => {
 
      // Define el estado para almacenar el tamaño de la ventana
      const [windowSize, setWindowSize] = useState({
@@ -42,6 +41,8 @@ export const Carousel_store = () => {
     let countCards = Math.floor(widthContainer / widthCardAuto)
     let grapZiseCards = widthCardAuto * countCards
     let margenCard = (widthContainer - grapZiseCards) / (countCards - 1)
+
+    let productosStore = productos.filter((item) => item.store === 'store')
     
   return (
     <div className='container_products_column'>
@@ -65,7 +66,7 @@ export const Carousel_store = () => {
                 style={{marginTop: '20px !important'}}
             >
                 {
-                    productos.map((item) => <SwiperSlide style={{ width: `${widthCardAuto}px !important` }}  key={item.CODIGO}>
+                    productosStore.map((item) => <SwiperSlide style={{ width: `${widthCardAuto}px !important` }}  key={item.CODIGO}>
                                                 <Card_product widthCard={widthCardAuto} item={item}/>
                                             </SwiperSlide>)
                 }

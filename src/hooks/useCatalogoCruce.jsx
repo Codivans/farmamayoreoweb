@@ -33,6 +33,7 @@ export const useCatalogoCruce = (rutaDocumentoPequeno) => {
                 return {
                   ...encontrado,
                   marca: item.marca, // añadimos la marca del array pequeño
+                  store: item.store, // añadimos la marca del array pequeño
                 };
               }
               return null;

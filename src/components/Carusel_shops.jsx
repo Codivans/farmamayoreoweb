@@ -12,51 +12,7 @@ import 'swiper/css/pagination';
 import { FreeMode, Pagination, Autoplay, Navigation } from 'swiper/modules';
 import { Card_product } from './Card_product';
 
-export const Carousel_products_top = () => {
-
-    const [productos, setProductos] = useState([]);
-    const [loading, setLoading] = useState(true);
-    const [error, setError] = useState(null);
-
-    useEffect(() => {
-        const obtenerCatalogoTopCompleto = async () => {
-          try {
-            const refTop = doc(db, "catalogo", "catalogo_top");
-            const refCompleto = doc(db, "catalogo", "farmaMayoreo");
-    
-            const [topSnap, completoSnap] = await Promise.all([
-              getDoc(refTop),
-              getDoc(refCompleto),
-            ]);
-    
-            if (topSnap.exists() && completoSnap.exists()) {
-              const topArray = topSnap.data().catalogo;
-              const completoArray = completoSnap.data().catalogo;
-    
-              const mapaCompleto = new Map(
-                completoArray.map((prod) => [prod.codigo, prod])
-              );
-    
-              const resultado = topArray
-                .map((itemTop) => mapaCompleto.get(itemTop.codigo))
-                .filter((item) => item !== undefined);
-    
-              setProductos(resultado);
-            } else {
-              throw new Error("Uno o ambos documentos no existen");
-            }
-          } catch (err) {
-            console.error("Error obteniendo catálogo top:", err);
-            setError(err);
-          } finally {
-            setLoading(false);
-          }
-        };
-    
-        obtenerCatalogoTopCompleto();
-      }, []);
-
-
+export const Carusel_shops = ({productos}) => {
 
     // Define el estado para almacenar el tamaño de la ventana
     const [windowSize, setWindowSize] = useState({
@@ -90,7 +46,6 @@ export const Carousel_products_top = () => {
 
   return (
     <div className='container_products_top'>
-        <h4 className='title_carrusel'>Productos Top</h4>
         <Swiper
             slidesPerView={Math.floor(widthContainer / 220)}
             spaceBetween={margenCard}

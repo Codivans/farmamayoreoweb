@@ -1,10 +1,10 @@
 import React, { useState, useEffect } from 'react';
 import { Header_principal } from '../components/Header_principal';
-import { Carousel_products_top } from '../components/Carousel_products_top';
+import { Carusel_shops } from '../components/Carusel_shops';
 // import productos from './../data/products_carrousel';
 import { Card_product } from '../components/Card_product';
 import banner_shop from '../assets/banner_shop.webp'
-import { Carousel_store } from '../components/Carousel_store';
+import { Carrusel_store_shop } from '../components/Carrusel_store_shop';
 
 import { useCatalogoCruce } from "./../hooks/useCatalogoCruce";
 
@@ -34,8 +34,6 @@ export const Shop = () => {
     const marcaActiva = marcaSeleccionada || marcas[0];
     const productosFiltrados = agrupadoPorMarca.find((g) => g.marca === marcaActiva)?.products || [];
 
-    console.log("first", productosFiltrados )
-
   return (
     <>
          {/* ==============   header   ==============*/}
@@ -43,9 +41,9 @@ export const Shop = () => {
             <div className='banner_shop'>
                 <img src={banner_shop} />
             </div>
-            <Carousel_products_top />
+            <Carusel_shops productos={productos} />
 
-            <Carousel_store />
+            <Carrusel_store_shop productos={productos}/>
 
             <div className='content_fiters_shop'>
                 <div className='menu_shop'>
@@ -59,8 +57,8 @@ export const Shop = () => {
                 </div>
                 <div className='item_shop'>
                     {
-                        productosFiltrados.map((item) => (
-                            <Card_product widthCard={widthCardAuto} item={item} />
+                        productosFiltrados.map((item, index) => (
+                            <Card_product widthCard={widthCardAuto} item={item} key={index}/>
                         ))
                     }
                 </div>
