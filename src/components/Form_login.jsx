@@ -56,11 +56,12 @@ export const Form_login = ({selectForm, setSelectForm, setShowForm}) => {
         <h3>Iniciar sesión</h3>
         <input name='email' type='text' placeholder='Email' onChange={handleChangeLogin}/>
         <input name='password' type='text' placeholder='password' onChange={handleChangeLogin}/>
-        <button className='btn_forgot'>Recuperar contraseña</button>
+        <button className='btn_blue' onClick={handleSubmitLogin}>Entrar</button>
 
         </form>
-            <p className='txt_form_footer'>¿No tienes una cuenta? <span onClick={() => setSelectForm(true)}> Registrarme</span></p>
-            <span onClick={logout}>cerrar</span>
+        <button className='btn_forgot'>Recuperar contraseña</button>
+        <p className='txt_form_footer'>¿No tienes una cuenta? <span onClick={() => setSelectForm(true)}> Registrarme</span></p>
+        <span onClick={logout}>cerrar</span>
     </div>
   )
 }

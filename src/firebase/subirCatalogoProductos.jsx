@@ -4,9 +4,9 @@ import { doc, setDoc, deleteDoc  } from "firebase/firestore";
 
 const subirCatalogoProductos = async (catalogo) => {
 
-    await deleteDoc(doc(db, 'shops', 'nivea'));
+    await deleteDoc(doc(db, 'shops', 'electrolit'));
 
-    await setDoc(doc(db, 'shops', 'nivea'), {
+    await setDoc(doc(db, 'shops', 'electrolit'), {
         fecha_modificacion: getUnixTime(new Date()),
         catalogo: catalogo
       });

@@ -3,6 +3,7 @@ import { ContextoCarrito } from './../context/cartContext';
 import { MdDelete } from "react-icons/md";
 import { VscChromeClose } from "react-icons/vsc";
 import formatoMoneda from '../functions/formatoMoneda';
+import { Link } from 'react-router-dom';
 
 
 export const Cart_slide = ({showCart, setShowCart}) => {
@@ -58,7 +59,7 @@ export const Cart_slide = ({showCart, setShowCart}) => {
         </div>
         <div className='cart_footer'>
           <button className='btn_vaciar_cart' onClick={() => vaciarCarrito()}>Vaciar carrito</button>
-          <button className='btn_finalizar_cart'>Finalizar {formatoMoneda(importeCart)}</button>
+          <Link className='btn_finalizar_cart' to='/detalle_shop'>Finalizar {formatoMoneda(importeCart)}</Link>
         </div>
       </div>
     </div>

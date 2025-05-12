@@ -4,11 +4,16 @@ import { Header_principal } from './../components/Header_principal';
 import { Banner_principal } from './../components/Banner_principal';
 import { Grid_Ofertas } from './../components/Grid_Ofertas';
 import { Carousel_products_top } from './../components/Carousel_products_top';
-import { Carousel_category } from './../components/Carousel_category';
+import { Portada_shop_grid } from './../components/Portada_shop_grid';
 import { Carousel_store } from './../components/Carousel_store';
+import useShopNames from '../hooks/useShopNames';
 
 
 export function Home() {
+
+  const { shopNames, loading } = useShopNames();
+
+  console.log(shopNames)
   
   return (
     <>
@@ -20,7 +25,15 @@ export function Home() {
         <Grid_Ofertas />
       {/* ==============   Grid Offer   ==============*/}
         <Carousel_products_top />
-        <Carousel_category />
+
+        {
+          shopNames.map((item) => (
+            <Portada_shop_grid nameShop={item}/>
+          ))
+        }
+
+        
+
         <Carousel_store />
     </>
   )

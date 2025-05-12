@@ -50,9 +50,12 @@ export const Header_principal = () => {
             </div>
 
             <div id='container_perfil'>
-                <button className='container_icons_perfil' onClick={() => setShowCart(!showCart)}>
+                <button className='container_icons_perfil btn_user' onClick={() => setShowForm(!showForm)}>
+                    <TiUser />
+                   <span> {userName  ?  `${userName[0].nombre} ${userName[0].apellidos}` : 'Iniciar sesión'}</span>
+                </button>
+                <button className='container_icons_perfil btn_cart' onClick={() => setShowCart(!showCart)}>
                    <IoMdCart /> 
-                   <span>Mi carrito</span>
                    {
                     countCart > 0 
                     ?(<span className='count_cart animate__animated animate__bounceIn'>{countCart > 99 ? '99+' : countCart}</span>) 
@@ -60,26 +63,12 @@ export const Header_principal = () => {
                    }
                    
                 </button>
-                <button className='container_icons_perfil' onClick={() => setShowForm(!showForm)}>
-                    <TiUser />
-                   <span> {userName  ?  `${userName[0].nombre} ${userName[0].apellidos}` : 'Iniciar sesión'}</span>
-                </button>
+               
             </div>
         </div>
 
         <div id='header_bottom'>
             <MenuFamilias />
-            {/* <nav id='nav_header'>
-                <ul>
-                    <li><Link to='/search/familia/medicamento'>Medicamento</Link> </li>
-                    <li><Link to='/search/familia/bebes'>Bebes</Link> </li>
-                    <li><Link to='/search/familia/perfumeria'>Perfumeria</Link> </li>
-                    <li><Link to='/search/familia/curacion'>Curación</Link> </li>
-                    <li><Link to='/search/familia/sueros'>Sueros orales</Link> </li>
-                    <li><Link to='/search/familia/suplementos'>Suplementos</Link> </li>
-                    <li><Link to='/search/familia/sexualidad'>Sexualidad</Link> </li>
-                </ul>
-            </nav> */}
         </div>
         {
             showCart && <Cart_slide showCart={showCart} setShowCart={setShowCart}/>
