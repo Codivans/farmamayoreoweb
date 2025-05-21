@@ -15,6 +15,7 @@ import {
   arrayRemove,
   arrayUnion,
 } from 'firebase/firestore';
+import { Link } from 'react-router-dom';
 
 export const Direcciones_clientes = () => {
     const [showForm, setShowForm] = useState(false);
@@ -112,6 +113,7 @@ export const Direcciones_clientes = () => {
 
                                             <button onClick={() => iniciarEdicion(dir)}>✏️ Editar</button>
                                             <button onClick={() => eliminarDireccion(dir)}>🗑️ Eliminar</button>
+                                            <Link to='/upload'>Upload</Link>
                                         </div>
                                     ))
                                 }
