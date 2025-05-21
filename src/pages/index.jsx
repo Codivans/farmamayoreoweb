@@ -7,6 +7,10 @@ export { Perfil_Cliente } from './Perfil_Cliente';
 export { Direcciones_clientes } from './Direcciones_clientes';
 
 
+export { UploadConstancia } from './UploadConstancia';
+export { UploadFile } from './UploadFile';
+
+
 
 
 // Admin Web

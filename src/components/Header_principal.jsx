@@ -10,6 +10,8 @@ import { Flag_Header } from './Flag_Header';
 import { Formulario_session } from './Formulario_session';
 import { useAuth } from '../context/AuthContext';
 import { MenuFamilias } from './MenuFamilias';
+import { signOut } from 'firebase/auth';
+import { auth } from './../firebase/firebaseConfig';
 
 export const Header_principal = () => {
     const [searchTerm, setSearchTerm] = useState('');
@@ -27,7 +29,15 @@ export const Header_principal = () => {
           }
         }
       };
-      console.log(usuario)
+      
+    const logOut = async () => {
+        await signOut(auth)
+        toast.success('Cerraste sesión, hasta pronto!!');
+        setEstatus(true)
+        localStorage.removeItem('UserState')
+        navigate('/')
+        
+    }
 
   return (
     <div id='header_page'>
@@ -50,10 +60,24 @@ export const Header_principal = () => {
             </div>
 
             <div id='container_perfil'>
-                <button className='container_icons_perfil btn_user' onClick={() => setShowForm(!showForm)}>
-                    <TiUser />
-                   <span> {userName  ?  `${userName[0].nombre} ${userName[0].apellidos}` : 'Iniciar sesión'}</span>
-                </button>
+                {
+                    usuario ? (
+                        <div className='container_user_buttons'>
+                            <Link to='/direcciones_perfil' className='item_displayname_user'>
+                                <TiUser />
+                                {usuario?.displayName}
+                            </Link>
+                            <button onClick={logOut}>
+                                Salir
+                            </button>
+                        </div>
+                    ) : (
+                        <button className='container_icons_perfil btn_user' onClick={() => setShowForm(!showForm)}>
+                            <TiUser />
+                            <span>Iniciar sesión</span>
+                        </button>
+                    )
+                }
                 <button className='container_icons_perfil btn_cart' onClick={() => setShowCart(!showCart)}>
                    <IoMdCart /> 
                    {

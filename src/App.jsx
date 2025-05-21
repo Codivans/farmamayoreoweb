@@ -1,6 +1,6 @@
 import React from 'react';
 import { Routes, Route } from "react-router-dom";
-import { Home, Search, AltaCatalogo, Formularios_session, Perfil_Cliente, Direcciones_clientes, Shop, ConfigShop, Detalle_shop } from './pages/index';
+import { Home, Search, AltaCatalogo, Formularios_session, Perfil_Cliente, Direcciones_clientes, Shop, ConfigShop, Detalle_shop, UploadConstancia, UploadFile } from './pages/index';
 import './App.css';
 import 'animate.css';
 import { CarritoProvider } from './context/cartContext';
@@ -26,10 +26,13 @@ function App() {
             <Route path='/search/:modulo/:searchTerm/' element={<Search />}/>
             <Route path='/shop/:nameShop' element={<Shop />}/>
             <Route path='/detalle_shop' element={<Detalle_shop/>}/>
+
+            <Route path='/upload' element={<UploadFile/>}/>
           {/* </Route> */}
         
           <Route path='/admin/alta/catalogo' element={<AltaCatalogo />} />
           <Route path='/admin/alta/config' element={<ConfigShop />} />
+          <Route path='/upload-p' element={<UploadConstancia />}/>
 
 
         </Routes>

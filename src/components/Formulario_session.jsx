@@ -68,7 +68,7 @@ export const Formulario_session = ({showForm, setShowForm}) => {
           </div>
 
           <div className='container_forms_column'>
-            <Form_login selectForm={selectForm} setSelectForm={setSelectForm} setShowForm={setShowForm}/>
+            <Form_login selectForm={selectForm} setSelectForm={setSelectForm} setShowForm={setShowForm} showForm={showForm}/>
             <Form_Register selectForm={selectForm} setSelectForm={setSelectForm} />           
           </div>
         </div>

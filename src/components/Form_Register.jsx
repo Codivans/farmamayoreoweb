@@ -1,69 +1,109 @@
 import { useState } from 'react'
+
 import { createUserWithEmailAndPassword, updateProfile } from "firebase/auth";
-import createUser from '../firebase/creatUser';
-import { auth } from './../firebase/firebaseConfig';
+import { auth, storage, db } from "./../firebase/firebaseConfig"; // asegúrate de tener estas referencias
+import { ref, uploadBytes, getDownloadURL } from "firebase/storage";
+import { doc, setDoc } from "firebase/firestore";
+import { useNavigate } from 'react-router-dom';
+
 
 export const Form_Register = ({selectForm, setSelectForm}) => {
-    const [dataRegistro, setDataRegistro] = useState({
-        email: '',
-        nombre: '',
-        apellidos: '',
-        telefono: '',
-        password: ''
-    
-      })
+      const [form, setForm] = useState({
+        nombre: "",
+        apellidoPaterno: "",
+        apellidoMaterno: "",
+        telefono: "",
+        email: "",
+        password: "",
+        documento: null,
+      });
 
-    const handleChange = (evt) => {
-        const { name, value } = evt.target
-        setDataRegistro({ ...dataRegistro, [name]: value })
+      const navigate = useNavigate();
+
+      const handleChange = (e) => {
+        const { name, value, files } = e.target;
+        setForm((prev) => ({
+          ...prev,
+          [name]: files ? files[0] : value,
+        }));
       };
-    
-    
-    
-      const actualizarNombre = async () => {
-        await updateProfile(auth.currentUser, {
-          displayName: dataRegistro.userName
-        }).then(() => {
-          console.log('Actualizado.')
-        }).catch((error) => {
-          console.log(error)
-        })
-      }
-    
-      const handleSubmitRegister = async(evt) => {
-        evt.preventDefault()
-        let email = dataRegistro.email
-        let nombre = dataRegistro.nombre
-        let apellidos = dataRegistro.apellidos
-        let telefono = dataRegistro.telefono
-        let password = dataRegistro.password
-        
-        await createUserWithEmailAndPassword(auth, email, password)
-        .then((userCredential) => {
-          actualizarNombre()
-          let uidUser = userCredential.user.uid;
-          createUser({uidUser, email, nombre, apellidos, telefono})
-          console.log('listo')
-        })
-        .catch((error) => {
-          const errorMessage = error.message;
-          if(errorMessage === 'Firebase: Error (auth/email-already-in-use).'){
-            // toast.error(`El correo ${email} ya esta registrado.`);
-          }
-            console.log(errorMessage)
-        })
-      }
-      console.log(dataRegistro)
+
+      const handleSubmit = async (e) => {
+        e.preventDefault();
+
+        try {
+          // 1. Crear usuario
+          const userCredential = await createUserWithEmailAndPassword(auth, form.email, form.password);
+          const user = userCredential.user;
+          console.log("Usuario creado con UID:", user.uid);
+
+          // 2. Subir el documento a Storage
+          // const documento = form.documento;
+          // console.log("Documento recibido:", documento);
+
+          // if (!documento) {
+          //   alert("Por favor selecciona un documento PDF");
+          //   return;
+          // }
+
+          // const storageRef = ref(storage, `documentos/${user.uid}.pdf`);
+          // console.log("Subiendo documento a:", storageRef.fullPath);
+          // await uploadBytes(storageRef, documento);
+          //  console.log("✅ URL del documento:", downloadURL);
+
+          // 3. Obtener URL del archivo
+          // const downloadURL = await getDownloadURL(storageRef);
+          // console.log("URL del documento:", downloadURL);
+
+          // 4. Guardar información en Firestore
+          await setDoc(doc(db, "usuarios", user.uid), {
+            nombre: form.nombre,
+            apellidoPaterno: form.apellidoPaterno,
+            apellidoMaterno: form.apellidoMaterno,
+            telefono: form.telefono,
+            uid: user.uid,
+            roll: 'cliente',
+            status: false,
+          });
+
+          console.log("Datos guardados en Firestore");
+
+          // 5. Actualizar displayName
+          await updateProfile(user, {
+            displayName: `${form.nombre} ${form.apellidoPaterno}`,
+          });
+
+          console.log("displayName actualizado");
+          navigate("/");
+
+        } catch (error) {
+          console.error("Error en el registro:", error);
+          alert("Ocurrió un error durante el registro");
+        }
+      };
+
+      
   return (
     <div className={`container_form_style form_register animate__animated  ${selectForm ? 'animate__bounceInRight' : 'animate__bounceOutRight'}`} >
-        <form onSubmit={handleSubmitRegister}>
+        <form onSubmit={handleSubmit}>
         <h3>Registrarme</h3>
         <input name='email' type='text' placeholder='Correo electrónico' onChange={handleChange}/>
         <input name='nombre' type='text' placeholder='Nombre' onChange={handleChange}/>
-        <input name='apellidos' type='text' placeholder='Apellido' onChange={handleChange}/>
+        <input name='apellidoPaterno' type='text' placeholder='Apellido Paterno' onChange={handleChange}/>
+        <input name='apellidoMaterno' type='text' placeholder='Apellido Materno' onChange={handleChange}/>
         <input name='telefono' type='text' placeholder='Numero Telefónico' onChange={handleChange}/>
+
+        {/* <input
+          type="file"
+          // accept="application/pdf"
+          onChange={(e) => setForm({ ...form, documento: e.target.files[0] })}
+          required
+        /> */}
+
+        
+
         <input name='password' type='password' placeholder='Contraseña' onChange={handleChange}/>
-        <button className='btn_blue'>
+        <button className='btn_blue'  type="submit">
             Entrar
         </button>
         </form>

@@ -4,7 +4,7 @@ import { signInWithEmailAndPassword,  signOut } from "firebase/auth";
 import searchUser from '../hooks/searchUser';
 import { useAuth } from './../context/AuthContext';
 
-export const Form_login = ({selectForm, setSelectForm, setShowForm}) => {
+export const Form_login = ({selectForm, setSelectForm, setShowForm, showForm}) => {
     const [dataLogin, setDataLogin] = useState({
         email: '',
         password: ''
@@ -31,7 +31,7 @@ export const Form_login = ({selectForm, setSelectForm, setShowForm}) => {
             try {
               await signInWithEmailAndPassword(auth, email, password);
               localStorage.setItem('UserState', JSON.stringify(dataUser));
-              // setEstatus(true)
+              setShowForm(!showForm)
               // setShowForm(false)
             } catch (error) {
               console.log('Hubo un error, upsss!', error)

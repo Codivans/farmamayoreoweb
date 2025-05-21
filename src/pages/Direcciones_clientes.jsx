@@ -1,8 +1,20 @@
-import React, { useState } from 'react'
+import { useState, useEffect } from 'react'
 import { Header_principal } from '../components/Header_principal'
 import { Menu_perfil } from '../components/Menu_perfil';
-import { IoArrowBackCircleSharp } from "react-icons/io5";
+
 import actualizarDireccion from '../firebase/agregarDireccion';
+import useGetDataUser from './../hooks/useGetDataUser';
+import ExcelToJson from '../components/ExcelToJson';
+
+import { FormularioDirecciones } from '../components/FormularioDirecciones';
+import { auth, db } from './../firebase/firebaseConfig';
+import {
+  doc,
+  getDoc,
+  updateDoc,
+  arrayRemove,
+  arrayUnion,
+} from 'firebase/firestore';
 
 export const Direcciones_clientes = () => {
     const [showForm, setShowForm] = useState(false);
@@ -18,19 +30,60 @@ export const Direcciones_clientes = () => {
         referencias: ''
     });
 
-    const handleChange = (evt) => {
-        const { name, value } = evt.target
-        setDataForm({ ...dataForm, [name]: value })
+    // const [cp, setCp] = useState('');
+    // const [colonias, setColonias] = useState([]);
+    // const [coloniaSeleccionada, setColoniaSeleccionada] = useState('');
+    // const [municipio, setMunicipio] = useState('');
+    // const [estado, setEstado] = useState('');
+
+    const userData = useGetDataUser({});
+
+
+
+    const [direcciones, setDirecciones] = useState([]);
+    const [direccionEditando, setDireccionEditando] = useState(null);
+
+    const obtenerDirecciones = async () => {
+        const user = auth.currentUser;
+        if (!user) return;
+
+        const ref = doc(db, 'usuarios', user.uid);
+        const snap = await getDoc(ref);
+        if (snap.exists()) {
+        const data = snap.data();
+        setDirecciones(data.direcciones || []);
+        }
     };
 
-    const handleSubmit = async(evt) => {
-        evt.preventDefault();
-        await actualizarDireccion({userId: 'xZtzTv9k1QSTkjcQklsqAvKeR1B3', newAddress: dataForm}).then(() => {
-            console.log('Actualizado !!!')
-            setShowForm(!showForm)
-        }).catch((error) => {
-            console.log('Error: ', error)
-        })
+    const eliminarDireccion = async (direccion) => {
+        const user = auth.currentUser;
+        if (!user) return;
+
+        const ref = doc(db, 'usuarios', user.uid);
+        await updateDoc(ref, {
+        direcciones: arrayRemove(direccion),
+        });
+
+        obtenerDirecciones();
+    };
+
+    const iniciarEdicion = (direccion) => {
+        setDireccionEditando(direccion);
+        setShowForm(!showForm)
+    };
+
+    const finalizarGuardado = () => {
+        setDireccionEditando(null);
+        obtenerDirecciones();
+    };
+
+    useEffect(() => {
+        obtenerDirecciones();
+    }, []);
+
+    const handleClick = () => {
+        setShowForm(!showForm)
+        finalizarGuardado();
     }
 
   return (
@@ -45,100 +98,104 @@ export const Direcciones_clientes = () => {
                         showForm != true ? (
                         <div className={`container_rows_direcciones animate__animated  ${showForm ? 'animate__bounceOutLeft' : 'animate__bounceInLeft'}`}>
                             <div className='botonera_perfil'>
-                                <button className='btn_add_data' onClick={() => setShowForm(true)}>+ Nueva dirección</button>
+                                <button className='btn_add_data' onClick={() => handleClick()}>+ Nueva dirección</button>
                             </div>
 
                             <div className='container_cards_address'>
-                                <div className='row_direccion'>
-                                    <h3>CEDIFA</h3>
-                                    <p><strong>Calle:</strong> AV LAGO DE XOCHIMILCO <strong>Num. Ext:</strong> 212, <strong>Num. Int:</strong> 1ER PISO, <strong>Colonia o Alcaldia:</strong> EVOLUCION 24 SUPER</p>
-                                    <p><strong>Municipio o Localidad:</strong> NEZAHUALCOYOTL, <strong>CP:</strong> 57699, <strong>Referencias:</strong> ENTRE AVENIDA PANTITLAN Y FLAMINGOS</p>
-                                </div>
-                                <div className='row_direccion'>
-                                    <h3>CEDIFA</h3>
-                                    <p><strong>Calle:</strong> AV LAGO DE XOCHIMILCO <strong>Num. Ext:</strong> 212, <strong>Num. Int:</strong> 1ER PISO, <strong>Colonia o Alcaldia:</strong> EVOLUCION 24 SUPER</p>
-                                    <p><strong>Municipio o Localidad:</strong> NEZAHUALCOYOTL, <strong>CP:</strong> 57699, <strong>Referencias:</strong> ENTRE AVENIDA PANTITLAN Y FLAMINGOS</p>
-                                </div>
-                                <div className='row_direccion'>
-                                    <h3>CEDIFA</h3>
-                                    <p><strong>Calle:</strong> AV LAGO DE XOCHIMILCO <strong>Num. Ext:</strong> 212, <strong>Num. Int:</strong> 1ER PISO, <strong>Colonia o Alcaldia:</strong> EVOLUCION 24 SUPER</p>
-                                    <p><strong>Municipio o Localidad:</strong> NEZAHUALCOYOTL, <strong>CP:</strong> 57699, <strong>Referencias:</strong> ENTRE AVENIDA PANTITLAN Y FLAMINGOS</p>
-                                </div>
-                                <div className='row_direccion'>
-                                    
-                                    <h3>CEDIFA</h3>
-                                    <p><strong>Calle:</strong> AV LAGO DE XOCHIMILCO <strong>Num. Ext:</strong> 212, <strong>Num. Int:</strong> 1ER PISO, <strong>Colonia o Alcaldia:</strong> EVOLUCION 24 SUPER</p>
-                                    <p><strong>Municipio o Localidad:</strong> NEZAHUALCOYOTL, <strong>CP:</strong> 57699, <strong>Referencias:</strong> ENTRE AVENIDA PANTITLAN Y FLAMINGOS</p>
-                                </div>
-                                <div className='row_direccion'>
-                                    <h3>CEDIFA</h3>
-                                    <p><strong>Calle:</strong> AV LAGO DE XOCHIMILCO <strong>Num. Ext:</strong> 212, <strong>Num. Int:</strong> 1ER PISO, <strong>Colonia o Alcaldia:</strong> EVOLUCION 24 SUPER</p>
-                                    <p><strong>Municipio o Localidad:</strong> NEZAHUALCOYOTL, <strong>CP:</strong> 57699, <strong>Referencias:</strong> ENTRE AVENIDA PANTITLAN Y FLAMINGOS</p>
-                                </div>
+
+                                {
+                                    direcciones.map((dir, i) => (
+                                        <div className='row_direccion' key={i}>
+                                            <h3>{dir.tipoDireccion}</h3>
+                                            <p><strong>Calle:</strong> {dir.calle} <strong>Num. Ext:</strong> {dir.numeroExt}, <strong>Num. Int:</strong> {dir.numeroInt}, <strong>Colonia o Alcaldia:</strong> {dir.colonia}</p>
+                                            <p><strong>Municipio o Localidad:</strong> {dir.municipio}, <strong>CP:</strong> {dir.cp}, <strong>Referencias:</strong> {dir.referencias}</p>
+
+                                            <button onClick={() => iniciarEdicion(dir)}>✏️ Editar</button>
+                                            <button onClick={() => eliminarDireccion(dir)}>🗑️ Eliminar</button>
+                                        </div>
+                                    ))
+                                }
                             </div>
                             
                         </div>
                         ) : (
-                            <div className={`container_form_add_direccion animate__animated  ${showForm ? 'animate__bounceInRight' : 'animate__bounceOutRight'}`}>
-                                <div className='title_form'>
-                                    <button onClick={() => setShowForm(false)}><IoArrowBackCircleSharp /> Regresar</button>
-                                    <p>Agregar dirección de entrega</p>
-                                </div>
-                                <form onSubmit={handleSubmit}>
-                                    <div className='box_input_label'>
-                                        <label>Nombre de dirección</label>
-                                        <input type='text' name='direccion' placeholder='Ej. Bodega' onChange={handleChange} />
-                                    </div>
+                            <FormularioDirecciones showForm={showForm} setShowForm={setShowForm} direccionEditar={direccionEditando} onGuardado={finalizarGuardado}/>
+                            // <div className={`container_form_add_direccion animate__animated  ${showForm ? 'animate__bounceInRight' : 'animate__bounceOutRight'}`}>
+                            //     <div className='title_form'>
+                            //         <button onClick={() => setShowForm(false)}><IoArrowBackCircleSharp /> Regresar</button>
+                            //         <p>Agregar dirección de entrega</p>
+                            //     </div>
+                            //     <form onSubmit={handleSubmit}>
+                            //         <div className='box_input_label'>
+                            //             <label>Nombre de dirección</label>
+                            //             <input type='text' name='direccion' placeholder='Ej. Bodega' onChange={handleChange} />
+                            //         </div>
 
-                                    <div className='box_input_label'>
-                                        <label>Calle</label>
-                                        <input type='text' name='calle' placeholder='Ej. Lago Atitlan    ' onChange={handleChange} />
-                                    </div>
+                            //         <div className='box_input_label'>
+                            //             <label>Calle</label>
+                            //             <input type='text' name='calle'  onChange={handleChange} />
+                            //         </div>
 
-                                    <div className='column_box_input'>
-                                        <div className='box_input_label sm_box'>
-                                            <label>Numero Exterior</label>
-                                            <input type='text' name='numero_exterior' placeholder='Ej. 201' onChange={handleChange} />
-                                        </div>
+                            //         <div className='column_box_input'>
+                            //             <div className='box_input_label sm_box'>
+                            //                 <label>Numero Exterior</label>
+                            //                 <input type='text' name='numero_exterior' onChange={handleChange} />
+                            //             </div>
 
-                                        <div className='box_input_label sm_box'>
-                                            <label>Numero Interior</label>
-                                            <input type='text' name='numero_interior' placeholder='Ej. 1ER PISO' onChange={handleChange} />
-                                        </div>
-                                    </div>
+                            //             <div className='box_input_label sm_box'>
+                            //                 <label>Numero Interior</label>
+                            //                 <input type='text' name='numero_interior' onChange={handleChange} />
+                            //             </div>
+                            //         </div>
+                            //         <div className='column_box_input'>
+                            //             <div className='box_input_label sm_box'>
+                            //                 <label>Código postal</label>
+                            //                 <input
+                            //                     type="text"
+                            //                     value={cp}
+                            //                     onChange={handleChangeCP}
+                            //                     style={{ display: 'block', marginBottom: '1rem', width: '100%' }}
+                            //                 />
+                            //             </div>
 
-                                    <div className='box_input_label'>
-                                        <label>Colonia o Localidad</label>
-                                        <input type='text' name='colonia' placeholder='Ej. AGUA AZUL' onChange={handleChange} />
-                                    </div>
+                            //             <div className='box_input_label sm_box'>
+                            //                 <label>Estado</label>
+                            //                 <input name='estado' type="text" value={estado} readOnly />
+                            //             </div>
+                            //         </div>
 
-                                    <div className='box_input_label'>
-                                        <label>Municipio o Ciudad</label>
-                                        <input type='text' name='municipio' placeholder='Ej. NEZAHUALCOYOTL' onChange={handleChange} />
-                                    </div>
+                            //         <div className='box_input_label'>
+                            //             <label>Colonia o Localidad</label>
+                            //             <select
+                            //                 value={coloniaSeleccionada}
+                            //                 onChange={handleSelectColonia}
+                            //                 disabled={colonias.length === 1}
+                            //                 style={{ display: 'block', marginBottom: '1rem', width: '100%' }}
+                            //             >
+                            //                 <option value="">-- Selecciona una colonia --</option>
+                            //                 {colonias.map((colonia, index) => (
+                            //                     <option key={index} value={colonia}>
+                            //                     {colonia}
+                            //                     </option>
+                            //                 ))}
+                            //             </select>
+                            //         </div>
 
-                                    <div className='column_box_input'>
-                                        <div className='box_input_label sm_box'>
-                                            <label>Código postal</label>
-                                            <input type='text' name='codigo_postal' placeholder='Ej. 57500' onChange={handleChange} />
-                                        </div>
+                            //         <div className='box_input_label'>
+                            //             <label>Municipio o Ciudad</label>
+                            //             <input type='text' name='municipio' value={municipio} readOnly />
+                            //         </div>
 
-                                        <div className='box_input_label sm_box'>
-                                            <label>Estado</label>
-                                            <input type='text' name='estado' placeholder='Ej. ESTADO DE MEXICO' onChange={handleChange} />
-                                        </div>
-                                    </div>
+                            //         <div className='box_input_label'>
+                            //             <label>Referencias</label>
+                            //             <input type='text' name='referencia' onChange={handleChange} />
+                            //         </div>
 
-                                    <div className='box_input_label'>
-                                        <label>Referencias</label>
-                                        <input type='text' name='referencia' placeholder='Ej. ESQUINA AV. CHIMALHUACAN' onChange={handleChange} />
-                                    </div>
-
-                                    <div className='box_input_label'>
-                                        <button>Guardar</button>
-                                    </div>
-                                </form>
-                            </div>
+                            //         <div className='box_input_label'>
+                            //             <button>Guardar</button>
+                            //         </div>
+                            //     </form>
+                            // </div>
                         )
                     }
                 </div>
