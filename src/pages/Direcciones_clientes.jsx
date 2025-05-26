@@ -15,7 +15,6 @@ import {
   arrayRemove,
   arrayUnion,
 } from 'firebase/firestore';
-import { Link } from 'react-router-dom';
 
 export const Direcciones_clientes = () => {
     const [showForm, setShowForm] = useState(false);
@@ -30,16 +29,6 @@ export const Direcciones_clientes = () => {
         estado: '',
         referencias: ''
     });
-
-    // const [cp, setCp] = useState('');
-    // const [colonias, setColonias] = useState([]);
-    // const [coloniaSeleccionada, setColoniaSeleccionada] = useState('');
-    // const [municipio, setMunicipio] = useState('');
-    // const [estado, setEstado] = useState('');
-
-    const userData = useGetDataUser({});
-
-
 
     const [direcciones, setDirecciones] = useState([]);
     const [direccionEditando, setDireccionEditando] = useState(null);
@@ -113,7 +102,7 @@ export const Direcciones_clientes = () => {
 
                                             <button onClick={() => iniciarEdicion(dir)}>✏️ Editar</button>
                                             <button onClick={() => eliminarDireccion(dir)}>🗑️ Eliminar</button>
-                                            <Link to='/upload'>Upload</Link>
+                                            
                                         </div>
                                     ))
                                 }
@@ -122,82 +111,6 @@ export const Direcciones_clientes = () => {
                         </div>
                         ) : (
                             <FormularioDirecciones showForm={showForm} setShowForm={setShowForm} direccionEditar={direccionEditando} onGuardado={finalizarGuardado}/>
-                            // <div className={`container_form_add_direccion animate__animated  ${showForm ? 'animate__bounceInRight' : 'animate__bounceOutRight'}`}>
-                            //     <div className='title_form'>
-                            //         <button onClick={() => setShowForm(false)}><IoArrowBackCircleSharp /> Regresar</button>
-                            //         <p>Agregar dirección de entrega</p>
-                            //     </div>
-                            //     <form onSubmit={handleSubmit}>
-                            //         <div className='box_input_label'>
-                            //             <label>Nombre de dirección</label>
-                            //             <input type='text' name='direccion' placeholder='Ej. Bodega' onChange={handleChange} />
-                            //         </div>
-
-                            //         <div className='box_input_label'>
-                            //             <label>Calle</label>
-                            //             <input type='text' name='calle'  onChange={handleChange} />
-                            //         </div>
-
-                            //         <div className='column_box_input'>
-                            //             <div className='box_input_label sm_box'>
-                            //                 <label>Numero Exterior</label>
-                            //                 <input type='text' name='numero_exterior' onChange={handleChange} />
-                            //             </div>
-
-                            //             <div className='box_input_label sm_box'>
-                            //                 <label>Numero Interior</label>
-                            //                 <input type='text' name='numero_interior' onChange={handleChange} />
-                            //             </div>
-                            //         </div>
-                            //         <div className='column_box_input'>
-                            //             <div className='box_input_label sm_box'>
-                            //                 <label>Código postal</label>
-                            //                 <input
-                            //                     type="text"
-                            //                     value={cp}
-                            //                     onChange={handleChangeCP}
-                            //                     style={{ display: 'block', marginBottom: '1rem', width: '100%' }}
-                            //                 />
-                            //             </div>
-
-                            //             <div className='box_input_label sm_box'>
-                            //                 <label>Estado</label>
-                            //                 <input name='estado' type="text" value={estado} readOnly />
-                            //             </div>
-                            //         </div>
-
-                            //         <div className='box_input_label'>
-                            //             <label>Colonia o Localidad</label>
-                            //             <select
-                            //                 value={coloniaSeleccionada}
-                            //                 onChange={handleSelectColonia}
-                            //                 disabled={colonias.length === 1}
-                            //                 style={{ display: 'block', marginBottom: '1rem', width: '100%' }}
-                            //             >
-                            //                 <option value="">-- Selecciona una colonia --</option>
-                            //                 {colonias.map((colonia, index) => (
-                            //                     <option key={index} value={colonia}>
-                            //                     {colonia}
-                            //                     </option>
-                            //                 ))}
-                            //             </select>
-                            //         </div>
-
-                            //         <div className='box_input_label'>
-                            //             <label>Municipio o Ciudad</label>
-                            //             <input type='text' name='municipio' value={municipio} readOnly />
-                            //         </div>
-
-                            //         <div className='box_input_label'>
-                            //             <label>Referencias</label>
-                            //             <input type='text' name='referencia' onChange={handleChange} />
-                            //         </div>
-
-                            //         <div className='box_input_label'>
-                            //             <button>Guardar</button>
-                            //         </div>
-                            //     </form>
-                            // </div>
                         )
                     }
                 </div>

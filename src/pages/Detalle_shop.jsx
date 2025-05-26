@@ -1,4 +1,5 @@
 import React, { useContext, useRef, useEffect, useState } from 'react';
+import { v4 as uuidv4 } from 'uuid';
 import { ContextoCarrito } from './../context/cartContext';
 import { Header_principal } from '../components/Header_principal';
 import { FaCheck } from "react-icons/fa6";
@@ -8,15 +9,73 @@ import { CiCreditCard2 } from "react-icons/ci";
 import { PiMoneyLight } from "react-icons/pi";
 import { BsPhoneFlip } from "react-icons/bs";
 import { FaArrowLeftLong } from "react-icons/fa6";
-import useGetDataUser from "./../hooks/useGetDataUser";
+import { auth, db } from './../firebase/firebaseConfig';
+import {
+  doc,
+  getDoc,
+  updateDoc,
+  arrayRemove,
+  arrayUnion,
+} from 'firebase/firestore';
+import createPedido from '../firebase/createPedido';
+import { useNavigate } from 'react-router-dom';
 
 export const Detalle_shop = () => {
     const [stepShop, setStepShop] = useState(0);
     const [selectAddress, setSelectAddress] = useState('');
-    const { productosCarrito, firstciarCarrito, deleteProductoCart, productDeliting, importeCart } = useContext(ContextoCarrito);
+    const [formaPago, setFormaPago] = useState('');
+    const { productosCarrito, firstciarCarrito, deleteProductoCart, productDeliting, importeCart, vaciarCarrito } = useContext(ContextoCarrito);
+    const [direcciones, setDirecciones] = useState([]);
     const imagenDefault = (e) => e.target.src =  'https://farmacias2web.com/imagenes/predeterminada.jpg';
 
-    const userData = useGetDataUser({});
+    const navigate = useNavigate();
+
+    const obtenerDirecciones = async () => {
+        const user = auth.currentUser;
+        if (!user) return;
+
+        const ref = doc(db, 'usuarios', user.uid);
+        const snap = await getDoc(ref);
+        if (snap.exists()) {
+        const data = snap.data();
+        setDirecciones(data.direcciones || []);
+        }
+    };
+
+    useEffect(() => {
+        obtenerDirecciones();
+    }, []);
+
+    let addressFullSelected = direcciones.filter((item) => item.tipoDireccion === selectAddress)
+
+    
+    const nuevoId = uuidv4();
+    const shortId = uuidv4().replace(/-/g, "").slice(0, 15);
+
+    const dataLayout = [{
+        uidPedido: shortId,
+        usuario: auth.currentUser.uid,
+        emailUser: auth.currentUser.email,
+        direccion: addressFullSelected,
+        formaPago: formaPago,
+        costoEnvio: 0,
+        pedido: productosCarrito
+    }]
+
+    const sendPedido = async (e) => {
+        e.preventDefault();
+
+        try {
+            await createPedido(dataLayout);
+            setSelectAddress('');
+            setFormaPago('');
+            vaciarCarrito();
+            navigate(`/order_send/${shortId}`)
+            
+        } catch (error) {
+            console.log(error)
+        }
+    }
 
 
 
@@ -58,22 +117,15 @@ export const Detalle_shop = () => {
                                 <h3>Selecciona la dirección de entrega</h3>
                                 <div className='container_cards_address'>
                                     {
-                                        userData?.direcciones?.map((add) => (
-                                            <div className={`item_address ${selectAddress === 'casa' ? 'actived_address': ''}`}>
-                                                <input type='radio' name='casa' value='' checked={'casa' === selectAddress} onChange={() => setSelectAddress('casa')} id='casa'  />
-                                                <label htmlFor='casa' >Casa</label>
-                                                <p>Calle: Xochimilco # 259, evolucion, nezahualcoyotl, mexico, CP.57700</p>
+                                        direcciones?.map((dir, i) => (
+                                            <div key={i} className={`item_address ${selectAddress === 'casa' ? 'actived_address': ''}`}>
+                                                <input type='radio' name={dir.tipoDireccion} value='' checked={dir.tipoDireccion === selectAddress} onChange={() => setSelectAddress(dir.tipoDireccion)} id={dir.tipoDireccion}  />
+                                                <label htmlFor='casa' >{dir.tipoDireccion}</label>
+                                                <p><strong>Calle:</strong> {dir.calle} <strong>Num. Ext:</strong> {dir.numeroExt}, <strong>Num. Int:</strong> {dir.numeroInt}, <strong>Colonia o Alcaldia:</strong> {dir.colonia}</p>
+                                                <p><strong>Municipio o Localidad:</strong> {dir.municipio}, <strong>CP:</strong> {dir.cp}, <strong>Referencias:</strong> {dir.referencias}</p>
                                             </div>
                                         ))
                                     }
-                                    
-
-                                     {/* <div className={`item_address ${selectAddress === 'casa' ? 'actived_address': ''}`}>
-                                        <input type='radio' name='casa' value='' checked={'casa' === selectAddress} onChange={() => setSelectAddress('casa')} id='casa'  />
-                                        <label htmlFor='casa' >Casa</label>
-                                        <p>Calle: Xochimilco # 259, evolucion, nezahualcoyotl, mexico, CP.57700</p>
-                                    </div> */}
-
                                 </div>
                             </div>
                         )
@@ -84,18 +136,18 @@ export const Detalle_shop = () => {
                                 <h3>Selecciona la dirección de entrega</h3>
 
                                 <div className='container_cards_address'>
-                                    <div className={`item_pago ${selectAddress === 'tarjeta' ? 'actived_address': ''}`}>
-                                        <input type='radio' name='tarjeta' value='' checked={'tarjeta' === selectAddress} onChange={() => setSelectAddress('tarjeta')} id='tarjeta'  />
+                                    <div className={`item_pago ${formaPago === 'tarjeta' ? 'actived_address': ''}`}>
+                                        <input type='radio' name='tarjeta' value='' checked={'tarjeta' === formaPago} onChange={() => setFormaPago('tarjeta')} id='tarjeta'  />
                                         <label htmlFor='tarjeta' >Tarjeta (llevamos la terminal) <CiCreditCard2 /></label>
                                     </div>
 
-                                    <div className={`item_pago ${selectAddress === 'efectivo' ? 'actived_address': ''}`}>
-                                        <input type='radio' name='efectivo' value='' checked={'efectivo' === selectAddress} onChange={() => setSelectAddress('efectivo')} id='efectivo'  />
+                                    <div className={`item_pago ${formaPago === 'efectivo' ? 'actived_address': ''}`}>
+                                        <input type='radio' name='efectivo' value='' checked={'efectivo' === formaPago} onChange={() => setFormaPago('efectivo')} id='efectivo'  />
                                         <label htmlFor='efectivo' >Efectivo <PiMoneyLight/> </label>
                                     </div>
 
-                                    <div className={`item_pago ${selectAddress === 'transferencia' ? 'actived_address': ''}`}>
-                                        <input type='radio' name='casa' value='' checked={'transferencia' === selectAddress} onChange={() => setSelectAddress('transferencia')} id='transferencia'  />
+                                    <div className={`item_pago ${formaPago === 'transferencia' ? 'actived_address': ''}`}>
+                                        <input type='radio' name='casa' value='' checked={'transferencia' === formaPago} onChange={() => setFormaPago('transferencia')} id='transferencia'  />
                                         <label htmlFor='transferencia' >Transferencia <BsPhoneFlip/></label>
                                     </div>
 
@@ -151,12 +203,18 @@ export const Detalle_shop = () => {
                                         Atras
                                     </button>
 
-                                    <button className='btn_next_step' onClick={() => setStepShop(3)}>
+                                    <button className='btn_next_step' onClick={sendPedido}>
                                         Finalizar
                                         <FaArrowRightLong />
                                     </button>
                                 </div>
                             )
+                        }
+
+                        {
+                            <pre style={{ marginTop: '1rem', background: '#f4f4f4', padding: '1rem' }}>
+                                {JSON.stringify(dataLayout, null, 2)}
+                            </pre>
                         }
                     </div>
                 </div>

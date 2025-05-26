@@ -1,6 +1,7 @@
 import { db } from './firebaseConfig';
 import { doc, setDoc } from 'firebase/firestore';
 
+
 const createUser = async ({uidUser, email, nombre, apellidos, telefono, urlDocument }) => {
 
     console.log(uidUser, email, nombre, apellidos, telefono)

@@ -1,4 +1,4 @@
-import React, { useState, useContext } from 'react';
+import { useState, useContext, useRef, useEffect } from 'react';
 import { ContextoCarrito } from './../context/cartContext';
 import { Link, useNavigate } from 'react-router-dom';
 import { Cart_slide } from './Cart_slide';
@@ -6,6 +6,7 @@ import logo from './../assets/farmamayoreo.svg';
 import { IoSearch } from "react-icons/io5";
 import { IoMdCart } from "react-icons/io";
 import { TiUser } from "react-icons/ti";
+
 import { Flag_Header } from './Flag_Header';
 import { Formulario_session } from './Formulario_session';
 import { useAuth } from '../context/AuthContext';
@@ -20,6 +21,7 @@ export const Header_principal = () => {
     const navigate = useNavigate();
     const { countCart } = useContext(ContextoCarrito);
     const {usuario, userName } = useAuth();
+
 
     const handleKeyPress = (event) => {
         if (event.key === 'Enter') {
@@ -47,6 +49,11 @@ export const Header_principal = () => {
                 <Link to='/'>
                     <img src={logo} />
                 </Link>
+            </div>
+            
+
+            <div>
+                <MenuFamilias />
             </div>
 
             <div id='container_search'>
@@ -91,9 +98,9 @@ export const Header_principal = () => {
             </div>
         </div>
 
-        <div id='header_bottom'>
+        {/* <div id='header_bottom'>
             <MenuFamilias />
-        </div>
+        </div> */}
         {
             showCart && <Cart_slide showCart={showCart} setShowCart={setShowCart}/>
         }
