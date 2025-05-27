@@ -46,7 +46,7 @@ export const Portada_shop_grid = ({nameShop}) => {
             };
         }, []); // El array vacío asegura que se ejecute solo una vez al montar
     
-        let widthContainer = windowSize.width * .80
+        let widthContainer = windowSize.width * .90
         let widthCardAuto = (widthContainer / 5) - 10
         let countCards = Math.floor(widthContainer / widthCardAuto)
         let grapZiseCards = widthCardAuto * countCards

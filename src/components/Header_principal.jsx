@@ -13,6 +13,9 @@ import { useAuth } from '../context/AuthContext';
 import { MenuFamilias } from './MenuFamilias';
 import { signOut } from 'firebase/auth';
 import { auth } from './../firebase/firebaseConfig';
+import { HiOutlineNewspaper } from "react-icons/hi2";
+import { LuUserCog } from "react-icons/lu";
+import { IoExitOutline } from "react-icons/io5";
 
 export const Header_principal = () => {
     const [searchTerm, setSearchTerm] = useState('');
@@ -50,12 +53,9 @@ export const Header_principal = () => {
                     <img src={logo} />
                 </Link>
             </div>
+
+            <MenuFamilias />
             
-
-            <div>
-                <MenuFamilias />
-            </div>
-
             <div id='container_search'>
                 <IoSearch />
                 <input 
@@ -74,9 +74,11 @@ export const Header_principal = () => {
                                 <TiUser />
                                 {usuario?.displayName}
                             </Link>
-                            <button onClick={logOut}>
-                                Salir
-                            </button>
+                            <div className='sub_user'>
+                                <Link><HiOutlineNewspaper /> Mis pedidos</Link>
+                                <Link><LuUserCog /> Mis datos</Link>
+                                <button onClick={logOut}><IoExitOutline /> Cerrar sesion</button>
+                            </div>
                         </div>
                     ) : (
                         <button className='container_icons_perfil btn_user' onClick={() => setShowForm(!showForm)}>

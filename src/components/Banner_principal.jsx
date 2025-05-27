@@ -1,4 +1,4 @@
-import imgBanner from './../assets/banner.webp';
+import imgBanner from './../assets/banner.jpg';
 import imgCuadrada1 from './../assets/cuadrada1.webp';
 
 export const Banner_principal = () => {

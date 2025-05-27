@@ -4,6 +4,7 @@ import { MdDelete } from "react-icons/md";
 import { VscChromeClose } from "react-icons/vsc";
 import formatoMoneda from '../functions/formatoMoneda';
 import { Link } from 'react-router-dom';
+import img_cart_notfound from './../assets/cart_not_found.png'
 
 
 export const Cart_slide = ({showCart, setShowCart}) => {
@@ -39,28 +40,38 @@ export const Cart_slide = ({showCart, setShowCart}) => {
         </div>
         <div className='cart_body'>
             {
-              productosCarrito.map((item) => {
-                return(
-                  <div className={`row_cart animate__animated ${productDeliting === item.codigo ? 'animate__bounceOutLeft' : ''}`} >
-                    <div className='img_product_cart'>
-                      <img loading="lazy" onError={imagenDefault} src={`https://farmacias2web.com/imagenes/${item.codigo}.jpg`}/>
+              productosCarrito.length > 0 ? (
+                productosCarrito.map((item) => {
+                  return(
+                    <div className={`row_cart animate__animated ${productDeliting === item.codigo ? 'animate__bounceOutLeft' : ''}`} >
+                      <div className='img_product_cart'>
+                        <img loading="lazy" onError={imagenDefault} src={`https://farmacias2web.com/imagenes/${item.codigo}.jpg`}/>
+                      </div>
+                      <div className='description_product_cart'>
+                        <span>{item.codigo}</span><br />
+                        <span>{item.nombre}</span>
+                        <div><span>{item.pedido} pzs X {formatoMoneda(item.precio)} Importe: {formatoMoneda(item.importe)}</span></div>
+                      </div>
+                      <button className='btn_delete_cart' onClick={() => deleteProductoCart(item.codigo)}><MdDelete /></button>
                     </div>
-                    <div className='description_product_cart'>
-                      <span>{item.codigo}</span><br />
-                      <span>{item.nombre}</span>
-                      <div><span>{item.pedido} pzs X {formatoMoneda(item.precio)} Importe: {formatoMoneda(item.importe)}</span></div>
-                    </div>
-                    <button className='btn_delete_cart' onClick={() => deleteProductoCart(item.codigo)}><MdDelete /></button>
-                  </div>
-                )
-              })
-
+                  )
+                })
+              ) : (
+                <div className='content_img_notfound'>
+                  <img src={img_cart_notfound} />
+                </div>
+              )
             }
         </div>
-        <div className='cart_footer'>
-          <button className='btn_vaciar_cart' onClick={() => vaciarCarrito()}>Vaciar carrito</button>
-          <Link className='btn_finalizar_cart' to='/detalle_shop'>Finalizar {formatoMoneda(importeCart)}</Link>
-        </div>
+        {
+          productosCarrito.length > 0 &&(
+            <div className='cart_footer'>
+              <button className='btn_vaciar_cart' onClick={() => vaciarCarrito()}>Vaciar carrito</button>
+              <Link className='btn_finalizar_cart' to='/detalle_shop'>Finalizar <b>{formatoMoneda(importeCart)}</b></Link>
+            </div>
+          )
+        }
+       
       </div>
     </div>
 

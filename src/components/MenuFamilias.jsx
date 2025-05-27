@@ -2,6 +2,7 @@ import { useState, useContext, useRef, useEffect } from 'react';
 import { getFirestore, doc, getDoc } from 'firebase/firestore';
 import { Link } from 'react-router-dom';
 import { MdOutlineKeyboardArrowDown } from "react-icons/md";
+import { BiCategoryAlt } from "react-icons/bi";
 
 export const MenuFamilias = () => {
     const [menu, setMenu] = useState([]);
@@ -70,8 +71,9 @@ useEffect(() => {
             className="categoria-button"
             onClick={() => setMenuAbierto(!menuAbierto)}
         >
-            Categoría
-            <MdOutlineKeyboardArrowDown />
+          <BiCategoryAlt />
+            Categorías
+            {/* <MdOutlineKeyboardArrowDown /> */}
         </button>
 
         {menuAbierto && (

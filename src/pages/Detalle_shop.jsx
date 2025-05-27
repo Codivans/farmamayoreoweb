@@ -47,15 +47,12 @@ export const Detalle_shop = () => {
     }, []);
 
     let addressFullSelected = direcciones.filter((item) => item.tipoDireccion === selectAddress)
-
-    
-    const nuevoId = uuidv4();
     const shortId = uuidv4().replace(/-/g, "").slice(0, 15);
 
     const dataLayout = [{
         uidPedido: shortId,
-        usuario: auth.currentUser.uid,
-        emailUser: auth.currentUser.email,
+        usuario: auth?.currentUser?.uid,
+        emailUser: auth?.currentUser?.email,
         direccion: addressFullSelected,
         formaPago: formaPago,
         costoEnvio: 0,
@@ -114,19 +111,32 @@ export const Detalle_shop = () => {
                     {
                         stepShop === 1 && (
                             <div className='detalle_shop'>
-                                <h3>Selecciona la dirección de entrega</h3>
-                                <div className='container_cards_address'>
-                                    {
-                                        direcciones?.map((dir, i) => (
-                                            <div key={i} className={`item_address ${selectAddress === 'casa' ? 'actived_address': ''}`}>
-                                                <input type='radio' name={dir.tipoDireccion} value='' checked={dir.tipoDireccion === selectAddress} onChange={() => setSelectAddress(dir.tipoDireccion)} id={dir.tipoDireccion}  />
-                                                <label htmlFor='casa' >{dir.tipoDireccion}</label>
-                                                <p><strong>Calle:</strong> {dir.calle} <strong>Num. Ext:</strong> {dir.numeroExt}, <strong>Num. Int:</strong> {dir.numeroInt}, <strong>Colonia o Alcaldia:</strong> {dir.colonia}</p>
-                                                <p><strong>Municipio o Localidad:</strong> {dir.municipio}, <strong>CP:</strong> {dir.cp}, <strong>Referencias:</strong> {dir.referencias}</p>
-                                            </div>
-                                        ))
-                                    }
-                                </div>
+                                {
+                                    auth?.currentUser ? (
+                                    <div>
+                                        <h3>Selecciona la dirección de entrega</h3>
+                                        <div className='container_cards_address'>
+                                            {
+                                                direcciones?.map((dir, i) => (
+                                                    <div key={i} className={`item_address ${selectAddress === 'casa' ? 'actived_address': ''}`}>
+                                                        <input type='radio' name={dir.tipoDireccion} value='' checked={dir.tipoDireccion === selectAddress} onChange={() => setSelectAddress(dir.tipoDireccion)} id={dir.tipoDireccion}  />
+                                                        <label htmlFor='casa' >{dir.tipoDireccion}</label>
+                                                        <p><strong>Calle:</strong> {dir.calle} <strong>Num. Ext:</strong> {dir.numeroExt}, <strong>Num. Int:</strong> {dir.numeroInt}, <strong>Colonia o Alcaldia:</strong> {dir.colonia}</p>
+                                                        <p><strong>Municipio o Localidad:</strong> {dir.municipio}, <strong>CP:</strong> {dir.cp}, <strong>Referencias:</strong> {dir.referencias}</p>
+                                                    </div>
+                                                ))
+                                            }
+                                        </div>
+                                    </div>
+                                    ) : (
+                                        <div>
+                                            <p>Para continuar es necesario iniciar seión</p>
+                                            <button>Iniciar sesion</button>
+                                        </div>
+                                    )
+                                }
+                                
+                                
                             </div>
                         )
                     }

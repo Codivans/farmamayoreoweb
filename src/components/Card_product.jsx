@@ -36,7 +36,7 @@ export const Card_product = ({widthCardAuto, item}) => {
             productoAgregado 
             ? <div className='container_btn_controllers'>
                 <button onClick={() => removeProductCart({codigo: parseInt(item.codigo), disminuir: 1, agregados: productoAgregado.pedido})}>-</button>
-                <span className='count_add_cart'>{productoAgregado.pedido}</span>
+                <input className='count_add_cart' value={productoAgregado.pedido} />
                 <button onClick={() => addProductoCart({codigo: parseInt(item.codigo), nombre: item.nombre, pedido: 1, precio: item.oferta > 0 ? item.oferta : item.precio, existencia: item.existencia})}>+</button>
               </div>
             : <button onClick={() => addProductoCart({codigo: parseInt(item.codigo), nombre: item.nombre, pedido: 1, precio: item.oferta > 0 ? item.oferta : item.precio, existencia: item.existencia})}>
