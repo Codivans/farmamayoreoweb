@@ -78,28 +78,28 @@ useEffect(() => {
 
         {menuAbierto && (
             <div className="menu-dropdown">
-            <ul className="menu-categorias">
-                {menu.map((categoria) => (
-                <li
-                     key={categoria.familia}
-                    className="menu-item"
-                    data-cerrar="true"
-                    onMouseEnter={() => setHoveredCategoria(categoria)}
-                >
-                    {categoria.familia}
-                </li>
-                ))}
-            </ul>
+              <ul className="menu-categorias">
+                  {menu.map((categoria) => (
+                  <li
+                      key={categoria.familia}
+                      className="menu-item"
+                      data-cerrar="true"
+                      onMouseEnter={() => setHoveredCategoria(categoria)}
+                  >
+                      {categoria.familia}
+                  </li>
+                  ))}
+              </ul>
 
-            {hoveredCategoria && (
-                <ul className="menu-subcategorias">
-                {hoveredCategoria.departamentos?.map((sub) => (
-                    <li key={sub} className="submenu-item">
-                    <Link to={`/search/familia/${sub}`} data-cerrar="true" >{sub}</Link>
-                    </li>
-                ))}
-                </ul>
-            )}
+              {hoveredCategoria && (
+                  <ul className="menu-subcategorias">
+                  {hoveredCategoria.departamentos?.map((sub) => (
+                      <li key={sub} className="submenu-item">
+                      <Link to={`/search/familia/${sub}`} data-cerrar="true" >{sub}</Link>
+                      </li>
+                  ))}
+                  </ul>
+              )}
             </div>
         )}
     </div>

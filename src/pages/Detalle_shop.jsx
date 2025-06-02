@@ -55,8 +55,10 @@ export const Detalle_shop = () => {
         emailUser: auth?.currentUser?.email,
         direccion: addressFullSelected,
         formaPago: formaPago,
+        importePedido: importeCart.toFixed(2),
         costoEnvio: 0,
-        pedido: productosCarrito
+        pedido: productosCarrito,
+        estatus: 'En espera'
     }]
 
     const sendPedido = async (e) => {

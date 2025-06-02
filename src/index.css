@@ -130,7 +130,7 @@ body{
   margin: 0;
   padding: 10px;
   width: 600px; /* Ancho total del submenú */
-  background-color: rgba(191, 221, 247,0.4);
+  background-color: rgba(243, 249, 255, 0.4);
   max-height: 480px;
   overflow-y: auto;
 }
@@ -198,11 +198,21 @@ body{
 
 
 .sub_user{
-    display: block;
+    display: none;
     position: absolute;
-    background-color: white;
-    padding: 6px;
+    background-color: #f6f6f6;
+    padding: 8px;
+    margin-top: 0px;
+    border-radius: 6px;
+    box-shadow: 1px 1px 2px 0px rgba(176,176,176,0.75);
+    -webkit-box-shadow: 1px 1px 2px 0px rgba(176,176,176,0.75);
+    -moz-box-shadow: 1px 1px 2px 0px rgba(176,176,176,0.75);
 }
+
+.container_user_buttons:hover > .sub_user{
+    display: block;
+}
+
 .sub_user > a{
     text-decoration: none;
     color: #0171d3;
@@ -1185,7 +1195,7 @@ body{
     border-radius: 10px;
     border: 1px solid #ececec;
     margin: 20px auto;
-    width: 80%;
+    width: 90%;
     padding: 10px;
     min-height: 100vh;
     display: flex;
@@ -1793,6 +1803,51 @@ body{
   background-color: #FFFFFF;
   /* background: green; */
 }
+
+
+
+
+.container_pedidos_cliente{
+    width: calc(100% - 220px);
+    margin: 0px auto;
+    padding: 20px;
+}
+
+.item_pedido_client{
+    border: 1px solid #d7eaff;
+    width: 100%;
+    border-radius: 4px;
+}
+
+.item_pedido_client:hover{
+    background-color: rgba(183, 216, 252, 0.3);
+    cursor: pointer;
+}
+.title_order{
+    display: flex;
+    justify-content: space-between;
+    padding-inline: 10px;
+
+}
+
+.item_pedido_client h3{
+    color: #262626;
+    font-size: 16px;
+    font-weight: 600;
+}
+
+.title_order p{
+    font-weight: 600;
+    color: #0171d3;
+}
+
+
+.container_products_order{
+    background-color: purple;
+    display: none;
+}
+
+
 
 
 

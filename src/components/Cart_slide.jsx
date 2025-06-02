@@ -41,9 +41,9 @@ export const Cart_slide = ({showCart, setShowCart}) => {
         <div className='cart_body'>
             {
               productosCarrito.length > 0 ? (
-                productosCarrito.map((item) => {
+                productosCarrito.map((item, i) => {
                   return(
-                    <div className={`row_cart animate__animated ${productDeliting === item.codigo ? 'animate__bounceOutLeft' : ''}`} >
+                    <div className={`row_cart animate__animated ${productDeliting === item.codigo ? 'animate__bounceOutLeft' : ''}`} key={i}>
                       <div className='img_product_cart'>
                         <img loading="lazy" onError={imagenDefault} src={`https://farmacias2web.com/imagenes/${item.codigo}.jpg`}/>
                       </div>

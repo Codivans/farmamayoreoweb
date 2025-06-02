@@ -22,17 +22,13 @@ export function Home() {
       {/* ==============   banner   ==============*/}
         <Banner_principal />
       {/* ==============   Grid Offer   ==============*/}
-        <Grid_Ofertas />
-      {/* ==============   Grid Offer   ==============*/}
         <Carousel_products_top />
 
         {
           shopNames.map((item) => (
             <Portada_shop_grid nameShop={item}/>
           ))
-        }
-
-        
+        }    
 
         <Carousel_store />
     </>

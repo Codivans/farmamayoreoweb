@@ -6,7 +6,7 @@ export { Formularios_session } from './Formularios_session';
 export { Perfil_Cliente } from './Perfil_Cliente';
 export { Direcciones_clientes } from './Direcciones_clientes';
 export { Order_send } from './Order_send';
-
+export { Pedidos_clientes } from './Pedidos_clientes';
 
 export { UploadConstancia } from './UploadConstancia';
 export { UploadFile } from './UploadFile';

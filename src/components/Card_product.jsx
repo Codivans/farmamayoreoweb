@@ -14,6 +14,43 @@ export const Card_product = ({widthCardAuto, item}) => {
 
     const productoAgregado = productosCarrito.find((i) => parseInt(i.codigo) === parseInt(item.codigo));
 
+    const handleChange = (event) => {
+      if(event.target.name === 'select-paquetes'){
+          console.log(event.target.dataset.pedido);
+          if(event.target.value === 0){
+              alert('Debes seleccionar un valor')
+              
+          }else{
+              addProductoCart(
+                  {
+                      codigo: parseInt(event.target.dataset.codigo), 
+                      nombre: event.target.dataset.nombre, 
+                      pedido: productoAgregado ? parseInt(event.target.value) - productoAgregado.pedido : parseInt(event.target.value) ,
+                      precio: event.target.dataset.precio, 
+                      existencia: event.target.dataset.existencia
+                  }
+              )
+          }
+          
+      }
+    }
+
+    const handleKey = (e) => {
+      if(e.keyCode === 13){
+          addProductoCart(
+              {
+                  codigo: parseInt(e.target.dataset.codigo), 
+                  nombre:e.target.dataset.nombre, 
+                  pedido: e.target.value - e.target.placeholder, 
+                  precio: e.target.dataset.precio, 
+                  existencia: e.target.dataset.existencia
+              }
+          )
+          e.target.value= ''
+      }
+    }
+      
+
   return (
     <div className='card_product' style={{ width: `${widthCardAuto}px !important` }}>
         <div className='card_header'>
@@ -36,7 +73,18 @@ export const Card_product = ({widthCardAuto, item}) => {
             productoAgregado 
             ? <div className='container_btn_controllers'>
                 <button onClick={() => removeProductCart({codigo: parseInt(item.codigo), disminuir: 1, agregados: productoAgregado.pedido})}>-</button>
-                <input className='count_add_cart' value={productoAgregado.pedido} />
+                <input
+                  type='text'
+                  data-codigo={item.codigo}
+                  data-nombre={item.nombre}
+                  data-precio={item.precio}
+                  data-existencia={item.existencia}
+                  placeholder={productoAgregado.pedido}
+                  className='count_add_cart' 
+                  placeholder={productoAgregado.pedido}
+                  onChange={handleChange} 
+                  onKeyDown={handleKey}
+                />
                 <button onClick={() => addProductoCart({codigo: parseInt(item.codigo), nombre: item.nombre, pedido: 1, precio: item.oferta > 0 ? item.oferta : item.precio, existencia: item.existencia})}>+</button>
               </div>
             : <button onClick={() => addProductoCart({codigo: parseInt(item.codigo), nombre: item.nombre, pedido: 1, precio: item.oferta > 0 ? item.oferta : item.precio, existencia: item.existencia})}>

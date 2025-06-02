@@ -75,7 +75,7 @@ export const Header_principal = () => {
                                 {usuario?.displayName}
                             </Link>
                             <div className='sub_user'>
-                                <Link><HiOutlineNewspaper /> Mis pedidos</Link>
+                                <Link to='/pedidos_perfil'><HiOutlineNewspaper /> Mis pedidos</Link>
                                 <Link><LuUserCog /> Mis datos</Link>
                                 <button onClick={logOut}><IoExitOutline /> Cerrar sesion</button>
                             </div>

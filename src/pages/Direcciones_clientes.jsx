@@ -1,11 +1,6 @@
 import { useState, useEffect } from 'react'
 import { Header_principal } from '../components/Header_principal'
 import { Menu_perfil } from '../components/Menu_perfil';
-
-import actualizarDireccion from '../firebase/agregarDireccion';
-import useGetDataUser from './../hooks/useGetDataUser';
-import ExcelToJson from '../components/ExcelToJson';
-
 import { FormularioDirecciones } from '../components/FormularioDirecciones';
 import { auth, db } from './../firebase/firebaseConfig';
 import {

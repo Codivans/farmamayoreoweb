@@ -88,7 +88,7 @@ export const Search = () => {
                 ):(
                     <div className='container_result_products'>
                         {
-                            currentProducts.map((item) => <Card_product widthCardAuto={widthCardAuto} item={item} key={item.CODIGO}/>) 
+                            currentProducts.map((item, i) => <Card_product widthCardAuto={widthCardAuto} item={item} key={i}/>) 
                         }
                     </div>
                 )
