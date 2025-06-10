@@ -863,17 +863,18 @@ body{
 }
 .card_body .codigo_item{
     color: #3c5cbb;
+    font-weight: 600;
 }
 .card_body .txt_name_product{
     height: 60px;
     color: #203266;
-    font-weight: 600;
+    font-weight: 400;
     margin: 10px auto;
     margin-top: -10px;
 }
 .card_body .container_price_product{
     display: flex;
-    justify-content: space-between;
+    justify-content: center;
     width: 90%;
     margin: 0px auto;
     align-items: center;
@@ -881,12 +882,13 @@ body{
 
 .card_body .price_item{
     color: red;
-    font-size: 14px;
+    font-size: 16px;
     font-weight: 600;
     text-align: left;
     display: flex;
     align-items: center;
     gap: 10px;
+    text-align: center;
 }
 
 .price_oferta{
@@ -904,7 +906,14 @@ body{
     font-weight: 400;
     text-align: left;
     margin-left: 10px;
+    text-align: center;
+    line-height: 10px;
 }
+
+.txt_color_green{color: #09ce41;}
+.txt_color_yellow{color: #fac638;}
+.txt_color_orange{color: #ec710b;}
+.txt_color_red{color: #ce0909;}
 
 .card_footer{
     margin-top: 0px;
@@ -1344,6 +1353,15 @@ body{
     margin: 10px;
     padding: 10px;
 }
+
+.item_address label{
+    color: #18285a;
+    font-size: 16px;
+    font-weight: 600;
+    text-transform: uppercase;
+    cursor: pointer;
+}
+
 .item_pago{
     border: 1px solid #cecece;
     border-radius: 4px;
@@ -1587,9 +1605,25 @@ body{
     border-radius: 4px;
 }
 .detalle_data_product{
-    width: calc(100% - 320px);
+    width: 100%;
     margin-left: 10px;
     color: #414141;
+    display: flex;
+    align-items: center;
+    gap: 20px;
+}
+
+.container_controller_detalle_shop{
+    margin-left: auto;
+}
+
+.container_controller_detalle_shop .container_btn_controllers{
+    width: 300px;
+    gap: 6px;
+}
+
+.container_controller_detalle_shop .container_btn_controllers input{
+    margin-top: 0px;
 }
 .detalle_data_product .code_product_d{
     color: #7d7d7d;
@@ -1694,7 +1728,57 @@ body{
     gap: 10px;
 }
 
+/* Tipo de entrega */
+.container_tipo_entrega h3{
+    text-align: center;
+    margin-block: 20px;
+    color: #414141;
+    font-size: 18px;
+}
 
+.container_cards_pickup{
+    margin: 20px auto;
+    padding: 10px;
+    width: 90%;
+}
+
+
+.container_toggle_entrega{
+    background-color: #f3f3f3;
+    border-radius: 4px;
+    width: 140px;
+    display: flex;
+    justify-content: center;
+    padding: 4px;
+    margin: 10px auto;
+}
+
+.container_toggle_entrega button{
+    background-color: #f3f3f3;
+    border: 0px none;
+    color: #0266d1;
+    cursor: pointer;
+    padding: 4px;
+    border-radius: 4px;
+    width: 50%;
+}
+.active_toggle{
+    background-color: #0266d1 !important;
+    color: white !important;
+}
+
+.container_cards_pago{
+    margin: 20px auto;
+    padding: 10px;
+    width: 90%;
+}
+
+.container_cards_pago h3{
+    text-align: center;
+    margin-block: 20px;
+    color: #414141;
+    font-size: 18px;
+}
 
 .data_succes_order{
     width: 50%;

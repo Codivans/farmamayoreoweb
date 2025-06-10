@@ -10,6 +10,18 @@ export const Card_product = ({widthCardAuto, item}) => {
       e.target.src =  'https://farmacias2web.com/imagenes/predeterminada.jpg' 
     }
 
+    const disponibilidad = (existencia) => {
+      if(existencia >= 50){
+        return <span className='txt_disponible txt_color_green'>Disponibilidad Alta</span>
+      }else if(existencia >=30 & existencia <= 49){
+        return <span className='txt_disponible txt_color_yellow'>Disponibilidad Media</span>
+      }else if(existencia >=1 & existencia <= 29){
+        return <span className='txt_disponible txt_color_orange'>Disponibilidad Baja</span>
+      }else if(existencia <= 0){
+        return <span className='txt_disponible txt_color_red'>Sin Disponibilidad</span>
+      }
+    }
+
     const { addProductoCart, removeProductCart, productosCarrito } = useContext(ContextoCarrito);
 
     const productoAgregado = productosCarrito.find((i) => parseInt(i.codigo) === parseInt(item.codigo));
@@ -60,12 +72,12 @@ export const Card_product = ({widthCardAuto, item}) => {
           <Link to={`/search/laboratorio/${item.laboratorio}`} className='laboratorio_item'>{item.laboratorio}</Link>
           <p className='codigo_item'>{item.codigo}</p>
           <p className='txt_name_product'>{item.nombre}</p>
+          <p className='existencia_item'>{disponibilidad(item.existencia)}</p>
           <div className='container_price_product'>
             <p className='price_item'>
               <span className={item.oferta > 0 ? 'price_tachado' : ''}>{formatoMoneda(item.precio)}</span>
               <span className='price_oferta'>{item.oferta > 0 ? formatoMoneda(item.oferta) : ''}</span>
             </p>
-            <p className='existencia_item'>{item.existencia} pzs</p>
           </div>
         </div>
         <div className='card_footer'>
@@ -81,7 +93,6 @@ export const Card_product = ({widthCardAuto, item}) => {
                   data-existencia={item.existencia}
                   placeholder={productoAgregado.pedido}
                   className='count_add_cart' 
-                  placeholder={productoAgregado.pedido}
                   onChange={handleChange} 
                   onKeyDown={handleKey}
                 />

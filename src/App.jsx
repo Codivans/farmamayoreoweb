@@ -23,14 +23,14 @@ function App() {
           <Route path='/direcciones_perfil' element={<Direcciones_clientes />}/>
           <Route path='/pedidos_perfil' element={<Pedidos_clientes />}/>
 
-          {/* <Route element={<ProtectedRoute />}> */}
+          <Route element={<ProtectedRoute />}>
             <Route path='/search/:modulo/:searchTerm/' element={<Search />}/>
             <Route path='/shop/:nameShop' element={<Shop />}/>
             <Route path='/detalle_shop' element={<Detalle_shop/>}/>
             <Route path='/order_send/:orden' element={<Order_send/>}/>
 
             <Route path='/upload' element={<UploadFile/>}/>
-          {/* </Route> */}
+          </Route>
         
           <Route path='/admin/alta/catalogo' element={<AltaCatalogo />} />
           <Route path='/admin/alta/config' element={<ConfigShop />} />

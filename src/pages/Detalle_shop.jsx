@@ -22,9 +22,11 @@ import { useNavigate } from 'react-router-dom';
 
 export const Detalle_shop = () => {
     const [stepShop, setStepShop] = useState(0);
+    const [toggleEntrega, setToggleEntrega] = useState(true);
     const [selectAddress, setSelectAddress] = useState('');
-    const [formaPago, setFormaPago] = useState('');
-    const { productosCarrito, firstciarCarrito, deleteProductoCart, productDeliting, importeCart, vaciarCarrito } = useContext(ContextoCarrito);
+    const [selectEntrega, setSelectEntrega] = useState('');
+    const [formaPago, setFormaPago] = useState('transferencia');
+    const { productosCarrito, firstciarCarrito, deleteProductoCart, productDeliting, addProductoCart, importeCart, vaciarCarrito } = useContext(ContextoCarrito);
     const [direcciones, setDirecciones] = useState([]);
     const imagenDefault = (e) => e.target.src =  'https://farmacias2web.com/imagenes/predeterminada.jpg';
 
@@ -53,6 +55,8 @@ export const Detalle_shop = () => {
         uidPedido: shortId,
         usuario: auth?.currentUser?.uid,
         emailUser: auth?.currentUser?.email,
+        tipoEntrega: toggleEntrega,
+        pickupEntrega: selectEntrega,
         direccion: addressFullSelected,
         formaPago: formaPago,
         importePedido: importeCart.toFixed(2),
@@ -73,6 +77,52 @@ export const Detalle_shop = () => {
             
         } catch (error) {
             console.log(error)
+        }
+    }
+
+    const handleChange = (event) => {
+      if(event.target.name === 'select-paquetes'){
+          console.log(event.target.dataset.pedido);
+          if(event.target.value === 0){
+              alert('Debes seleccionar un valor')
+              
+          }else{
+              addProductoCart(
+                  {
+                      codigo: parseInt(event.target.dataset.codigo), 
+                      nombre: event.target.dataset.nombre, 
+                      pedido: productoAgregado ? parseInt(event.target.value) - productoAgregado.pedido : parseInt(event.target.value) ,
+                      precio: event.target.dataset.precio, 
+                      existencia: event.target.dataset.existencia
+                  }
+              )
+          }
+          
+      }
+    }
+
+    const handleKey = (e) => {
+      if(e.keyCode === 13){
+          addProductoCart(
+              {
+                  codigo: parseInt(e.target.dataset.codigo), 
+                  nombre:e.target.dataset.nombre, 
+                  pedido: e.target.value - e.target.placeholder, 
+                  precio: e.target.dataset.precio, 
+                  existencia: e.target.dataset.existencia
+              }
+          )
+          e.target.value= ''
+      }
+    }
+
+    const handleChangeToggle = (evt) => {
+        if(evt.target.name === 'tienda'){
+            setSelectEntrega('tienda')
+            setSelectAddress('')
+        }else if(evt.target.name === 'anden'){
+            setSelectEntrega('anden');
+            setSelectAddress('')
         }
     }
 
@@ -99,9 +149,30 @@ export const Detalle_shop = () => {
                                         <div className='row_product_detalle_shop' key={item.codigo}>
                                             <img className='img_product_detalle' loading="lazy" onError={imagenDefault} src={`https://farmacias2web.com/imagenes/${item.codigo}.jpg`}/>
                                             <div className='detalle_data_product'>
-                                                <span className='code_product_d'>{item.codigo}</span>
-                                                <p className='name_product_d'>{item.nombre}</p>
-                                                <p className='price_product_d'>{formatoMoneda(item.precio)} x {item.pedido} pzs = <b>{formatoMoneda(item.importe)}</b></p>
+                                                <div>
+                                                    <span className='code_product_d'>{item.codigo}</span>
+                                                    <p className='name_product_d'>{item.nombre}</p>
+                                                </div>
+                                                <div>
+                                                    <p className='price_product_d'>{formatoMoneda(item.precio)} x {item.pedido} pzs = <b>{formatoMoneda(item.importe)}</b></p>
+                                                </div>
+                                                <div className='container_controller_detalle_shop'>
+                                                    <div className='container_btn_controllers'>
+                                                        <button onClick={() => removeProductCart({codigo: parseInt(item.codigo), disminuir: 1, agregados: productoAgregado.pedido})}>-</button>
+                                                        <input
+                                                        type='text'
+                                                        data-codigo={item.codigo}
+                                                        data-nombre={item.nombre}
+                                                        data-precio={item.precio}
+                                                        data-existencia={item.existencia}
+                                                        placeholder={item.pedido}
+                                                        className='count_add_cart' 
+                                                        onChange={handleChange} 
+                                                        onKeyDown={handleKey}
+                                                        />
+                                                        <button onClick={() => addProductoCart({codigo: parseInt(item.codigo), nombre: item.nombre, pedido: 1, precio: item.oferta > 0 ? item.oferta : item.precio, existencia: item.existencia})}>+</button>
+                                                    </div>
+                                                </div>
                                             </div>
                                         </div>
                                     ))
@@ -115,20 +186,45 @@ export const Detalle_shop = () => {
                             <div className='detalle_shop'>
                                 {
                                     auth?.currentUser ? (
-                                    <div>
+                                    <div className='container_tipo_entrega'>
                                         <h3>Selecciona la dirección de entrega</h3>
-                                        <div className='container_cards_address'>
-                                            {
-                                                direcciones?.map((dir, i) => (
-                                                    <div key={i} className={`item_address ${selectAddress === 'casa' ? 'actived_address': ''}`}>
-                                                        <input type='radio' name={dir.tipoDireccion} value='' checked={dir.tipoDireccion === selectAddress} onChange={() => setSelectAddress(dir.tipoDireccion)} id={dir.tipoDireccion}  />
-                                                        <label htmlFor='casa' >{dir.tipoDireccion}</label>
-                                                        <p><strong>Calle:</strong> {dir.calle} <strong>Num. Ext:</strong> {dir.numeroExt}, <strong>Num. Int:</strong> {dir.numeroInt}, <strong>Colonia o Alcaldia:</strong> {dir.colonia}</p>
-                                                        <p><strong>Municipio o Localidad:</strong> {dir.municipio}, <strong>CP:</strong> {dir.cp}, <strong>Referencias:</strong> {dir.referencias}</p>
-                                                    </div>
-                                                ))
-                                            }
+                                        <div className='container_toggle_entrega'>
+                                            <button className={`btn_toggle ${toggleEntrega ? 'active_toggle' : ''}`} onClick={() => setToggleEntrega(!toggleEntrega)}>PickUp</button>
+                                            <button className={`btn_toggle ${!toggleEntrega ? 'active_toggle' : ''}`} onClick={() => setToggleEntrega(!toggleEntrega)}>Envio</button>
                                         </div>
+
+                                        {
+                                            toggleEntrega ? (
+                                                <>
+                                                    <div className='container_cards_pickup'>
+                                                        <div className={`item_address ${selectEntrega === 'tienda' ? 'actived_address': ''}`}>
+                                                            <input type='radio' name='tienda' checked={'tienda' === selectEntrega} onChange={handleChangeToggle} id='tienda'/>
+                                                            <label htmlFor='tienda'>Tienda</label>
+                                                            <p>Rio churubusco s/n Central de Abastos, Pasillo E-F Local 30B, Iztapalapa, 09040, CDMX.</p>
+                                                        </div>
+
+                                                        <div className={`item_address ${selectEntrega === 'anden' ? 'actived_address': ''}`}>
+                                                            <input type='radio' name='anden' checked={'anden' === selectEntrega} onChange={handleChangeToggle} id='anden'/>
+                                                            <label htmlFor='anden'>Anden</label>
+                                                            <p>Rio churubusco s/n Central de Abastos, Anden estacionamiento 30B, Iztapalapa, 09040, CDMX.</p>
+                                                        </div>
+                                                    </div>
+                                                </>
+                                            ) : (
+                                                <div className='container_cards_address'>
+                                                    {
+                                                        direcciones?.map((dir, i) => (
+                                                            <div key={i} className={`item_address ${selectAddress === dir.tipoDireccion ? 'actived_address': ''}`}>
+                                                                <input type='radio' name={dir.tipoDireccion} value='' checked={dir.tipoDireccion === selectAddress} onChange={() => setSelectAddress(dir.tipoDireccion)} id={dir.tipoDireccion}  />
+                                                                <label htmlFor={dir.tipoDireccion} >{dir.tipoDireccion}</label>
+                                                                <p>Calle:{dir.calle} Num. Ext:{dir.numeroExt}, Num. Int:{dir.numeroInt}, Colonia o Alcaldia:{dir.colonia}</p>
+                                                                <p>Municipio o Localidad:{dir.municipio}, CP:{dir.cp}, Referencias:{dir.referencias}</p>
+                                                            </div>
+                                                        ))
+                                                    }
+                                                </div>
+                                            )
+                                        }
                                     </div>
                                     ) : (
                                         <div>
@@ -145,12 +241,12 @@ export const Detalle_shop = () => {
                     {
                         stepShop === 2 && (
                             <div className='detalle_shop'>
-                                <h3>Selecciona la dirección de entrega</h3>
+                                <div className='container_cards_pago'>
+                                    <h3>Selecciona tu forma de pago</h3>
 
-                                <div className='container_cards_address'>
-                                    <div className={`item_pago ${formaPago === 'tarjeta' ? 'actived_address': ''}`}>
-                                        <input type='radio' name='tarjeta' value='' checked={'tarjeta' === formaPago} onChange={() => setFormaPago('tarjeta')} id='tarjeta'  />
-                                        <label htmlFor='tarjeta' >Tarjeta (llevamos la terminal) <CiCreditCard2 /></label>
+                                    <div className={`item_pago ${formaPago === 'transferencia' ? 'actived_address': ''}`}>
+                                        <input type='radio' name='casa' value='' checked={'transferencia' === formaPago} onChange={() => setFormaPago('transferencia')} id='transferencia'  />
+                                        <label htmlFor='transferencia' >Transferencia <BsPhoneFlip/></label>
                                     </div>
 
                                     <div className={`item_pago ${formaPago === 'efectivo' ? 'actived_address': ''}`}>
@@ -158,10 +254,12 @@ export const Detalle_shop = () => {
                                         <label htmlFor='efectivo' >Efectivo <PiMoneyLight/> </label>
                                     </div>
 
-                                    <div className={`item_pago ${formaPago === 'transferencia' ? 'actived_address': ''}`}>
-                                        <input type='radio' name='casa' value='' checked={'transferencia' === formaPago} onChange={() => setFormaPago('transferencia')} id='transferencia'  />
-                                        <label htmlFor='transferencia' >Transferencia <BsPhoneFlip/></label>
+                                    <div className={`item_pago ${formaPago === 'tarjeta' ? 'actived_address': ''}`}>
+                                        <input type='radio' name='tarjeta' value='' checked={'tarjeta' === formaPago} onChange={() => setFormaPago('tarjeta')} id='tarjeta'  />
+                                        <label htmlFor='tarjeta' >Terminal <CiCreditCard2 /></label>
                                     </div>
+
+
 
                                 </div>
                             </div>
@@ -223,11 +321,11 @@ export const Detalle_shop = () => {
                             )
                         }
 
-                        {
+                        {/* {
                             <pre style={{ marginTop: '1rem', background: '#f4f4f4', padding: '1rem' }}>
                                 {JSON.stringify(dataLayout, null, 2)}
                             </pre>
-                        }
+                        } */}
                     </div>
                 </div>
             </div>
