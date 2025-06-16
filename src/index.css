@@ -837,8 +837,8 @@ body{
     overflow: hidden;
 }
 .card_header{
-    width: 250px;
-    height: 250px;
+    width: 250px !important;
+    height: 250px !important;
     margin: 0px auto;
     overflow: hidden;
 }
@@ -1711,11 +1711,18 @@ body{
     gap: 10px;
 }
 
+.btn_next_step:disabled{
+    background-color: #cecece;
+    border: 1px solid #797979;
+    color: #575757;
+    cursor: not-allowed;
+}
+
 .btn_back_step{
-    border: 1px solid #0a9b33;
+    border: 1px solid #797979;
     border-radius: 4px;
     cursor: pointer;
-    color: #0a9b33;
+    color: #262626;
     display: flex;
     justify-content: center;
     padding: 10px;
@@ -1740,6 +1747,7 @@ body{
     margin: 20px auto;
     padding: 10px;
     width: 90%;
+    display: flex;
 }
 
 
@@ -1901,17 +1909,34 @@ body{
     border: 1px solid #d7eaff;
     width: 100%;
     border-radius: 4px;
+    overflow: hidden;
+    margin: 10px auto;
 }
 
-.item_pedido_client:hover{
-    background-color: rgba(183, 216, 252, 0.3);
-    cursor: pointer;
-}
 .title_order{
     display: flex;
     justify-content: space-between;
     padding-inline: 10px;
+}
 
+.footer_order_pleca{
+    display: flex;
+    justify-content: space-between;
+    background-color: rgba(183, 216, 252, 0.3);
+    padding-inline: 10px;
+    align-items: center;
+}
+
+.btn_controller_order{
+    background-color: transparent;
+    border: 0px none;
+    color: #0171d3;
+    font-weight: 500;
+    text-decoration: underline;
+    cursor: pointer;
+    display: block;
+    width: 100px;
+    height: 30px;
 }
 
 .item_pedido_client h3{
@@ -1927,8 +1952,10 @@ body{
 
 
 .container_products_order{
-    background-color: purple;
     display: none;
+}
+.active_container_products_order{
+    display: block;
 }
 
 

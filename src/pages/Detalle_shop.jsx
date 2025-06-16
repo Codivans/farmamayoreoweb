@@ -22,10 +22,11 @@ import { useNavigate } from 'react-router-dom';
 
 export const Detalle_shop = () => {
     const [stepShop, setStepShop] = useState(0);
-    const [toggleEntrega, setToggleEntrega] = useState(true);
+    const [toggleEntrega, setToggleEntrega] = useState('pickUp');
     const [selectAddress, setSelectAddress] = useState('');
     const [selectEntrega, setSelectEntrega] = useState('');
     const [formaPago, setFormaPago] = useState('transferencia');
+    const [stepEnvio, setStepEnvio] = useState(true);
     const { productosCarrito, firstciarCarrito, deleteProductoCart, productDeliting, addProductoCart, importeCart, vaciarCarrito } = useContext(ContextoCarrito);
     const [direcciones, setDirecciones] = useState([]);
     const imagenDefault = (e) => e.target.src =  'https://farmacias2web.com/imagenes/predeterminada.jpg';
@@ -126,6 +127,30 @@ export const Detalle_shop = () => {
         }
     }
 
+    const handleChangeToggleTipoEntrega = (evt) => {
+        if(evt.target.name === 'pickUp'){
+            setToggleEntrega('pickUp');
+            addressFullSelected=[];
+        }else if(evt.target.name === 'envio'){
+            setToggleEntrega('envio');
+        }
+    }
+
+    
+
+    useEffect(() => {
+        if(toggleEntrega === 'pickUp' && selectEntrega !=''){
+            setStepEnvio(false);
+        }else if(toggleEntrega === 'envio' && addressFullSelected.length > 0){
+            setStepEnvio(false);
+        }else{
+            setStepEnvio(true);
+        }
+    }, [toggleEntrega, selectEntrega, selectAddress])
+
+
+    console.log('StepEnvio: ', stepEnvio)
+
 
 
   return (
@@ -189,12 +214,12 @@ export const Detalle_shop = () => {
                                     <div className='container_tipo_entrega'>
                                         <h3>Selecciona la dirección de entrega</h3>
                                         <div className='container_toggle_entrega'>
-                                            <button className={`btn_toggle ${toggleEntrega ? 'active_toggle' : ''}`} onClick={() => setToggleEntrega(!toggleEntrega)}>PickUp</button>
-                                            <button className={`btn_toggle ${!toggleEntrega ? 'active_toggle' : ''}`} onClick={() => setToggleEntrega(!toggleEntrega)}>Envio</button>
+                                            <button className={`btn_toggle ${toggleEntrega === 'pickUp' ? 'active_toggle' : ''}`} name='pickUp' onClick={handleChangeToggleTipoEntrega}>PickUp</button>
+                                            <button className={`btn_toggle ${toggleEntrega === 'envio' ? 'active_toggle' : ''}`} name='envio' onClick={handleChangeToggleTipoEntrega}>Envio</button>
                                         </div>
 
                                         {
-                                            toggleEntrega ? (
+                                            toggleEntrega === 'pickUp' ? (
                                                 <>
                                                     <div className='container_cards_pickup'>
                                                         <div className={`item_address ${selectEntrega === 'tienda' ? 'actived_address': ''}`}>
@@ -297,9 +322,9 @@ export const Detalle_shop = () => {
                                         <FaArrowLeftLong />
                                         Atras
                                     </button>
-
-                                    <button className='btn_next_step' onClick={() => setStepShop(2)}>
-                                        Siguiente 
+                                    
+                                    <button className='btn_next_step' onClick={() => setStepShop(2)} disabled={stepEnvio}>
+                                        Siguiente e{stepEnvio}
                                         <FaArrowRightLong />
                                     </button>
                                 </div>
@@ -313,7 +338,7 @@ export const Detalle_shop = () => {
                                         Atras
                                     </button>
 
-                                    <button className='btn_next_step' onClick={sendPedido}>
+                                    <button className='btn_next_step' onClick={sendPedido} disabled={formaPago=== '' ? true : false}>
                                         Finalizar
                                         <FaArrowRightLong />
                                     </button>

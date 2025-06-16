@@ -6,7 +6,8 @@ import { collection, onSnapshot, query, where } from "firebase/firestore";
 import formatoMoneda from '../functions/formatoMoneda';
 
 export const Pedidos_clientes = () => {
-    const [pedidos, setPedidos] = useState([])
+    const [pedidos, setPedidos] = useState([]);
+    const [activeOrder, setActiveOrder] = useState(null);
 
     useEffect(() => {
             const consultarDocumentos = () => {
@@ -56,6 +57,9 @@ export const Pedidos_clientes = () => {
     }
 
 
+    console.log('first:', activeOrder)
+
+
 
 
   return (
@@ -73,12 +77,21 @@ export const Pedidos_clientes = () => {
                                 <h3>Orden Id: {ped.uidPedido}</h3>
                                 <p>{formatUnixTimestamp(ped.fechaPedido)}</p>
                             </div>
-                            <div>
-                                <p>{ped.estatus}</p>
+                            <div className='footer_order_pleca'>
+                                <p>Estatus: {ped.estatus}</p>
+                                <p>Importe: {ped.importePedido}</p>
+                                <p>Forma de pago: {ped.formaPago}</p>
+                                <p>Modo entrega: {ped.tipoEntrega}</p>
+                                {
+                                    activeOrder === i 
+                                    ? (<button className='btn_controller_order' onClick={() => setActiveOrder(null)}>Cerrar</button>)
+                                    : (<button className='btn_controller_order' onClick={() => setActiveOrder(i)}>Ver detalle</button>)
+                                }
+                                
                             </div>
                         </div>
 
-                        <div className='container_products_order'>
+                        <div className={`container_products_order ${activeOrder === i ? 'active_container_products_order' : ''}`}>
                             {
                                 ped.pedido?.map((p , i) => (
                                     <div className='row_product_detalle_shop' key={p.codigo}>
