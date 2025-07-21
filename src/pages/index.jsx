@@ -17,3 +17,4 @@ export { UploadFile } from './UploadFile';
 // Admin Web
 export { AltaCatalogo } from './AltaCatalogo';
 export { ConfigShop } from './ConfigShop';
+export { Pedidos_admin } from './Pedidos_admin';

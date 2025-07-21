@@ -1,6 +1,7 @@
 import { useState } from "react";
 import { storage } from "./../firebase/firebaseConfig";
 import { ref, uploadBytes, getDownloadURL } from "firebase/storage";
+import { uid } from 'uid';
 
 export const UploadFile = () => {
   const [file, setFile] = useState(null);
@@ -14,15 +15,10 @@ export const UploadFile = () => {
     if (!file) return alert("Selecciona un archivo");
 
     try {
-      const storageRef = ref(storage, `documentos/${file.name}`);
+      const storageRef = ref(storage, `documentos/${uid(16)}`);
 
       console.log("Subiendo archivo...");
-      const snapshot = await uploadBytes(storageRef, file);
-      console.log("Archivo subido:", snapshot);
-
-      const url = await getDownloadURL(storageRef);
-      console.log("URL del archivo:", url);
-      setFileURL(url);
+      await uploadBytes(storageRef, file)
     } catch (error) {
       console.error("Error al subir archivo:", error);
     }
@@ -34,14 +30,14 @@ export const UploadFile = () => {
       <input type="file" onChange={handleFileChange} />
       <button onClick={handleUpload}>Subir</button>
 
-      {fileURL && (
+      {/* {fileURL && (
         <div>
           <p>Archivo subido correctamente:</p>
           <a href={fileURL} target="_blank" rel="noopener noreferrer">
             Ver archivo
           </a>
         </div>
-      )}
+      )} */}
     </div>
   );
 };

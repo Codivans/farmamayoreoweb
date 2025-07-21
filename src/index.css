@@ -843,6 +843,18 @@ body{
     overflow: hidden;
 }
 .card_header img{
+    width: 250px !important;
+    height: 250px !important;
+}
+
+.item_grupo{
+    color: #262626;
+    display: block;
+    height: 12px;
+    font-size: 12px;
+    text-align: center;
+}
+.card_header img{
     width: 100%;
 }
 .card_body{
@@ -1365,7 +1377,7 @@ body{
 .item_pago{
     border: 1px solid #cecece;
     border-radius: 4px;
-    width: 38%;
+    width: 250px;
     margin: 10px;
     padding: 10px;
     display: flex;
@@ -1788,6 +1800,19 @@ body{
     font-size: 18px;
 }
 
+.container_flex_pago{
+    display: flex;
+    justify-content: flex-start;
+}
+.container_flex_pago .cards_pago{
+    width: 340px;
+}
+
+
+.btn_perfil_tipo{
+    margin: 50px auto;
+}
+
 .data_succes_order{
     width: 50%;
     margin: 50px auto;
@@ -1956,6 +1981,130 @@ body{
 }
 .active_container_products_order{
     display: block;
+}
+
+
+
+/* pedidos admin */
+
+.container_pedidos_admin{
+    width: 100%;
+}
+
+.container_filtros_pedidos{
+    width: 90%;
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    padding: 10px;
+}
+.container_filtros_pedidos input{
+    background-color: white;
+    border: 1px solid #8b8b8b;
+    border-radius: 4px;
+    cursor: pointer;
+    width: 220px;
+    padding: 6px;
+    color: #262626;
+}
+
+.container_filtros_pedidos input:focus{
+    outline: none;
+}
+
+.container_filtros_pedidos select{
+    background-color: white;
+    border: 1px solid #8b8b8b;
+    border-radius: 4px;
+    cursor: pointer;
+    width: 200px;
+    padding: 6px;
+}
+
+.container_filtros_pedidos button{
+    background-color: #007bff;
+    border: 1px solid #007bff;
+    padding: 6px 20px;
+    border-radius: 4px;
+    color: white;
+    cursor: pointer;
+    font-weight: 600;
+}
+
+.table_pedidos_admin{
+    width: 96%;
+    margin: 0px auto;
+    border-collapse: collapse;
+}
+.table_pedidos_admin thead{
+    background-color: #0266d1;
+    color: white;
+}
+.table_pedidos_admin > thead > tr > th{
+    padding: 6px;
+    text-align: center;
+}
+.table_pedidos_admin tbody tr{
+    border-bottom: 1px solid #e3e3e3;
+}
+.table_pedidos_admin tbody tr:nth-child(odd){
+    background-color: #ededed;
+}
+
+.table_pedidos_admin tbody tr:hover{
+    background-color: rgba(0, 123, 255,0.3);
+}
+
+.table_pedidos_admin tbody tr td{
+    padding: 2px;
+    color: #262626;
+    font-size: 12px;
+    text-align: left;
+}
+
+.table_pedidos_admin .item_estatus{
+    border-radius: 10px;
+    text-align: center;
+    color: white;
+    padding: 2px;
+    font-size: 14px;
+    text-transform: capitalize;
+    width: 100px;
+    display: block;
+    margin: 0px auto;
+}
+.item_nuevo{background-color: #0b89cc;}
+.item_surtiendo{background-color: #e78a09;}
+.item_entregado{background-color: #079517;}
+.item_cancelado{background-color: #8e0e1f;}
+
+.pagination_table{
+    margin: 20px auto;
+    width: 96%;
+    padding: 10px;
+}
+.pagination_table button{
+    background-color: #0171d3;
+    border: 1px solid #0266d1;
+    border-radius: 6px;
+    color: white;
+    padding: 6px 20px;
+    margin-inline: 6px;
+}
+
+.pagination_table .txt_pagination{
+    color: #262626;
+    font-size: 12px;
+    margin-inline: 10px;
+}
+
+.pagination_table select{
+    background-color: #ededed;
+    border: 1px solid #c2c2c2;
+    border-radius: 4px;
+    width: 160px;
+    padding: 6px;
+    margin-left: 10px;
 }
 
 

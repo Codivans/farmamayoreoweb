@@ -11,9 +11,10 @@ const firebaseConfig = {
   apiKey: "AIzaSyA4jTmlggSK7sAd0y57qNxypWGZXr-PDF4",
   authDomain: "farmamayoreoapp.firebaseapp.com",
   projectId: "farmamayoreoapp",
-  storageBucket: "farmamayoreoapp.appspot.com",
+  storageBucket: "farmamayoreoapp.firebasestorage.app",
   messagingSenderId: "475117055697",
   appId: "1:475117055697:web:80a7a0bbbff5b6597cdff0"
+
 };
 
   

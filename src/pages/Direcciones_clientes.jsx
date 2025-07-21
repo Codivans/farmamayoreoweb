@@ -13,17 +13,6 @@ import {
 
 export const Direcciones_clientes = () => {
     const [showForm, setShowForm] = useState(false);
-    const [dataForm, setDataForm] = useState({
-        direccion: '',
-        calle: '',
-        numero_exterior: '',
-        numero_interior: '',
-        colonia: '',
-        municipio: '',
-        codigo_postal: '',
-        estado: '',
-        referencias: ''
-    });
 
     const [direcciones, setDirecciones] = useState([]);
     const [direccionEditando, setDireccionEditando] = useState(null);

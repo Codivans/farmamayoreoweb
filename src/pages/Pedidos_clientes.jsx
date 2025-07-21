@@ -2,7 +2,7 @@ import { useState, useEffect } from 'react'
 import { auth, db } from './../firebase/firebaseConfig';
 import { Header_principal } from '../components/Header_principal'
 import { Menu_perfil } from '../components/Menu_perfil'
-import { collection, onSnapshot, query, where } from "firebase/firestore";
+import { collection, onSnapshot, query, where, orderBy } from "firebase/firestore";
 import formatoMoneda from '../functions/formatoMoneda';
 
 export const Pedidos_clientes = () => {
@@ -16,7 +16,8 @@ export const Pedidos_clientes = () => {
 
                 const consultarUser = query(
                     collection(db, 'pedidos'),
-                    where('usuario', '==', user.uid)
+                    where('usuario', '==', user.uid),
+                    orderBy("fechaPedido", "desc")
                 );
 
             const unsuscribe = onSnapshot(

@@ -2,6 +2,7 @@ import React, { useContext } from 'react'
 import { ContextoCarrito } from './../context/cartContext';
 import formatoMoneda from './../functions/formatoMoneda';
 import { VscAdd, VscChromeMinimize  } from "react-icons/vsc";
+import { IoDocumentTextOutline } from "react-icons/io5";
 import { Link } from 'react-router-dom';
 
 export const Card_product = ({widthCardAuto, item}) => {
@@ -65,6 +66,11 @@ export const Card_product = ({widthCardAuto, item}) => {
 
   return (
     <div className='card_product' style={{ width: `${widthCardAuto}px !important` }}>
+        <p className='item_grupo'>
+          {
+            item.grupo === 'GRUPO IV (ANTIBIOTICO)' && <span><IoDocumentTextOutline /> Producto Antibiótico</span>
+          }  
+        </p>
         <div className='card_header'>
           <img loading="lazy" onError={imagenDefault} src={`https://farmacias2web.com/imagenes/${item.codigo}.jpg`} />
         </div>

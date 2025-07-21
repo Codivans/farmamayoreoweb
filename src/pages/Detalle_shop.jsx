@@ -1,5 +1,5 @@
 import React, { useContext, useRef, useEffect, useState } from 'react';
-import { v4 as uuidv4 } from 'uuid';
+// import { v4 as uuidv4 } from 'uuid';
 import { ContextoCarrito } from './../context/cartContext';
 import { Header_principal } from '../components/Header_principal';
 import { FaCheck } from "react-icons/fa6";
@@ -10,15 +10,11 @@ import { PiMoneyLight } from "react-icons/pi";
 import { BsPhoneFlip } from "react-icons/bs";
 import { FaArrowLeftLong } from "react-icons/fa6";
 import { auth, db } from './../firebase/firebaseConfig';
-import {
-  doc,
-  getDoc,
-  updateDoc,
-  arrayRemove,
-  arrayUnion,
-} from 'firebase/firestore';
+import { doc, getDoc, updateDoc, arrayRemove, arrayUnion } from 'firebase/firestore';
 import createPedido from '../firebase/createPedido';
 import { useNavigate } from 'react-router-dom';
+import { FormularioDirecciones } from '../components/FormularioDirecciones';
+import { getUnixTime } from 'date-fns';
 
 export const Detalle_shop = () => {
     const [stepShop, setStepShop] = useState(0);
@@ -26,9 +22,11 @@ export const Detalle_shop = () => {
     const [selectAddress, setSelectAddress] = useState('');
     const [selectEntrega, setSelectEntrega] = useState('');
     const [formaPago, setFormaPago] = useState('transferencia');
+    const [showForm, setShowForm] = useState(false);
     const [stepEnvio, setStepEnvio] = useState(true);
     const { productosCarrito, firstciarCarrito, deleteProductoCart, productDeliting, addProductoCart, importeCart, vaciarCarrito } = useContext(ContextoCarrito);
     const [direcciones, setDirecciones] = useState([]);
+    const [direccionEditando, setDireccionEditando] = useState(null);
     const imagenDefault = (e) => e.target.src =  'https://farmacias2web.com/imagenes/predeterminada.jpg';
 
     const navigate = useNavigate();
@@ -50,10 +48,10 @@ export const Detalle_shop = () => {
     }, []);
 
     let addressFullSelected = direcciones.filter((item) => item.tipoDireccion === selectAddress)
-    const shortId = uuidv4().replace(/-/g, "").slice(0, 15);
+    // const shortId = uuidv4().replace(/-/g, "").slice(0, 15);
 
     const dataLayout = [{
-        uidPedido: shortId,
+        uidPedido: getUnixTime(new Date()),
         usuario: auth?.currentUser?.uid,
         emailUser: auth?.currentUser?.email,
         tipoEntrega: toggleEntrega,
@@ -63,7 +61,7 @@ export const Detalle_shop = () => {
         importePedido: importeCart.toFixed(2),
         costoEnvio: 0,
         pedido: productosCarrito,
-        estatus: 'En espera'
+        estatus: 'nuevo'
     }]
 
     const sendPedido = async (e) => {
@@ -74,7 +72,7 @@ export const Detalle_shop = () => {
             setSelectAddress('');
             setFormaPago('');
             vaciarCarrito();
-            navigate(`/order_send/${shortId}`)
+            navigate(`/order_send/${dataLayout?.uidPedido}`)
             
         } catch (error) {
             console.log(error)
@@ -149,7 +147,15 @@ export const Detalle_shop = () => {
     }, [toggleEntrega, selectEntrega, selectAddress])
 
 
-    console.log('StepEnvio: ', stepEnvio)
+     const handleClick = () => {
+        setShowForm(!showForm)
+        finalizarGuardado();
+    }
+
+    const finalizarGuardado = () => {
+        setDireccionEditando(null);
+        obtenerDirecciones();
+    };
 
 
 
@@ -238,15 +244,37 @@ export const Detalle_shop = () => {
                                             ) : (
                                                 <div className='container_cards_address'>
                                                     {
-                                                        direcciones?.map((dir, i) => (
-                                                            <div key={i} className={`item_address ${selectAddress === dir.tipoDireccion ? 'actived_address': ''}`}>
-                                                                <input type='radio' name={dir.tipoDireccion} value='' checked={dir.tipoDireccion === selectAddress} onChange={() => setSelectAddress(dir.tipoDireccion)} id={dir.tipoDireccion}  />
-                                                                <label htmlFor={dir.tipoDireccion} >{dir.tipoDireccion}</label>
-                                                                <p>Calle:{dir.calle} Num. Ext:{dir.numeroExt}, Num. Int:{dir.numeroInt}, Colonia o Alcaldia:{dir.colonia}</p>
-                                                                <p>Municipio o Localidad:{dir.municipio}, CP:{dir.cp}, Referencias:{dir.referencias}</p>
-                                                            </div>
-                                                        ))
+                                                        direcciones?.length > 0 ?
+                                                        (
+                                                            <>
+                                                            {
+                                                                direcciones?.map((dir, i) => (
+                                                                    <div key={i} className={`item_address ${selectAddress === dir.tipoDireccion ? 'actived_address': ''}`}>
+                                                                        <input type='radio' name={dir.tipoDireccion} value='' checked={dir.tipoDireccion === selectAddress} onChange={() => setSelectAddress(dir.tipoDireccion)} id={dir.tipoDireccion}  />
+                                                                        <label htmlFor={dir.tipoDireccion} >{dir.tipoDireccion}</label>
+                                                                        <p>Calle:{dir.calle} Num. Ext:{dir.numeroExt}, Num. Int:{dir.numeroInt}, Colonia o Alcaldia:{dir.colonia}</p>
+                                                                        <p>Municipio o Localidad:{dir.municipio}, CP:{dir.cp}, Referencias:{dir.referencias}</p>
+                                                                    </div>
+                                                                ))
+                                                            }
+                                                            </>
+                                                        )
+                                                        :(
+                                                            <>
+                                                            {
+                                                                showForm === false ? (
+                                                                    <div className='botonera_perfil btn_perfil_tipo'>
+                                                                        <button className='btn_add_data' onClick={() => handleClick()}>+ Agregar dirección</button>
+                                                                    </div>
+                                                                ): ('')
+                                                            }
+                                                            
+                                                            <FormularioDirecciones showForm={showForm} setShowForm={setShowForm} direccionEditar={direccionEditando} onGuardado={finalizarGuardado}/>
+                                                            </>
+
+                                                        )
                                                     }
+                                                    
                                                 </div>
                                             )
                                         }
@@ -269,23 +297,55 @@ export const Detalle_shop = () => {
                                 <div className='container_cards_pago'>
                                     <h3>Selecciona tu forma de pago</h3>
 
-                                    <div className={`item_pago ${formaPago === 'transferencia' ? 'actived_address': ''}`}>
-                                        <input type='radio' name='casa' value='' checked={'transferencia' === formaPago} onChange={() => setFormaPago('transferencia')} id='transferencia'  />
-                                        <label htmlFor='transferencia' >Transferencia <BsPhoneFlip/></label>
+                                    <div className='container_flex_pago'>
+                                        <div className='cards_pago'>
+                                            <div className={`item_pago ${formaPago === 'transferencia' ? 'actived_address': ''}`}>
+                                                <input type='radio' name='casa' value='' checked={'transferencia' === formaPago} onChange={() => setFormaPago('transferencia')} id='transferencia'  />
+                                                <label htmlFor='transferencia' >Transferencia <BsPhoneFlip/></label>
+                                            </div>
+
+                                            {
+                                                toggleEntrega === 'pickUp' && (
+                                                    <div className={`item_pago ${formaPago === 'efectivo' ? 'actived_address': ''}`}>
+                                                        <input type='radio' name='efectivo' value='' checked={'efectivo' === formaPago} onChange={() => setFormaPago('efectivo')} id='efectivo'  />
+                                                        <label htmlFor='efectivo' >Efectivo <PiMoneyLight/> </label>
+                                                    </div>
+                                                )
+                                            }
+
+                                            <div className={`item_pago ${formaPago === 'tarjeta' ? 'actived_address': ''}`}>
+                                                <input type='radio' name='tarjeta' value='' checked={'tarjeta' === formaPago} onChange={() => setFormaPago('tarjeta')} id='tarjeta'  />
+                                                <label htmlFor='tarjeta' >Terminal <CiCreditCard2 /></label>
+                                            </div>
+                                        </div>
+                                        <div className='info_pago'>
+                                            {
+                                                formaPago === 'transferencia' ? (
+                                                    <div>
+                                                        <h4>Banco Afirme</h4>
+                                                        <strong>Cuenta:</strong>
+                                                        <p>3494938943249842389</p>
+                                                        <strong>CLABE:</strong>
+                                                        <p>3492390493284944321</p>
+                                                    </div>
+                                                ):('')
+                                            }
+                                            {
+                                                formaPago === 'efectivo' ? (
+                                                    <div>
+                                                        
+                                                    </div>
+                                                ) : ('')
+                                            }
+                                            {
+                                                formaPago === 'tarjeta' ? (
+                                                    <div>
+                                                        terminal
+                                                    </div>
+                                                ) : ('')
+                                            }
+                                        </div>
                                     </div>
-
-                                    <div className={`item_pago ${formaPago === 'efectivo' ? 'actived_address': ''}`}>
-                                        <input type='radio' name='efectivo' value='' checked={'efectivo' === formaPago} onChange={() => setFormaPago('efectivo')} id='efectivo'  />
-                                        <label htmlFor='efectivo' >Efectivo <PiMoneyLight/> </label>
-                                    </div>
-
-                                    <div className={`item_pago ${formaPago === 'tarjeta' ? 'actived_address': ''}`}>
-                                        <input type='radio' name='tarjeta' value='' checked={'tarjeta' === formaPago} onChange={() => setFormaPago('tarjeta')} id='tarjeta'  />
-                                        <label htmlFor='tarjeta' >Terminal <CiCreditCard2 /></label>
-                                    </div>
-
-
-
                                 </div>
                             </div>
                         )

@@ -103,7 +103,7 @@ export const Carousel_products_top = () => {
                 clickable: true,
             }}
             modules={[Autoplay, FreeMode, Navigation]}
-            className="mySwiper"
+            className="mySwiper swiper_top"
         >
         {
             productos.map((item) => <SwiperSlide  key={item.codigo}>

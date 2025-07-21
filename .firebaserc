@@ -1,5 +1,8 @@
 {
   "projects": {
-    "default": "farmamayoreoapp"
-  }
+    "default": "farmamayoreoapp",
+    "farmamayoreoapp": "farmamayoreoapp"
+  },
+  "targets": {},
+  "etags": {}
 }

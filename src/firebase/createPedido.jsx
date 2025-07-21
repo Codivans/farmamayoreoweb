@@ -1,6 +1,5 @@
 import { db } from './firebaseConfig';
 import { doc, setDoc } from 'firebase/firestore';
-import { getUnixTime } from 'date-fns';
 
 const createPedido = async (dataLayout) => {
 
@@ -16,7 +15,7 @@ const createPedido = async (dataLayout) => {
         costoEnvio: dataLayout[0].costoEnvio,
         pedido: dataLayout[0].pedido,
         estatus: dataLayout[0].estatus,
-        fechaPedido: getUnixTime(new Date())      
+        fecha: dataLayout[0].uidPedido     
     });
 }
 
