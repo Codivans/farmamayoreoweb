@@ -9,6 +9,7 @@ export const Menu_perfil = () => {
             <li><Link to='/'>Mi perfil</Link></li>
             <li><Link to='/pedidos_perfil'>Mi pedidos</Link></li>
             <li><Link to='/direcciones_perfil'>Mis Direcciones</Link></li>
+            <li><Link to='/documentos'>Mis Documentos</Link></li>
         </ul>
     </div>
   )

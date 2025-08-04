@@ -3,6 +3,7 @@ import { ContextoCarrito } from './../context/cartContext';
 import { Link, useNavigate } from 'react-router-dom';
 import { Cart_slide } from './Cart_slide';
 import logo from './../assets/farmamayoreo.svg';
+import iconlogo from './../assets/icon_logo.png';
 import { IoSearch } from "react-icons/io5";
 import { IoMdCart } from "react-icons/io";
 import { TiUser } from "react-icons/ti";
@@ -48,13 +49,34 @@ export const Header_principal = () => {
     <div id='header_page'>
         <Flag_Header />
         <div id="header_top">
-            <div id='container_logo'>
-                <Link to='/'>
-                    <img src={logo} />
-                </Link>
-            </div>
+            <div className='container_brand_menu'>
+                <div id='container_logo'>
+                    <Link to='/'>
+                        <picture>
+                            <source 
+                                media="(min-width: 640px)"
+                                srcSet={logo}
+                            >    
+                            </source>
+                            <img src={iconlogo} className='img_icon_logo'/>
+                        </picture>
+                    </Link>
+                </div>
 
-            <MenuFamilias />
+                <MenuFamilias />
+
+                <button className='container_icons_perfil btn_cart btn_cart_responsive' onClick={() => setShowCart(!showCart)}>
+                   <IoMdCart /> 
+                   {
+                    countCart > 0 
+                    ?(<span className='count_cart animate__animated animate__bounceIn'>{countCart > 99 ? '99+' : countCart}</span>) 
+                    :('')
+                   }
+                   
+                </button>
+
+            </div>
+            
             
             <div id='container_search'>
                 <IoSearch />

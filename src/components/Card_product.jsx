@@ -72,7 +72,7 @@ export const Card_product = ({widthCardAuto, item}) => {
           }  
         </p>
         <div className='card_header'>
-          <img loading="lazy" onError={imagenDefault} src={`https://farmacias2web.com/imagenes/${item.codigo}.jpg`} />
+          <img loading="lazy" onError={imagenDefault} src={`https://farmamayoreocentral.com/imagenes/${item.codigo}.jpg`} />
         </div>
         <div className='card_body'>
           <Link to={`/search/laboratorio/${item.laboratorio}`} className='laboratorio_item'>{item.laboratorio}</Link>

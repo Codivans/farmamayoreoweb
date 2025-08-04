@@ -37,24 +37,6 @@ export const Form_Register = ({selectForm, setSelectForm}) => {
           const user = userCredential.user;
           console.log("Usuario creado con UID:", user.uid);
 
-          // 2. Subir el documento a Storage
-          // const documento = form.documento;
-          // console.log("Documento recibido:", documento);
-
-          // if (!documento) {
-          //   alert("Por favor selecciona un documento PDF");
-          //   return;
-          // }
-
-          // const storageRef = ref(storage, `documentos/${user.uid}.pdf`);
-          // console.log("Subiendo documento a:", storageRef.fullPath);
-          // await uploadBytes(storageRef, documento);
-          //  console.log("✅ URL del documento:", downloadURL);
-
-          // 3. Obtener URL del archivo
-          // const downloadURL = await getDownloadURL(storageRef);
-          // console.log("URL del documento:", downloadURL);
-
           // 4. Guardar información en Firestore
           await setDoc(doc(db, "usuarios", user.uid), {
             nombre: form.nombre,

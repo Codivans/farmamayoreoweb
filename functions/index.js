@@ -75,7 +75,8 @@ exports.verificarConstanciaManual = functions.https.onCall(async (data, context)
 
     } else if (extension === "pdf") {
       // *** Importante: La URL de destino para el output de Vision API también debe usar el bucket .appspot.com ***
-      const visionOutputPath = `vision-output/${Date.now()}/`; // Creamos una carpeta única para cada ejecución PDF
+      // const visionOutputPath = `vision-output/${Date.now()}/`;
+      const visionOutputPath = `vision-output/${userId}_${nombreSeguro.replace(/\.pdf$/, '')}/`;
       const visionOutputUri = `gs://${bucketName}/${visionOutputPath}`;
       console.log(`Iniciando procesamiento de PDF asíncrono. Output en: ${visionOutputUri}`);
 
@@ -128,7 +129,64 @@ exports.verificarConstanciaManual = functions.https.onCall(async (data, context)
         throw error; // Relanza errores HttpsError específicos
     } else {
         // Envuelve otros errores inesperados en un HttpsError genérico
-        throw new functions.https.HttpsError("internal", "Error interno al procesar el documento.", error.message);
+        throw new functions.https.HttpsError(
+          "internal",
+          "Error interno al procesar el documento.",
+          typeof error?.message === 'string' ? error.message : String(error)
+        );
+
     }
   }
 });
+
+
+// exports.procesarResultadoVision = functions.storage.object().onFinalize(async (object) => {
+//     const filePath = object.name;
+//     if (!filePath.startsWith("vision-output/") || !filePath.endsWith(".json")) {
+//       console.log("Archivo ignorado:", filePath);
+//       return null;
+//     }
+
+//     const bucket = storage.bucket(object.bucket);
+//     const file = bucket.file(filePath);
+//     const [contents] = await file.download();
+
+//     let json;
+//     try {
+//       json = JSON.parse(contents.toString());
+//     } catch (err) {
+//       console.error("Error al parsear JSON:", err);
+//       return null;
+//     }
+
+//     const textoDetectado = json.responses
+//       .map(res => res.fullTextAnnotation?.text || '')
+//       .join('\n')
+//       .toUpperCase();
+
+//     const contieneClave = palabrasClave.some(palabra => textoDetectado.includes(palabra));
+//     console.log("Resultado:", contieneClave);
+
+//     // Extraer UID y nombre de archivo desde el path
+//     const match = filePath.match(/^vision-output\/([^_]+)_(.+)\/output-\d+-to-\d+\.json$/);
+//     if (!match) {
+//       console.error("No se pudo extraer UID y nombre desde:", filePath);
+//       return null;
+//     }
+
+//     const userId = match[1];
+//     const nombreArchivo = match[2];
+//     const docId = `${userId}_${nombreArchivo}`;
+
+//     await firestore.collection("verificaciones").doc(docId).set({
+//       userId,
+//       nombreArchivo,
+//       valido: contieneClave,
+//       textoDetectado: textoDetectado.slice(0, 1000),
+//       procesadoEn: new Date().toISOString(),
+//       archivo: filePath,
+//     });
+
+//     console.log("Resultado guardado con ID:", docId);
+//     return null;
+//   });

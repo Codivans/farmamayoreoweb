@@ -1,11 +1,16 @@
 import { useEffect, useState } from "react";
 import { collection, getDocs, doc, getDoc, onSnapshot  } from "firebase/firestore";
 import { db } from "./../firebase/firebaseConfig"; // Asegúrate de tener tu firebase config aquí
+import logo from './../assets/farmamayoreo.svg';
+import { Link } from "react-router-dom";
 
 export const Pedidos_admin = () => {
     const [pedidosOriginales, setPedidosOriginales] = useState([]);
     const [pedidosFiltrados, setPedidosFiltrados] = useState([]);
     const [loading, setLoading] = useState(true);
+    const [showPedido, setShowPedido] = useState(false);
+    const [idPedidoDetail, setIdPedidoDetail] = useState(null);
+    const [pedidoDetail, setPedidoDetail] = useState([]);
 
   // Recuperar desde localStorage o dejar vacío
     const [nombreFiltro, setNombreFiltro] = useState(localStorage.getItem("filtro_nombre") || "");
@@ -109,10 +114,31 @@ export const Pedidos_admin = () => {
 
   if (loading) return <p>Cargando datos...</p>;
 
-  console.log(datosPagina)
+  let detail = idPedidoDetail != null ? datosPagina?.filter((x) => x.idPedido === idPedidoDetail) : [];
+
+  
+
+  const showPedidoDetails = (e) => {
+    setIdPedidoDetail(e);
+    setShowPedido(!showPedido);
+  }
+
+  
+
+  console.log(datosPagina, detail)
 
   return (
     <div className="container_pedidos_admin">
+      <div className="menu_admin">
+        <div className="margin_menu_admin">
+          <img src={logo} className="logo_admin" />
+          <ul>
+            <li><Link to='/admin/pedidos'>Pedidos</Link></li>
+            <li><Link to='/admin/pedidos'>Clientes</Link></li>
+            <li><Link to='/admin/pedidos'>Configuraciones</Link></li>
+          </ul>
+        </div>
+      </div>
 
         <div className="container_filtros_pedidos">
             <input
@@ -163,7 +189,7 @@ export const Pedidos_admin = () => {
                 localStorage.removeItem("filtro_fechaInicio");
                 localStorage.removeItem("filtro_fechaFin");
                 }}>
-                Limpiar filtros
+                Limpiar
             </button>
             
         </div>
@@ -181,6 +207,8 @@ export const Pedidos_admin = () => {
                     <th>Forma de pago</th>
                     <th>Importe</th>
                     <th>Estatus</th>
+                    <th>View</th>
+                    <th>Opciones</th>
                 </tr>
             </thead>
             <tbody>
@@ -197,6 +225,14 @@ export const Pedidos_admin = () => {
                         <td style={{textTransform: 'Capitalize'}}>{item.pedido?.formaPago}</td>
                         <td>$ {item.pedido?.importePedido}</td>           
                         <td><span className={`item_estatus item_${item.pedido.estatus}`}> {item.pedido.estatus} </span></td>
+                        <td><button onClick={() => showPedidoDetails(item.idPedido)}>Imprimir</button></td>
+                        <td>
+                          <select>
+                            <option>Surtiendo</option>
+                            <option>Entregado</option>
+                            <option>Cancelado</option>
+                          </select>
+                        </td>
                     </tr>
                 ))}
             </tbody>
@@ -216,6 +252,27 @@ export const Pedidos_admin = () => {
             </select>
             <p>Mostrando {datosPagina.length} de {pedidosFiltrados.length} resultados</p>
         </div>
+
+        {
+          showPedido &&(
+            <div className="container_popup_pedido">
+              <div className="popup_pedido">
+                  {
+                    detail?.map((item) => {
+                      return(
+                        <div>
+                            <p>Id pedido: {item.idPedido}</p>
+                        </div>
+                      )
+                    })
+                  }
+
+              </div>
+            </div>
+          )
+        }
+
+
     </div>
   );
 };

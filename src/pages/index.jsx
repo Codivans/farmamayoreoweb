@@ -13,7 +13,6 @@ export { UploadFile } from './UploadFile';
 
 
 
-
 // Admin Web
 export { AltaCatalogo } from './AltaCatalogo';
 export { ConfigShop } from './ConfigShop';

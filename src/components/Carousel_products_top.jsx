@@ -82,7 +82,7 @@ export const Carousel_products_top = () => {
         };
     }, []); // El array vacío asegura que se ejecute solo una vez al montar
 
-    let widthContainer = windowSize.width * .90
+    let widthContainer = windowSize.width * 1
     let widthCardAuto = (widthContainer / 6) - 10
     let countCards = Math.floor(widthContainer / widthCardAuto)
     let grapZiseCards = widthCardAuto * countCards
