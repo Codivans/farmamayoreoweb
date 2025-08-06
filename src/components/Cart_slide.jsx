@@ -1,7 +1,6 @@
 import React, { useContext, useRef, useEffect } from 'react';
 import { ContextoCarrito } from './../context/cartContext';
 import { MdDelete } from "react-icons/md";
-import { VscChromeClose } from "react-icons/vsc";
 import formatoMoneda from '../functions/formatoMoneda';
 import { Link } from 'react-router-dom';
 import img_cart_notfound from './../assets/cart_not_found.png'
@@ -35,8 +34,7 @@ export const Cart_slide = ({showCart, setShowCart}) => {
     <div className='wrap_cart_slide' onClick={() => setShowCart(false)}>
       <div ref={cartRef} className={`container_cart_slide animate__animated ${showCart === true ? 'animate__bounceInRight' : 'animate__bounceOutRight'}`} onClick={(event) => event.stopPropagation()}>
         <div className='cart_header'>
-          <button className='btn_close_cart_slide' onClick={() => setShowCart(!showCart)}><VscChromeClose /></button>
-          <h3>Mi carrito</h3>
+          <span>Mi carrito</span>
         </div>
         <div className='cart_body'>
             {
@@ -66,8 +64,16 @@ export const Cart_slide = ({showCart, setShowCart}) => {
         {
           productosCarrito.length > 0 &&(
             <div className='cart_footer'>
-              <button className='btn_vaciar_cart' onClick={() => vaciarCarrito()}>Vaciar carrito</button>
-              <Link className='btn_finalizar_cart' to='/detalle_shop'>Finalizar <b>{formatoMoneda(importeCart)}</b></Link>
+              <div className='column_footer_cart'>
+                <p>Total: </p>
+                <p><b>{formatoMoneda(importeCart)}</b></p>
+              </div>
+              <div className='column_footer_cart'>
+                <button className='btn_vaciar_cart' onClick={() => vaciarCarrito()}>Vaciar carrito</button>
+                <Link className='btn_finalizar_cart' to='/detalle_shop'>Finalizar</Link>
+              </div>
+              
+              
             </div>
           )
         }

@@ -6,6 +6,7 @@ import { Carousel_products_top } from './../components/Carousel_products_top';
 import { Portada_shop_grid } from './../components/Portada_shop_grid';
 import { Carousel_store } from './../components/Carousel_store';
 import useShopNames from '../hooks/useShopNames';
+import { Menu_Bottom } from '../components/Menu_Bottom';
 
 
 export function Home() {
@@ -30,6 +31,7 @@ export function Home() {
         }    
 
         <Carousel_store />
+        <Menu_Bottom />
     </>
   )
 }

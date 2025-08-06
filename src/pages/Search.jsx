@@ -8,13 +8,6 @@ import searchCatalog from '../hooks/searchCatalog';
 
 import ClipLoader from "react-spinners/ClipLoader";
 
-// const override: CSSProperties = {
-//     display: "block",
-//     margin: "0 auto",
-//     borderColor: "red",
-//   };
-
-
 export const Search = () => {
     const [results, setResults] = useState([]);
     const { modulo, searchTerm } = useParams();
@@ -67,7 +60,7 @@ export const Search = () => {
         <Header_principal />
 
         <div className='container_result_search'>
-            <h4>Se encontraron <span>({results.length})</span> resultados con. <span>"{searchTerm}"</span></h4>
+            <h4>Se encontraron <span>({results.length})</span> resultados con. <br /><span>"{searchTerm}"</span></h4>
 
             {
                 loading ? (

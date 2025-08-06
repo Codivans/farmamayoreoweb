@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { Swiper, SwiperSlide } from 'swiper/react';
 // import productos from './../data/products_carrousel';
-import { doc, getDoc } from "firebase/firestore";
+import { count, doc, getDoc } from "firebase/firestore";
 import { db } from "./../firebase/firebaseConfig"; // Ajusta según tu ruta
 
 
@@ -83,16 +83,17 @@ export const Carousel_products_top = () => {
     }, []); // El array vacío asegura que se ejecute solo una vez al montar
 
     let widthContainer = windowSize.width * 1
-    let widthCardAuto = (widthContainer / 6) - 10
+    let widthCardAuto = (widthContainer / 6) -10
     let countCards = Math.floor(widthContainer / widthCardAuto)
     let grapZiseCards = widthCardAuto * countCards
     let margenCard = (widthContainer - grapZiseCards) / (countCards - 1)
+  
 
   return (
     <div className='container_products_top'>
         <h4 className='title_carrusel'>Productos Top</h4>
         <Swiper
-            slidesPerView={Math.floor(widthContainer / 220)}
+            slidesPerView={Math.floor(widthContainer / 235)}
             spaceBetween={margenCard}
             freeMode={true}
             autoplay={{
@@ -107,7 +108,7 @@ export const Carousel_products_top = () => {
         >
         {
             productos.map((item) => <SwiperSlide  key={item.codigo}>
-                                        <Card_product widthCard={widthCardAuto} item={item} />
+                                        <Card_product  item={item} />
                                     </SwiperSlide>)
         }
         </Swiper>

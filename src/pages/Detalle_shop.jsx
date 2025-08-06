@@ -9,12 +9,14 @@ import { CiCreditCard2 } from "react-icons/ci";
 import { PiMoneyLight } from "react-icons/pi";
 import { BsPhoneFlip } from "react-icons/bs";
 import { FaArrowLeftLong } from "react-icons/fa6";
+import { MdDelete } from "react-icons/md";
 import { auth, db } from './../firebase/firebaseConfig';
 import { doc, getDoc, updateDoc, arrayRemove, arrayUnion } from 'firebase/firestore';
 import createPedido from '../firebase/createPedido';
 import { useNavigate } from 'react-router-dom';
 import { FormularioDirecciones } from '../components/FormularioDirecciones';
 import { getUnixTime } from 'date-fns';
+import { Menu_Bottom } from '../components/Menu_Bottom';
 
 export const Detalle_shop = () => {
     const [stepShop, setStepShop] = useState(0);
@@ -166,197 +168,217 @@ export const Detalle_shop = () => {
             <div className='content_detalle_shop'>
                 <div className='content_tab_shop'>
                     <ul className='step_shop'>
-                        <li className={`step ${stepShop >= 0 ? 'step_active' : ''}`}><FaCheck /> Detalle del cart</li>
+                        <li className={`step ${stepShop >= 0 ? 'step_active' : ''}`}><FaCheck /> <span>Detalle productos</span></li>
                         <li className={`step ${stepShop >= 1 ? 'step_active' : ''}`}><FaCheck /> Dirección de entrega</li>
                         <li className={`step ${stepShop >= 2 ? 'step_active' : ''}`}><FaCheck /> Forma de pago</li>
                     </ul>
                 </div>
+
                 <div className='container_panel_shop'>
-                    {
-                        stepShop === 0 && (
-                            <div className='detalle_shop'>
-                                {
-                                    productosCarrito.map((item) => (
-                                        <div className='row_product_detalle_shop' key={item.codigo}>
-                                            <img className='img_product_detalle' loading="lazy" onError={imagenDefault} src={`https://farmacias2web.com/imagenes/${item.codigo}.jpg`}/>
-                                            <div className='detalle_data_product'>
-                                                <div>
-                                                    <span className='code_product_d'>{item.codigo}</span>
-                                                    <p className='name_product_d'>{item.nombre}</p>
-                                                </div>
-                                                <div>
-                                                    <p className='price_product_d'>{formatoMoneda(item.precio)} x {item.pedido} pzs = <b>{formatoMoneda(item.importe)}</b></p>
-                                                </div>
-                                                <div className='container_controller_detalle_shop'>
-                                                    <div className='container_btn_controllers'>
-                                                        <button onClick={() => removeProductCart({codigo: parseInt(item.codigo), disminuir: 1, agregados: productoAgregado.pedido})}>-</button>
-                                                        <input
-                                                        type='text'
-                                                        data-codigo={item.codigo}
-                                                        data-nombre={item.nombre}
-                                                        data-precio={item.precio}
-                                                        data-existencia={item.existencia}
-                                                        placeholder={item.pedido}
-                                                        className='count_add_cart' 
-                                                        onChange={handleChange} 
-                                                        onKeyDown={handleKey}
-                                                        />
-                                                        <button onClick={() => addProductoCart({codigo: parseInt(item.codigo), nombre: item.nombre, pedido: 1, precio: item.oferta > 0 ? item.oferta : item.precio, existencia: item.existencia})}>+</button>
+                    <div className='container_steps_details'>
+                        {
+                            stepShop === 0 && (
+                                <div className='detalle_shop'>
+                                    {
+                                        productosCarrito.map((item) => (
+                                            <div className='row_product_detalle_shop' key={item.codigo}>
+                                                <img className='img_product_detalle' loading="lazy" onError={imagenDefault} src={`https://farmacias2web.com/imagenes/${item.codigo}.jpg`}/>
+                                                <div className='detalle_data_product'>
+                                                    <div className='column_detalle_cart column_name'>
+                                                        <div className='container_name_cart'>
+                                                            <span className='code_product_d'>{item.codigo}</span>
+                                                            <p className='name_product_d'>{item.nombre}</p>
+                                                        </div>
+                                                        <div className='container_price_cart'>
+                                                            <span>Precio</span>
+                                                            <p className='price_product_d'>{formatoMoneda(item.precio)}</p>
+                                                        </div>
                                                     </div>
+
+                                                    <div  className='column_detalle_cart column_prices'>
+                                                        <div className='container_controller_detalle_shop'>
+                                                            <div className='container_btn_controllers'>
+                                                                <button onClick={() => removeProductCart({codigo: parseInt(item.codigo), disminuir: 1, agregados: productoAgregado.pedido})}>-</button>
+                                                                <input
+                                                                type='text'
+                                                                data-codigo={item.codigo}
+                                                                data-nombre={item.nombre}
+                                                                data-precio={item.precio}
+                                                                data-existencia={item.existencia}
+                                                                placeholder={item.pedido}
+                                                                className='count_add_cart' 
+                                                                onChange={handleChange} 
+                                                                onKeyDown={handleKey}
+                                                                />
+                                                                <button onClick={() => addProductoCart({codigo: parseInt(item.codigo), nombre: item.nombre, pedido: 1, precio: item.oferta > 0 ? item.oferta : item.precio, existencia: item.existencia})}>+</button>
+                                                            </div>
+                                                        </div>
+                                                        <p className='importe_product_d'>{formatoMoneda(item.importe)}</p>
+                                                        <button className='btn_delete_cart_d' onClick={() => deleteProductoCart(item.codigo)}><MdDelete /></button>
+
+                                                    </div>
+                                                    
+
+                                                    
+
+
+
                                                 </div>
                                             </div>
-                                        </div>
-                                    ))
-                                }
-                            </div>
+                                        ))
+                                    }
+                                </div>
 
-                        )
-                    }
-                    {
-                        stepShop === 1 && (
-                            <div className='detalle_shop'>
-                                {
-                                    auth?.currentUser ? (
-                                    <div className='container_tipo_entrega'>
-                                        <h3>Selecciona la dirección de entrega</h3>
-                                        <div className='container_toggle_entrega'>
-                                            <button className={`btn_toggle ${toggleEntrega === 'pickUp' ? 'active_toggle' : ''}`} name='pickUp' onClick={handleChangeToggleTipoEntrega}>PickUp</button>
-                                            <button className={`btn_toggle ${toggleEntrega === 'envio' ? 'active_toggle' : ''}`} name='envio' onClick={handleChangeToggleTipoEntrega}>Envio</button>
-                                        </div>
-
-                                        {
-                                            toggleEntrega === 'pickUp' ? (
-                                                <>
-                                                    <div className='container_cards_pickup'>
-                                                        <div className={`item_address ${selectEntrega === 'tienda' ? 'actived_address': ''}`}>
-                                                            <input type='radio' name='tienda' checked={'tienda' === selectEntrega} onChange={handleChangeToggle} id='tienda'/>
-                                                            <label htmlFor='tienda'>Tienda</label>
-                                                            <p>Rio churubusco s/n Central de Abastos, Pasillo E-F Local 30B, Iztapalapa, 09040, CDMX.</p>
-                                                        </div>
-
-                                                        <div className={`item_address ${selectEntrega === 'anden' ? 'actived_address': ''}`}>
-                                                            <input type='radio' name='anden' checked={'anden' === selectEntrega} onChange={handleChangeToggle} id='anden'/>
-                                                            <label htmlFor='anden'>Anden</label>
-                                                            <p>Rio churubusco s/n Central de Abastos, Anden estacionamiento 30B, Iztapalapa, 09040, CDMX.</p>
-                                                        </div>
-                                                    </div>
-                                                </>
-                                            ) : (
-                                                <div className='container_cards_address'>
-                                                    {
-                                                        direcciones?.length > 0 ?
-                                                        (
-                                                            <>
-                                                            {
-                                                                direcciones?.map((dir, i) => (
-                                                                    <div key={i} className={`item_address ${selectAddress === dir.tipoDireccion ? 'actived_address': ''}`}>
-                                                                        <input type='radio' name={dir.tipoDireccion} value='' checked={dir.tipoDireccion === selectAddress} onChange={() => setSelectAddress(dir.tipoDireccion)} id={dir.tipoDireccion}  />
-                                                                        <label htmlFor={dir.tipoDireccion} >{dir.tipoDireccion}</label>
-                                                                        <p>Calle:{dir.calle} Num. Ext:{dir.numeroExt}, Num. Int:{dir.numeroInt}, Colonia o Alcaldia:{dir.colonia}</p>
-                                                                        <p>Municipio o Localidad:{dir.municipio}, CP:{dir.cp}, Referencias:{dir.referencias}</p>
-                                                                    </div>
-                                                                ))
-                                                            }
-                                                            </>
-                                                        )
-                                                        :(
-                                                            <>
-                                                            {
-                                                                showForm === false ? (
-                                                                    <div className='botonera_perfil btn_perfil_tipo'>
-                                                                        <button className='btn_add_data' onClick={() => handleClick()}>+ Agregar dirección</button>
-                                                                    </div>
-                                                                ): ('')
-                                                            }
-                                                            
-                                                            <FormularioDirecciones showForm={showForm} setShowForm={setShowForm} direccionEditar={direccionEditando} onGuardado={finalizarGuardado}/>
-                                                            </>
-
-                                                        )
-                                                    }
-                                                    
-                                                </div>
-                                            )
-                                        }
-                                    </div>
-                                    ) : (
-                                        <div>
-                                            <p>Para continuar es necesario iniciar seión</p>
-                                            <button>Iniciar sesion</button>
-                                        </div>
-                                    )
-                                }
-                                
-                                
-                            </div>
-                        )
-                    }
-                    {
-                        stepShop === 2 && (
-                            <div className='detalle_shop'>
-                                <div className='container_cards_pago'>
-                                    <h3>Selecciona tu forma de pago</h3>
-
-                                    <div className='container_flex_pago'>
-                                        <div className='cards_pago'>
-                                            <div className={`item_pago ${formaPago === 'transferencia' ? 'actived_address': ''}`}>
-                                                <input type='radio' name='casa' value='' checked={'transferencia' === formaPago} onChange={() => setFormaPago('transferencia')} id='transferencia'  />
-                                                <label htmlFor='transferencia' >Transferencia <BsPhoneFlip/></label>
+                            )
+                        }
+                        {
+                            stepShop === 1 && (
+                                <div className='detalle_shop'>
+                                    {
+                                        auth?.currentUser ? (
+                                        <div className='container_tipo_entrega'>
+                                            <h3>Selecciona una dirección de entrega</h3>
+                                            <div className='container_toggle_entrega'>
+                                                <button className={`btn_toggle ${toggleEntrega === 'pickUp' ? 'active_toggle' : ''}`} name='pickUp' onClick={handleChangeToggleTipoEntrega}>PickUp</button>
+                                                <button className={`btn_toggle ${toggleEntrega === 'envio' ? 'active_toggle' : ''}`} name='envio' onClick={handleChangeToggleTipoEntrega}>Envio</button>
                                             </div>
 
                                             {
-                                                toggleEntrega === 'pickUp' && (
-                                                    <div className={`item_pago ${formaPago === 'efectivo' ? 'actived_address': ''}`}>
-                                                        <input type='radio' name='efectivo' value='' checked={'efectivo' === formaPago} onChange={() => setFormaPago('efectivo')} id='efectivo'  />
-                                                        <label htmlFor='efectivo' >Efectivo <PiMoneyLight/> </label>
+                                                toggleEntrega === 'pickUp' ? (
+                                                    <>
+                                                        <div className='container_cards_pickup'>
+                                                            <div className={`item_address ${selectEntrega === 'tienda' ? 'actived_address': ''}`}>
+                                                                <input type='radio' name='tienda' checked={'tienda' === selectEntrega} onChange={handleChangeToggle} id='tienda'/>
+                                                                <label htmlFor='tienda'>Tienda</label>
+                                                                <p>Rio churubusco s/n Central de Abastos, Pasillo E-F Local 30B, Iztapalapa, 09040, CDMX.</p>
+                                                            </div>
+
+                                                            <div className={`item_address ${selectEntrega === 'anden' ? 'actived_address': ''}`}>
+                                                                <input type='radio' name='anden' checked={'anden' === selectEntrega} onChange={handleChangeToggle} id='anden'/>
+                                                                <label htmlFor='anden'>Anden</label>
+                                                                <p>Rio churubusco s/n Central de Abastos, Anden estacionamiento 30B, Iztapalapa, 09040, CDMX.</p>
+                                                            </div>
+                                                        </div>
+                                                    </>
+                                                ) : (
+                                                    <div className='container_cards_address'>
+                                                        {
+                                                            direcciones?.length > 0 ?
+                                                            (
+                                                                <>
+                                                                {
+                                                                    direcciones?.map((dir, i) => (
+                                                                        <div key={i} className={`item_address ${selectAddress === dir.tipoDireccion ? 'actived_address': ''}`}>
+                                                                            <input type='radio' name={dir.tipoDireccion} value='' checked={dir.tipoDireccion === selectAddress} onChange={() => setSelectAddress(dir.tipoDireccion)} id={dir.tipoDireccion}  />
+                                                                            <label htmlFor={dir.tipoDireccion} >{dir.tipoDireccion}</label>
+                                                                            <p>Calle:{dir.calle} Num. Ext:{dir.numeroExt}, Num. Int:{dir.numeroInt}, Colonia o Alcaldia:{dir.colonia}</p>
+                                                                            <p>Municipio o Localidad:{dir.municipio}, CP:{dir.cp}, Referencias:{dir.referencias}</p>
+                                                                        </div>
+                                                                    ))
+                                                                }
+                                                                </>
+                                                            )
+                                                            :(
+                                                                <>
+                                                                {
+                                                                    showForm === false ? (
+                                                                        <div className='botonera_perfil btn_perfil_tipo'>
+                                                                            <button className='btn_add_data' onClick={() => handleClick()}>+ Agregar dirección</button>
+                                                                        </div>
+                                                                    ): ('')
+                                                                }
+                                                                
+                                                                <FormularioDirecciones showForm={showForm} setShowForm={setShowForm} direccionEditar={direccionEditando} onGuardado={finalizarGuardado}/>
+                                                                </>
+
+                                                            )
+                                                        }
+                                                        
                                                     </div>
                                                 )
                                             }
-
-                                            <div className={`item_pago ${formaPago === 'tarjeta' ? 'actived_address': ''}`}>
-                                                <input type='radio' name='tarjeta' value='' checked={'tarjeta' === formaPago} onChange={() => setFormaPago('tarjeta')} id='tarjeta'  />
-                                                <label htmlFor='tarjeta' >Terminal <CiCreditCard2 /></label>
-                                            </div>
                                         </div>
-                                        <div className='info_pago'>
-                                            {
-                                                formaPago === 'transferencia' ? (
-                                                    <div>
-                                                        <h4>Banco Afirme</h4>
-                                                        <strong>Cuenta:</strong>
-                                                        <p>3494938943249842389</p>
-                                                        <strong>CLABE:</strong>
-                                                        <p>3492390493284944321</p>
-                                                    </div>
-                                                ):('')
-                                            }
-                                            {
-                                                formaPago === 'efectivo' ? (
-                                                    <div>
-                                                        
-                                                    </div>
-                                                ) : ('')
-                                            }
-                                            {
-                                                formaPago === 'tarjeta' ? (
-                                                    <div>
-                                                        terminal
-                                                    </div>
-                                                ) : ('')
-                                            }
+                                        ) : (
+                                            <div>
+                                                <p>Para continuar es necesario iniciar seión</p>
+                                                <button>Iniciar sesion</button>
+                                            </div>
+                                        )
+                                    }
+                                    
+                                    
+                                </div>
+                            )
+                        }
+                        {
+                            stepShop === 2 && (
+                                <div className='detalle_shop'>
+                                    <div className='container_cards_pago'>
+                                        <h3>Selecciona tu forma de pago</h3>
+
+                                        <div className='container_flex_pago'>
+                                            <div className='cards_pago'>
+                                                <div className={`item_pago ${formaPago === 'transferencia' ? 'actived_address': ''}`}>
+                                                    <input type='radio' name='casa' value='' checked={'transferencia' === formaPago} onChange={() => setFormaPago('transferencia')} id='transferencia'  />
+                                                    <label htmlFor='transferencia' >Transferencia <BsPhoneFlip/></label>
+                                                </div>
+
+                                                {
+                                                    toggleEntrega === 'pickUp' && (
+                                                        <div className={`item_pago ${formaPago === 'efectivo' ? 'actived_address': ''}`}>
+                                                            <input type='radio' name='efectivo' value='' checked={'efectivo' === formaPago} onChange={() => setFormaPago('efectivo')} id='efectivo'  />
+                                                            <label htmlFor='efectivo' >Efectivo <PiMoneyLight/> </label>
+                                                        </div>
+                                                    )
+                                                }
+
+                                                <div className={`item_pago ${formaPago === 'tarjeta' ? 'actived_address': ''}`}>
+                                                    <input type='radio' name='tarjeta' value='' checked={'tarjeta' === formaPago} onChange={() => setFormaPago('tarjeta')} id='tarjeta'  />
+                                                    <label htmlFor='tarjeta' >Terminal <CiCreditCard2 /></label>
+                                                </div>
+                                            </div>
+                                            <div className='info_pago'>
+                                                {
+                                                    formaPago === 'transferencia' ? (
+                                                        <div>
+                                                            <h4>Banco Afirme</h4>
+                                                            <strong>Cuenta:</strong>
+                                                            <p>3494938943249842389</p>
+                                                            <strong>CLABE:</strong>
+                                                            <p>3492390493284944321</p>
+                                                        </div>
+                                                    ):('')
+                                                }
+                                                {
+                                                    formaPago === 'efectivo' ? (
+                                                        <div>
+                                                            
+                                                        </div>
+                                                    ) : ('')
+                                                }
+                                                {
+                                                    formaPago === 'tarjeta' ? (
+                                                        <div>
+                                                            terminal
+                                                        </div>
+                                                    ) : ('')
+                                                }
+                                            </div>
                                         </div>
                                     </div>
                                 </div>
-                            </div>
-                        )
-                    }
+                            )
+                        }
+
+                    </div>
+                    
                     
 
-                    <div>
+                    <div className='container_column_importes'>
                         <div className='content_importe_ticket'>
                             <div className='header_ticket'>
                                 <h5>Resumen</h5>
-                                <span>El importe de este detalle puede variaral capturar su pedido, debido a diferencias en el stock fisico en almacen.</span>
+                                <span>El importe de este detalle puede variar al capturar su pedido, debido a diferencias en el stock fisico en almacen.</span>
                             </div>
                             <div className='body_ticket'>
                                 <p><span>Subtotal</span> <span>{formatoMoneda(importeCart)}</span></p>
@@ -415,6 +437,7 @@ export const Detalle_shop = () => {
                 </div>
             </div>
         </main>
+        <Menu_Bottom />
     </>
   )
 }

@@ -5,7 +5,7 @@ import { VscAdd, VscChromeMinimize  } from "react-icons/vsc";
 import { IoDocumentTextOutline } from "react-icons/io5";
 import { Link } from 'react-router-dom';
 
-export const Card_product = ({widthCardAuto, item}) => {
+export const Card_product = ({item}) => {
 
     const imagenDefault = (e) =>{
       e.target.src =  'https://farmacias2web.com/imagenes/predeterminada.jpg' 
@@ -65,7 +65,7 @@ export const Card_product = ({widthCardAuto, item}) => {
       
 
   return (
-    <div className='card_product' style={{ width: `${widthCardAuto}px !important` }}>
+    <div className='card_product'>
         <p className='item_grupo'>
           {
             item.grupo === 'GRUPO IV (ANTIBIOTICO)' && <span><IoDocumentTextOutline /> Producto Antibiótico</span>

@@ -61,7 +61,7 @@ export const Form_login = ({selectForm, setSelectForm, setShowForm, showForm}) =
         </form>
         <button className='btn_forgot'>Recuperar contraseña</button>
         <p className='txt_form_footer'>¿No tienes una cuenta? <span onClick={() => setSelectForm(true)}> Registrarme</span></p>
-        <span onClick={logout}>cerrar</span>
+
     </div>
   )
 }

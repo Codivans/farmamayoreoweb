@@ -121,10 +121,6 @@ export const Header_principal = () => {
                
             </div>
         </div>
-
-        {/* <div id='header_bottom'>
-            <MenuFamilias />
-        </div> */}
         {
             showCart && <Cart_slide showCart={showCart} setShowCart={setShowCart}/>
         }

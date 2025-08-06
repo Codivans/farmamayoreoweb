@@ -68,26 +68,16 @@ export const Form_Register = ({selectForm, setSelectForm}) => {
   return (
     <div className={`container_form_style form_register animate__animated  ${selectForm ? 'animate__bounceInRight' : 'animate__bounceOutRight'}`} >
         <form onSubmit={handleSubmit}>
-        <h3>Registrarme</h3>
-        <input name='email' type='text' placeholder='Correo electrónico' onChange={handleChange}/>
-        <input name='nombre' type='text' placeholder='Nombre' onChange={handleChange}/>
-        <input name='apellidoPaterno' type='text' placeholder='Apellido Paterno' onChange={handleChange}/>
-        <input name='apellidoMaterno' type='text' placeholder='Apellido Materno' onChange={handleChange}/>
-        <input name='telefono' type='text' placeholder='Numero Telefónico' onChange={handleChange}/>
-
-        {/* <input
-          type="file"
-          // accept="application/pdf"
-          onChange={(e) => setForm({ ...form, documento: e.target.files[0] })}
-          required
-        /> */}
-
-        
-
-        <input name='password' type='password' placeholder='Contraseña' onChange={handleChange}/>
-        <button className='btn_blue'  type="submit">
-            Entrar
-        </button>
+          <h3>Registrarme</h3>
+          <input name='email' type='text' placeholder='Correo electrónico' onChange={handleChange}/>
+          <input name='nombre' type='text' placeholder='Nombre' onChange={handleChange}/>
+          <input name='apellidoPaterno' type='text' placeholder='Apellido Paterno' onChange={handleChange}/>
+          <input name='apellidoMaterno' type='text' placeholder='Apellido Materno' onChange={handleChange}/>
+          <input name='telefono' type='text' placeholder='Numero Telefónico' onChange={handleChange}/>
+          <input name='password' type='password' placeholder='Contraseña' onChange={handleChange}/>
+          <button className='btn_blue'  type="submit">
+              Entrar
+          </button>
         </form>
         <p className='txt_form_footer'>¿Ya tienes una cuenta? <span onClick={() => setSelectForm(false)}> Inicia sesión</span></p>
     </div>

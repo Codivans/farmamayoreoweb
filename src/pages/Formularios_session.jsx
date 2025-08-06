@@ -3,6 +3,7 @@ import { Header_principal } from '../components/Header_principal';
 import imagen from './../assets/imagen.jpeg'
 import { Form_login } from './../components/Form_login';
 import { Form_Register } from './../components/Form_Register';
+import { Menu_Bottom } from '../components/Menu_Bottom';
 
 export const Formularios_session = () => {
   const [selectForm, setSelectForm] = useState(false);
@@ -32,7 +33,6 @@ export const Formularios_session = () => {
     left: 0,
     width: '100%',
     height: '100%',
-    // backgroundColor: 'rgba(9, 139, 145, 0.8)',
     backgroundColor: 'rgba(43, 55, 90, 0.8)',
     zIndex: 2,
   };
@@ -40,9 +40,7 @@ export const Formularios_session = () => {
   return (
     <>
         <Header_principal />
-
-        <div>
-        <div className='container_form_session' onClick={() => setShowForm(false)}>
+        <div className='container_form_session'>
             <div className='container_forms' ref={cartRef} onClick={(event) => event.stopPropagation()}>
               <div className='image_session' style={divStyle}>
                 <div style={imageStyle}></div>
@@ -57,7 +55,8 @@ export const Formularios_session = () => {
               </div>
             </div>
         </div>
-        </div>
+        <Menu_Bottom />
+        
     </>
   )
 }
