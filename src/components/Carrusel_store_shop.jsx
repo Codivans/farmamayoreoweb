@@ -43,25 +43,30 @@ export const Carrusel_store_shop = ({productos, nameShop}) => {
         };
     }, []); // El array vacío asegura que se ejecute solo una vez al montar
 
-    let widthContainerPrimary = windowSize.width * .80
-    let widthContainer = widthContainerPrimary - 390
-    let widthCardAuto = (widthContainer / 5) - 10
-    let countCards = Math.floor(widthContainer / widthCardAuto)
-    let grapZiseCards = widthCardAuto * countCards
-    let margenCard = (widthContainer - grapZiseCards) / (countCards - 1)
+    let widthContainer = windowSize.width * 1
+
+    let totalCardsWidth = 235;
+    if(widthContainer <= 480 ){
+      totalCardsWidth = (widthContainer / 2)-10
+    }
+    let margenCard = 10;
+    
+    if(widthContainer <= 440){
+      margenCard = ((widthContainer/2) - ((widthContainer / 2)-10))/2
+    }
 
     let productosStore = productos.filter((item) => item.store === 'store')
 
 
     
   return (
-    <div className='container_products_column'>
+    <div className='container_products_column container_swiper_responsive'>
         <div className='img_portada'>
             <img src={portadasSrc} />
         </div>
         <div className='container_carousel_column'>
             <Swiper
-                slidesPerView={Math.floor(widthContainer / 220)}
+                slidesPerView={Math.floor(widthContainer / totalCardsWidth)}
                 spaceBetween={margenCard}
                 freeMode={true}
                 autoplay={{
@@ -76,8 +81,8 @@ export const Carrusel_store_shop = ({productos, nameShop}) => {
                 style={{marginTop: '20px !important'}}
             >
                 {
-                    productosStore.map((item) => <SwiperSlide style={{ width: `${widthCardAuto}px !important` }}  key={item.CODIGO}>
-                                                <Card_product widthCard={widthCardAuto} item={item}/>
+                    productosStore.map((item) => <SwiperSlide style={{width : totalCardsWidth}}  key={item.CODIGO}>
+                                                <Card_product item={item}/>
                                             </SwiperSlide>)
                 }
             </Swiper>

@@ -83,17 +83,25 @@ export const Carousel_products_top = () => {
     }, []); // El array vacío asegura que se ejecute solo una vez al montar
 
     let widthContainer = windowSize.width * 1
-    let widthCardAuto = (widthContainer / 6) -10
-    let countCards = Math.floor(widthContainer / widthCardAuto)
-    let grapZiseCards = widthCardAuto * countCards
-    let margenCard = (widthContainer - grapZiseCards) / (countCards - 1)
+
+    let totalCardsWidth = 235;
+    if(widthContainer <= 480 ){
+      totalCardsWidth = (widthContainer / 2)-10
+    }
+    let margenCard = 10;
+    
+    if(widthContainer <= 440){
+      margenCard = ((widthContainer/2) - ((widthContainer / 2)-10))/2
+    }
+
+
   
 
   return (
-    <div className='container_products_top'>
+    <div className='container_products_top container_swiper_responsive'>
         <h4 className='title_carrusel'>Productos Top</h4>
         <Swiper
-            slidesPerView={Math.floor(widthContainer / 235)}
+            slidesPerView={Math.floor(widthContainer / totalCardsWidth)}
             spaceBetween={margenCard}
             freeMode={true}
             autoplay={{
@@ -107,8 +115,8 @@ export const Carousel_products_top = () => {
             className="mySwiper swiper_top"
         >
         {
-            productos.map((item) => <SwiperSlide  key={item.codigo}>
-                                        <Card_product  item={item} />
+            productos.map((item) => <SwiperSlide  key={item.codigo} className='content_swiper_top' style={{width : totalCardsWidth}}>
+                                        <Card_product  item={item}/>
                                     </SwiperSlide>)
         }
         </Swiper>

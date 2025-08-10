@@ -984,11 +984,11 @@ body{
     margin-top: 0px;
 }
 .card_footer button{
-    background-color: #203266;
-    border-radius: 2px;
+    background-color: #0165d0;
+    border-radius: 4px;
     border: 0px none;
     font-size: 14px;
-    font-weight: 600;
+    font-weight: 500;
     padding: 10px;
     display: block;
     width: 90%;
@@ -996,6 +996,7 @@ body{
     color: white;
     cursor: pointer; 
     margin-bottom: 10px;
+    
 }
 
 .card_footer button:hover{
@@ -1007,21 +1008,24 @@ body{
 .container_btn_controllers{
     border: 1px none;
     border-radius: 6px;
-    padding: 2px;
+    padding: 0px;
     width: 90% !important;
     margin: 0px auto;
     display: flex !important;
     justify-content: space-between;
     align-items: center;
     align-self: center;
+    gap: 3%;
+    /* margin-bottom: 10px; */
+    padding-block: 5px;
 }
 .container_btn_controllers .count_add_cart{
     background-color: #f9f9f9;
     border: 1px solid #afafaf;
-    width: 96px;
+    width: 50%;
     padding: 4px;
     border-radius: 4px;
-    color: #7d7d7d;
+    color: #383838;
     text-align: center;
     margin-top: -12px;
 }
@@ -1030,15 +1034,15 @@ body{
     outline: none;
 }
 .container_btn_controllers button{
-    background-color: #203266;
-    border: 1px solid #18285a;
+    background-color: #0165d0;
+    border: 1px solid #0165d0;
     border-radius: 4px;
     color: white;
     cursor: pointer;
     font-size: 16px;
     font-weight: 600;
     padding: 2px;
-    width: 42px;
+    width: 20%;
     height: 25px;
 }
 
@@ -1105,7 +1109,7 @@ body{
     overflow: hidden;
     margin-top: 10px;
     height: 480px;
-    width: 390px;
+    width: 100%;
 }
 .img_portada img{
     width: 100%;
@@ -2318,7 +2322,7 @@ body{
 
 
 
-  @media only screen and (max-width:550px) {
+  @media only screen and (max-width:490px) {
     #flag_header{
         display: none;
     }
@@ -2327,6 +2331,7 @@ body{
         width: 100%;
         background-color: #007bff;
         padding-bottom: 10px;
+        height: 120px;
     }
     .container_brand_menu{
         justify-content: space-around;
@@ -2346,7 +2351,6 @@ body{
     
     .container_logo{
         margin-left: 100px;
-        background-color: red;
     }
 
     .img_icon_logo{
@@ -2397,6 +2401,7 @@ body{
     .slider-container{
         width: 100%;
         border-radius: 0px;
+        margin-top: -10px;
     }
 
     .container_products_category{
@@ -2479,6 +2484,12 @@ body{
     /* cart_slide */
     .container_cart_slide .cart_body{
         height: calc(100% - 205px);
+        background-color: #f7f7f7;
+    }
+
+    .container_cart_slide{
+        width: 340px;
+        margin-left: calc(100% - 340px);
     }
 
 
@@ -2591,7 +2602,7 @@ body{
 
     /* Search */
     .container_result_search{
-        width: 96%;
+        width: 94%;
         padding: 0px;
         margin: 0px auto;
         padding-block: 10px;
@@ -2604,11 +2615,12 @@ body{
         display: flex;
         flex-wrap: wrap;
         gap: auto;
-        justify-content: space-between;
+        justify-content: flex-start;
     }
 
     .container_result_products .card_product{
-        width: 46%;
+        width: 44%;
+        margin-inline: 1%;
     }
 
     .container_result_products .card_product .card_header {
@@ -2621,11 +2633,67 @@ body{
         margin: 0px auto;
     }
 
+   .container_swiper_responsive{
+        width: 94%;
+    }
+
+    .container_swiper_responsive .card_product .card_header{
+        width: 80% !important;
+        height: 80% !important;
+    }
+    .container_swiper_responsive .card_product .card_header img{
+        width: 100% !important;
+        height: 100% !important;
+        display: block;
+    }
+
+
+
+    /* Filter en shop */
+    .content_fiters_shop{
+        width: 100%;
+    }
+
+    .menu_shop{
+        position: sticky;
+        top: 130px;
+        border-radius: 0px;
+    }
+    .menu_shop ul li button{
+        font-size: 14px;
+    }
+    .item_shop{
+        width: 94%;
+        margin: 10px auto;
+        padding: 0px;
+        display: flex;
+        flex-wrap: wrap;
+        justify-content: flex-start;
+        overflow: hidden;
+    }
+
+    .item_shop .card_product{
+        width: 45%;
+        display: block;
+        margin-inline: 2px;
+    }
+
+    .item_shop .card_product .card_header{
+        width: 150px !important;
+        height: 150px !important;
+    }
+
+    .item_shop .card_product .card_header img{
+        width: 100% !important;
+        height: 100% !important;
+        display: block;
+    }
+
+
 
     
   }
   
-
 
 
 

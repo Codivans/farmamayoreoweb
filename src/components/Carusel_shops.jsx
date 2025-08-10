@@ -40,14 +40,21 @@ export const Carusel_shops = ({productos}) => {
 
     let widthContainer = windowSize.width * .90
     let widthCardAuto = (widthContainer / 6) - 10
-    let countCards = Math.floor(widthContainer / widthCardAuto)
-    let grapZiseCards = widthCardAuto * countCards
-    let margenCard = (widthContainer - grapZiseCards) / (countCards - 1)
+
+    let totalCardsWidth = 235;
+    if(widthContainer <= 480 ){
+      totalCardsWidth = (widthContainer / 2)-10
+    }
+    let margenCard = 10;
+    
+    if(widthContainer <= 440){
+      margenCard = ((widthContainer/2) - ((widthContainer / 2)-10))/2
+    }
 
   return (
-    <div className='container_products_top'>
+    <div className='container_products_top container_swiper_responsive'>
         <Swiper
-            slidesPerView={Math.floor(widthContainer / 220)}
+            slidesPerView={Math.floor(widthContainer / totalCardsWidth)}
             spaceBetween={margenCard}
             freeMode={true}
             autoplay={{

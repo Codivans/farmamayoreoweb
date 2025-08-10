@@ -51,7 +51,7 @@ export const Carousel_category = () => {
         <Link className='img_category' to='/shop'>
             <img src={imgPleca} />
         </Link>
-        <div className='container_carousel_category'>
+        <div className='container_carousel_category container_swiper_responsive'>
             <Swiper
                 slidesPerView={Math.floor(widthContainer / 220)}
                 spaceBetween={margenCard}
