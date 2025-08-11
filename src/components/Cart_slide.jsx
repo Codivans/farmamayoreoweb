@@ -32,7 +32,8 @@ export const Cart_slide = ({showCart, setShowCart}) => {
 
   return (
     <div className='wrap_cart_slide' onClick={() => setShowCart(false)}>
-      <div ref={cartRef} className={`container_cart_slide animate__animated ${showCart === true ? 'animate__bounceInRight' : 'animate__bounceOutRight'}`} onClick={(event) => event.stopPropagation()}>
+      {/* <div ref={cartRef} className={`container_cart_slide animate__animated ${showCart === true ? 'animate__bounceInRight' : 'animate__bounceOutRight'}`} onClick={(event) => event.stopPropagation()}> */}
+      <div ref={cartRef} className={`container_cart_slide ${showCart === true ? 'up_slideup_active' : ''}`} onClick={(event) => event.stopPropagation()}>
         <div className='cart_header'>
           <span>Mi carrito</span>
         </div>
@@ -69,7 +70,7 @@ export const Cart_slide = ({showCart, setShowCart}) => {
                 <p><b>{formatoMoneda(importeCart)}</b></p>
               </div>
               <div className='column_footer_cart'>
-                <button className='btn_vaciar_cart' onClick={() => vaciarCarrito()}>Vaciar carrito</button>
+                <button className='btn_vaciar_cart' onClick={() => setShowCart(false)}>Seguir comprando</button>
                 <Link className='btn_finalizar_cart' to='/detalle_shop'>Finalizar</Link>
               </div>
               

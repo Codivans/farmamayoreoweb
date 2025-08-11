@@ -3,12 +3,10 @@ import React, { useContext, useRef, useEffect, useState } from 'react';
 import { ContextoCarrito } from './../context/cartContext';
 import { Header_principal } from '../components/Header_principal';
 import { FaCheck } from "react-icons/fa6";
-import { FaArrowRightLong } from "react-icons/fa6";
 import formatoMoneda from '../functions/formatoMoneda';
 import { CiCreditCard2 } from "react-icons/ci";
 import { PiMoneyLight } from "react-icons/pi";
 import { BsPhoneFlip } from "react-icons/bs";
-import { FaArrowLeftLong } from "react-icons/fa6";
 import { MdDelete } from "react-icons/md";
 import { auth, db } from './../firebase/firebaseConfig';
 import { doc, getDoc, updateDoc, arrayRemove, arrayUnion } from 'firebase/firestore';
@@ -215,14 +213,7 @@ export const Detalle_shop = () => {
                                                         </div>
                                                         <p className='importe_product_d'>{formatoMoneda(item.importe)}</p>
                                                         <button className='btn_delete_cart_d' onClick={() => deleteProductoCart(item.codigo)}><MdDelete /></button>
-
                                                     </div>
-                                                    
-
-                                                    
-
-
-
                                                 </div>
                                             </div>
                                         ))
@@ -305,8 +296,6 @@ export const Detalle_shop = () => {
                                             </div>
                                         )
                                     }
-                                    
-                                    
                                 </div>
                             )
                         }
@@ -320,21 +309,21 @@ export const Detalle_shop = () => {
                                             <div className='cards_pago'>
                                                 <div className={`item_pago ${formaPago === 'transferencia' ? 'actived_address': ''}`}>
                                                     <input type='radio' name='casa' value='' checked={'transferencia' === formaPago} onChange={() => setFormaPago('transferencia')} id='transferencia'  />
-                                                    <label htmlFor='transferencia' >Transferencia <BsPhoneFlip/></label>
+                                                    <label htmlFor='transferencia' >Transferencia</label>
                                                 </div>
 
                                                 {
                                                     toggleEntrega === 'pickUp' && (
                                                         <div className={`item_pago ${formaPago === 'efectivo' ? 'actived_address': ''}`}>
                                                             <input type='radio' name='efectivo' value='' checked={'efectivo' === formaPago} onChange={() => setFormaPago('efectivo')} id='efectivo'  />
-                                                            <label htmlFor='efectivo' >Efectivo <PiMoneyLight/> </label>
+                                                            <label htmlFor='efectivo' >Efectivo </label>
                                                         </div>
                                                     )
                                                 }
 
                                                 <div className={`item_pago ${formaPago === 'tarjeta' ? 'actived_address': ''}`}>
                                                     <input type='radio' name='tarjeta' value='' checked={'tarjeta' === formaPago} onChange={() => setFormaPago('tarjeta')} id='tarjeta'  />
-                                                    <label htmlFor='tarjeta' >Terminal <CiCreditCard2 /></label>
+                                                    <label htmlFor='tarjeta' >Terminal</label>
                                                 </div>
                                             </div>
                                             <div className='info_pago'>
@@ -342,10 +331,8 @@ export const Detalle_shop = () => {
                                                     formaPago === 'transferencia' ? (
                                                         <div>
                                                             <h4>Banco Afirme</h4>
-                                                            <strong>Cuenta:</strong>
-                                                            <p>3494938943249842389</p>
-                                                            <strong>CLABE:</strong>
-                                                            <p>3492390493284944321</p>
+                                                            <p><strong>Cuenta:</strong> 3494938943249842389</p>
+                                                            <p><strong>CLABE:</strong> 3492390493284944321</p>
                                                         </div>
                                                     ):('')
                                                 }
@@ -392,8 +379,7 @@ export const Detalle_shop = () => {
                         {
                             stepShop === 0 && (
                                 <button className='btn_next_step' onClick={() => setStepShop(1)}>
-                                    Siguiente 
-                                    <FaArrowRightLong />
+                                    Siguir
                                 </button>
                             )
                         }
@@ -401,13 +387,11 @@ export const Detalle_shop = () => {
                             stepShop === 1 && (
                                 <div className='botonera_shop'>
                                     <button className='btn_back_step' onClick={() => setStepShop(0)}>
-                                        <FaArrowLeftLong />
                                         Atras
                                     </button>
                                     
                                     <button className='btn_next_step' onClick={() => setStepShop(2)} disabled={stepEnvio}>
-                                        Siguiente e{stepEnvio}
-                                        <FaArrowRightLong />
+                                        Seguir
                                     </button>
                                 </div>
                             )
@@ -416,13 +400,11 @@ export const Detalle_shop = () => {
                             stepShop === 2 && (
                                 <div className='botonera_shop'>
                                     <button className='btn_back_step' onClick={() => setStepShop(1)}>
-                                        <FaArrowLeftLong />
                                         Atras
                                     </button>
 
                                     <button className='btn_next_step' onClick={sendPedido} disabled={formaPago=== '' ? true : false}>
                                         Finalizar
-                                        <FaArrowRightLong />
                                     </button>
                                 </div>
                             )
