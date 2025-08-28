@@ -493,7 +493,7 @@ body{
 
 /* Container formularios session */
 .container_form_session{
-    background-color: rgba(0,0,0,0.6);
+    background-color: #efefef;
     width: 100%;
     top: 0px;
     height: 100vh;
@@ -556,9 +556,18 @@ body{
     padding: 8px;
     margin: 6px auto;
 }
+
+.inp_email{
+    text-transform: lowercase !important;
+}
+
+
 .container_form_style form input:focus{
     outline: none;
     background-color: #eeeeee;
+}
+.email_input, .pass_input{
+    text-transform: lowercase !important;
 }
 
 .container_form_style .btn_forgot{
@@ -886,18 +895,19 @@ body{
     border: 1px solid #dadada;
     border-radius: 6px;
     min-height: 405px;
-    width: 230px;
+    width: 200px;
     overflow: hidden;
 }
 .card_header{
-    width: 250px !important;
-    height: 250px !important;
+    width: 80% !important;
+    height: auto !important;
     margin: 0px auto;
     overflow: hidden;
 }
 .card_header img{
-    width: 200px !important;
-    height: 200px !important;
+    width: 100% !important;
+    height: 100% !important;
+    display: block;
 }
 
 .item_grupo{
@@ -1136,9 +1146,9 @@ body{
     display: grid;
     grid-template-columns: repeat(
         auto-fit,
-        minmax(250px, 1fr)
+        minmax(200px, 1fr)
     );
-    gap: 15px;
+    gap: 10px;
 }
 
 .container_searching_products{
@@ -1773,6 +1783,29 @@ body{
     padding-inline: 20px;
 }
 
+.alert_box{
+    background-color: #ffff72cc;
+    border-radius: 10px;
+    padding: 10px;
+    color: #7e5f0a;
+    text-align: center;
+}
+
+.alert_box a{
+    font-style: italic;
+    color: #7e5f0a;
+    font-weight: 600;
+    cursor: pointer;
+}
+
+.pendiente_box{
+    background-color: rgba(206, 253, 204, 0.6);
+    border-radius: 10px;
+    padding: 10px;
+    color: #0a7e25;
+    text-align: center;
+}
+
 .content_importe_ticket{
     background-color: white;
     width: 100%;
@@ -2325,6 +2358,161 @@ body{
   }
 
 
+  .container_panel{
+    width: 80%;
+    height: 600px;
+    margin: 0px auto;
+  }
+
+  .wrap_pop{
+    background-color: rgba(38, 38, 38, 0.3);
+    position: fixed;
+    width: 100%;
+    height: 100vh;
+    top: 0px;
+    left: 0px;
+    z-index: 999;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+
+  }
+
+  .pop_content{
+    background-color: white;
+    border-radius: 6px;
+    width: 794px;
+    height: calc(100vh - 20%);
+    padding: 20px;
+    position: relative;
+    -webkit-box-shadow: 0px 0px 6px -1px rgba(128,128,128,1);
+    -moz-box-shadow: 0px 0px 6px -1px rgba(128,128,128,1);
+    box-shadow: 0px 0px 6px -1px rgba(128,128,128,1);
+  }
+  .fram_container{
+    width: 100%;
+    height: 100%;
+  }
+  .btn_delete_pop{
+    background-color: #262626;
+    border: 0px none;
+    border-radius: 50%;
+    padding: 6px 9px;
+    color: white;
+    cursor: pointer;
+    position: absolute;
+    right: -10px;
+    top: -10px;
+  }
+
+  .message_alert{
+    background-color: rgba(255, 255, 0, 0.4);
+    border-radius: 10px;
+    width: 420px;
+    margin: 20px auto;
+    padding: 10px;
+    color: #585802;
+    text-align: center;
+  }
+
+  .container_icon_pdf{
+    width: 240px;
+  }
+  .icon_pdf{
+    width: 60px;
+  }
+
+  .container_input_file{
+    display: flex;
+    justify-content: flex-start;
+    align-items: center;
+    gap: 40px;
+  }
+
+  .input_file_document{
+    background-color: #fbfbfb;
+    border: 1px dashed #ababab;
+    border-radius: 4px;
+    width: 200px;
+    padding: 10px 10px;
+    height: auto;
+    display: block;
+    text-align: center;
+    cursor: pointer;
+    font-size: 12px;
+    color: #404040;
+    margin-block: 20px;
+  }
+
+  .input_file_document svg{
+    font-size: 24px;
+  }
+
+  .btn_save_document{
+    background-color: green;
+    border: 0px none;
+    border-radius: 4px;
+    color: white;
+    padding: 8px 10px;
+    cursor: pointer;
+  }
+
+  .btn_save_document:hover{
+    background-color: #016701;
+  }
+  .txt_info_document{
+    color: #0171d3;
+    font-size: 14px;
+  }
+
+  .table_clientes{
+    width: 80%;
+    border-collapse: collapse;
+    margin: 20px auto;
+  }
+  .table_clientes thead{
+    background-color: #007bff;
+  }
+  .table_clientes thead th{
+    padding: 8px;
+    color: white;
+  }
+
+  .table_clientes tbody tr:nth-child(odd){
+    background-color: rgba(130, 185, 243, 0.2);
+  }
+  .table_clientes tbody tr td{
+    padding: 6px;
+    color: #262626;
+    font-size: 14px;
+  }
+  .btn_document_table, .btn_direcciones_table{
+    background-color: #007bff;
+    border: 1px solid #0165d0;
+    border-radius: 4px;
+    cursor: pointer;
+    padding: 4px;
+    width: 110px;
+    text-align: center;
+    color: white;
+  }
+
+  .row_expanded{
+    background-color: #e8e8e8;
+  }
+
+  .row_expanded ul{
+    padding: 0px;
+    margin: 0px;
+  }
+  .row_expanded ul li{
+    list-style: none;
+    border-radius: 6px;
+    margin: 4px;
+    background-color: #f4f4f4;
+    padding: 8px;
+  }
+
 
 
 
@@ -2607,6 +2795,21 @@ body{
     .btn_delete_cart_d{
         margin-left: auto;
     }
+
+    .alert_box{
+        height: 150px;
+        border-radius: 0px;
+        background-color: #fae338;
+        font-size: 16px !important;
+    }
+    .pendiente_box{
+        height: 150px;
+        border-radius: 0px;
+        background-color: #8cd689;
+        font-size: 16px !important;
+        color: #055b1d !important;
+    }
+
 
     .container_column_importes{
         background-color: #007bff;

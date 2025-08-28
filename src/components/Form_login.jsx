@@ -3,6 +3,7 @@ import { auth } from '../firebase/firebaseConfig';
 import { signInWithEmailAndPassword,  signOut } from "firebase/auth";
 import searchUser from '../hooks/searchUser';
 import { useAuth } from './../context/AuthContext';
+import { useNavigate } from 'react-router-dom';
 
 export const Form_login = ({selectForm, setSelectForm, setShowForm, showForm}) => {
     const [dataLogin, setDataLogin] = useState({
@@ -10,6 +11,8 @@ export const Form_login = ({selectForm, setSelectForm, setShowForm, showForm}) =
         password: ''
     });
     const { setEstatus } = useAuth();
+
+    const navigate = useNavigate();
 
     let emailSearch = dataLogin.email
 
@@ -31,7 +34,8 @@ export const Form_login = ({selectForm, setSelectForm, setShowForm, showForm}) =
             try {
               await signInWithEmailAndPassword(auth, email, password);
               localStorage.setItem('UserState', JSON.stringify(dataUser));
-              setShowForm(!showForm)
+              navigate('/')
+              // setShowForm(!showForm)
               // setShowForm(false)
             } catch (error) {
               console.log('Hubo un error, upsss!', error)
@@ -54,8 +58,8 @@ export const Form_login = ({selectForm, setSelectForm, setShowForm, showForm}) =
     <div className={`container_form_style animate__animated  ${selectForm ? 'animate__bounceOutLeft' : 'animate__bounceInLeft'}`} >
         <form onSubmit={handleSubmitLogin}>
         <h3>Iniciar sesión</h3>
-        <input name='email' type='text' placeholder='Email' onChange={handleChangeLogin}/>
-        <input name='password' type='text' placeholder='password' onChange={handleChangeLogin}/>
+        <input name='email' type='email' placeholder='Email' onChange={handleChangeLogin} className='inp_email'/>
+        <input name='password' type='text' placeholder='password' onChange={handleChangeLogin} className='inp_pass'/>
         <button className='btn_blue' onClick={handleSubmitLogin}>Entrar</button>
 
         </form>

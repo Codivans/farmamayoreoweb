@@ -17,7 +17,7 @@ export const Pedidos_clientes = () => {
                 const consultarUser = query(
                     collection(db, 'pedidos'),
                     where('usuario', '==', user.uid),
-                    orderBy("fechaPedido", "desc")
+                    // orderBy("fecha", "desc")
                 );
 
             const unsuscribe = onSnapshot(
@@ -56,12 +56,6 @@ export const Pedidos_clientes = () => {
         // Formatear la fecha en el formato deseado
         return `${day}/${month}/${year} ${String(hours).padStart(2, '0')}:${minutes} ${ampm}`;
     }
-
-
-    console.log('first:', activeOrder)
-
-
-
 
   return (
     <>

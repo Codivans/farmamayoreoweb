@@ -18,6 +18,12 @@ export const Form_Register = ({selectForm, setSelectForm}) => {
         documento: null,
       });
 
+      function capitalizar(str) {
+          return str.replace(/\w\S*/g, function(txt){
+              return txt.charAt(0).toUpperCase() + txt.substr(1).toLowerCase();
+          });
+      }
+
       const navigate = useNavigate();
 
       const handleChange = (e) => {
@@ -39,9 +45,9 @@ export const Form_Register = ({selectForm, setSelectForm}) => {
 
           // 4. Guardar información en Firestore
           await setDoc(doc(db, "usuarios", user.uid), {
-            nombre: form.nombre,
-            apellidoPaterno: form.apellidoPaterno,
-            apellidoMaterno: form.apellidoMaterno,
+            nombre: capitalizar(form.nombre),
+            apellidoPaterno: capitalizar(form.apellidoPaterno),
+            apellidoMaterno: capitalizar(form.apellidoMaterno),
             telefono: form.telefono,
             uid: user.uid,
             roll: 'cliente',
@@ -52,11 +58,11 @@ export const Form_Register = ({selectForm, setSelectForm}) => {
 
           // 5. Actualizar displayName
           await updateProfile(user, {
-            displayName: `${form.nombre} ${form.apellidoPaterno}`,
+            displayName: `${capitalizar(form.nombre)} ${capitalizar(form.apellidoPaterno)}`,
           });
 
           console.log("displayName actualizado");
-          navigate("/");
+          navigate("/documentos");
 
         } catch (error) {
           console.error("Error en el registro:", error);
@@ -69,12 +75,12 @@ export const Form_Register = ({selectForm, setSelectForm}) => {
     <div className={`container_form_style form_register animate__animated  ${selectForm ? 'animate__bounceInRight' : 'animate__bounceOutRight'}`} >
         <form onSubmit={handleSubmit}>
           <h3>Registrarme</h3>
-          <input name='email' type='text' placeholder='Correo electrónico' onChange={handleChange}/>
+          <input name='email' type='email' placeholder='Correo electrónico' onChange={handleChange} className='email_input'/>
           <input name='nombre' type='text' placeholder='Nombre' onChange={handleChange}/>
           <input name='apellidoPaterno' type='text' placeholder='Apellido Paterno' onChange={handleChange}/>
           <input name='apellidoMaterno' type='text' placeholder='Apellido Materno' onChange={handleChange}/>
-          <input name='telefono' type='text' placeholder='Numero Telefónico' onChange={handleChange}/>
-          <input name='password' type='password' placeholder='Contraseña' onChange={handleChange}/>
+          <input name='telefono' type='tel' placeholder='Numero Telefónico' onChange={handleChange}/>
+          <input name='password' type='password' placeholder='Contraseña' onChange={handleChange} className='pass_input'/>
           <button className='btn_blue'  type="submit">
               Entrar
           </button>

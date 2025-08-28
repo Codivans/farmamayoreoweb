@@ -29,20 +29,18 @@ export const Header_principal = () => {
 
     const handleKeyPress = (event) => {
         if (event.key === 'Enter') {
-          event.preventDefault();
-          if (searchTerm.trim()) {
+            event.preventDefault();
+            if (searchTerm.trim()) {
             navigate(`/search/search_input/${searchTerm}`);
-          }
+            }
         }
-      };
+    };
       
     const logOut = async () => {
         await signOut(auth)
-        toast.success('Cerraste sesión, hasta pronto!!');
         setEstatus(true)
         localStorage.removeItem('UserState')
         navigate('/')
-        
     }
 
   return (
@@ -103,10 +101,10 @@ export const Header_principal = () => {
                             </div>
                         </div>
                     ) : (
-                        <button className='container_icons_perfil btn_user' onClick={() => setShowForm(!showForm)}>
+                        <Link to='/login' className='container_icons_perfil btn_user'>
                             <TiUser />
                             <span>Iniciar sesión</span>
-                        </button>
+                        </Link>
                     )
                 }
                 <button className='container_icons_perfil btn_cart' onClick={() => setShowCart(!showCart)}>

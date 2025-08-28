@@ -11,10 +11,11 @@ import { MdDelete } from "react-icons/md";
 import { auth, db } from './../firebase/firebaseConfig';
 import { doc, getDoc, updateDoc, arrayRemove, arrayUnion } from 'firebase/firestore';
 import createPedido from '../firebase/createPedido';
-import { useNavigate } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
 import { FormularioDirecciones } from '../components/FormularioDirecciones';
 import { getUnixTime } from 'date-fns';
 import { Menu_Bottom } from '../components/Menu_Bottom';
+import toast from 'react-hot-toast';
 
 export const Detalle_shop = () => {
     const [stepShop, setStepShop] = useState(0);
@@ -27,6 +28,8 @@ export const Detalle_shop = () => {
     const { productosCarrito, firstciarCarrito, deleteProductoCart, productDeliting, addProductoCart, importeCart, vaciarCarrito } = useContext(ContextoCarrito);
     const [direcciones, setDirecciones] = useState([]);
     const [direccionEditando, setDireccionEditando] = useState(null);
+    const [userData, setUserData] = useState([])
+
     const imagenDefault = (e) => e.target.src =  'https://farmacias2web.com/imagenes/predeterminada.jpg';
 
     const navigate = useNavigate();
@@ -43,8 +46,21 @@ export const Detalle_shop = () => {
         }
     };
 
+    const obtenerEstatus = async () => {
+        const user = auth.currentUser;
+        if (!user) return;
+
+        const ref = doc(db, 'usuarios', user.uid);
+        const snap = await getDoc(ref);
+        if (snap.exists()) {
+        const data = snap.data();
+        setUserData(data || []);
+        }
+    };
+
     useEffect(() => {
         obtenerDirecciones();
+        obtenerEstatus();
     }, []);
 
     let addressFullSelected = direcciones.filter((item) => item.tipoDireccion === selectAddress)
@@ -67,16 +83,22 @@ export const Detalle_shop = () => {
     const sendPedido = async (e) => {
         e.preventDefault();
 
-        try {
-            await createPedido(dataLayout);
-            setSelectAddress('');
-            setFormaPago('');
-            vaciarCarrito();
-            navigate(`/order_send/${dataLayout?.uidPedido}`)
-            
-        } catch (error) {
-            console.log(error)
+        if(userData?.status){
+            try {
+                await createPedido(dataLayout);
+                setSelectAddress('');
+                setFormaPago('');
+                vaciarCarrito();
+                navigate(`/order_send/${dataLayout?.uidPedido}`)
+                
+            } catch (error) {
+                console.log(error)
+            }
+        }else{
+            toast.error('Tu cuenta debe estar activa.')
         }
+
+        
     }
 
     const handleChange = (event) => {
@@ -156,6 +178,9 @@ export const Detalle_shop = () => {
         setDireccionEditando(null);
         obtenerDirecciones();
     };
+
+
+    console.log(direcciones)
 
 
 
@@ -362,53 +387,74 @@ export const Detalle_shop = () => {
                     
 
                     <div className='container_column_importes'>
-                        <div className='content_importe_ticket'>
-                            <div className='header_ticket'>
-                                <h5>Resumen</h5>
-                                <span>El importe de este detalle puede variar al capturar su pedido, debido a diferencias en el stock fisico en almacen.</span>
-                            </div>
-                            <div className='body_ticket'>
-                                <p><span>Subtotal</span> <span>{formatoMoneda(importeCart)}</span></p>
-                                <p><span>Costo de envio</span> <span>{formatoMoneda(50)}</span></p>
-                            </div>
-                            <div className='footer_ticket'>
-                                <h3>{formatoMoneda(importeCart)}</h3>
-                            </div>
+                        <div>
+                            {userData?.status ? (
+                                <>
+                                    <div className='content_importe_ticket'>
+                                        
+                                        <div className='header_ticket'>
+                                            <h5>Resumen</h5>
+                                            <span>El importe de este detalle puede variar al capturar su pedido, debido a diferencias en el stock fisico en almacen.</span>
+                                        </div>
+                                    
+                                        <div className='body_ticket'>
+                                            <p><span>Subtotal</span> <span>{formatoMoneda(importeCart)}</span></p>
+                                            <p><span>Costo de envio</span> <span>{formatoMoneda(50)}</span></p>
+                                        </div>
+                                        <div className='footer_ticket'>
+                                            <h3>{formatoMoneda(importeCart)}</h3>
+                                        </div>
+                                    </div>
+                                    {
+                                        stepShop === 0 && (
+                                            <button className='btn_next_step' onClick={() => setStepShop(1)}>Seguir</button>
+                                        )
+                                    }
+                                    {
+                                        stepShop === 1 && (
+                                            <div className='botonera_shop'>
+                                                <button className='btn_back_step' onClick={() => setStepShop(0)}>Atras</button>
+                                                <button className='btn_next_step' onClick={() => setStepShop(2)} disabled={stepEnvio}>Seguir</button>
+                                            </div>
+                                        )
+                                    }
+                                    {
+                                        stepShop === 2 && (
+                                            <div className='botonera_shop'>
+                                                <button className='btn_back_step' onClick={() => setStepShop(1)}>Atras</button>
+                                                <button className='btn_next_step' onClick={sendPedido} disabled={formaPago=== '' ? true : false}>Finalizar</button>
+                                            </div>
+                                        )
+                                    }
+                                
+                                </>
+                            ) :(
+                                
+                                <div>
+                                    {
+                                        userData?.constancia?.url && userData?.aviso?.url ? (
+                                            <div className='pendiente_box'>
+                                                <p>Estamos validando tu información, en cuanto terminemos te notificaremos el estatus de tu cuenta.</p>
+                                                <p>llamar solo en caso de tener más de 24 hrs de espera</p>
+                                                <p>admin: 55 1023 2343</p>
+                                            </div>
+                                        ) : (
+                                            <div className='alert_box'>
+                                                <p>Para continuar con tu compra es necesario que tu cuenta este verificada, 
+                                                    sube tu Constancia de situación fiscal y tu Aviso de funcionamiento, 
+                                                    para activar tu cuenta</p>
+                                                <Link to="/documentos">Subir mis documentos</Link>
+                                            </div>
+                                        )
+                                    }
+                                    
+                                </div>
+                            )}
                         </div>
 
-                        {
-                            stepShop === 0 && (
-                                <button className='btn_next_step' onClick={() => setStepShop(1)}>
-                                    Siguir
-                                </button>
-                            )
-                        }
-                        {
-                            stepShop === 1 && (
-                                <div className='botonera_shop'>
-                                    <button className='btn_back_step' onClick={() => setStepShop(0)}>
-                                        Atras
-                                    </button>
-                                    
-                                    <button className='btn_next_step' onClick={() => setStepShop(2)} disabled={stepEnvio}>
-                                        Seguir
-                                    </button>
-                                </div>
-                            )
-                        }
-                        {
-                            stepShop === 2 && (
-                                <div className='botonera_shop'>
-                                    <button className='btn_back_step' onClick={() => setStepShop(1)}>
-                                        Atras
-                                    </button>
 
-                                    <button className='btn_next_step' onClick={sendPedido} disabled={formaPago=== '' ? true : false}>
-                                        Finalizar
-                                    </button>
-                                </div>
-                            )
-                        }
+
+                        
 
                         {/* {
                             <pre style={{ marginTop: '1rem', background: '#f4f4f4', padding: '1rem' }}>

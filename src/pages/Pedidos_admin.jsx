@@ -3,6 +3,7 @@ import { collection, getDocs, doc, getDoc, onSnapshot  } from "firebase/firestor
 import { db } from "./../firebase/firebaseConfig"; // Asegúrate de tener tu firebase config aquí
 import logo from './../assets/farmamayoreo.svg';
 import { Link } from "react-router-dom";
+import { Header_admin } from "../components/Header_admin";
 
 export const Pedidos_admin = () => {
     const [pedidosOriginales, setPedidosOriginales] = useState([]);
@@ -129,7 +130,7 @@ export const Pedidos_admin = () => {
 
   return (
     <div className="container_pedidos_admin">
-      <div className="menu_admin">
+      {/* <div className="menu_admin">
         <div className="margin_menu_admin">
           <img src={logo} className="logo_admin" />
           <ul>
@@ -138,7 +139,8 @@ export const Pedidos_admin = () => {
             <li><Link to='/admin/pedidos'>Configuraciones</Link></li>
           </ul>
         </div>
-      </div>
+      </div> */}
+      <Header_admin />
 
         <div className="container_filtros_pedidos">
             <input

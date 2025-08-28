@@ -41,6 +41,7 @@ export const Formularios_session = () => {
     <>
         <Header_principal />
         <div className='container_form_session'>
+
             <div className='container_forms' ref={cartRef} onClick={(event) => event.stopPropagation()}>
               <div className='image_session' style={divStyle}>
                 <div style={imageStyle}></div>
@@ -54,6 +55,7 @@ export const Formularios_session = () => {
                 <Form_Register selectForm={selectForm} setSelectForm={setSelectForm} />           
               </div>
             </div>
+            
         </div>
         <Menu_Bottom />
         
