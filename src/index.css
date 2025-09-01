@@ -2513,6 +2513,66 @@ body{
     padding: 8px;
   }
 
+.toggle-switch {
+  width: 80px;
+  height: 30px;
+  border-radius: 36px;
+  display: flex;
+  align-items: center;
+  justify-content: center; /* Texto al centro */
+  cursor: pointer;
+  position: relative;
+  transition: background-color 0.3s ease;
+  font-family: sans-serif;
+  font-weight: bold;
+  color: white;
+}
+
+.toggle-switch.on {
+  background-color: #2ecc71; /* Verde ON */
+}
+
+.toggle-switch.off {
+  background-color: #e74c3c; /* Rojo OFF */
+}
+
+.toggle-label {
+  position: relative;
+  z-index: 1;       /* Texto arriba del fondo */
+  font-size: 14px;
+}
+
+.toggle-knob {
+  width: 24px;
+  height: 24px;
+  background: #fff;
+  border-radius: 50%;
+  position: absolute;
+  top: 2.5px;
+  left: 4px;
+  transition: transform 0.3s ease;
+  z-index: 2;       /* bolita arriba del texto */
+}
+
+.toggle-switch.on .toggle-knob {
+  transform: translateX(48px);
+}
+
+.toggle-switch.on .toggle-label{
+    margin-right: 25px;
+}
+
+.toggle-switch.off .toggle-knob {
+  transform: translateX(0);
+}
+
+.toggle-switch.off .toggle-label{
+    margin-left: 25px;
+}
+
+
+
+
 
 
 

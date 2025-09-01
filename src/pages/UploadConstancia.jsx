@@ -82,9 +82,6 @@ export function UploadConstancia() {
       <div className='container_perfil'>
         <Menu_perfil />
         <div className='container_panel'>
-          {
-            usuarioDocs?.constancia?.url || usuarioDocs?.aviso?.url ? 'ya estan' : 'no hay archivos'
-          }
           <p className='message_alert'>⚠️ Es necesario que proporciones tu constancia de situación fiscal y tu aviso de funcionamiento.</p>
 
           {/* 📌 Constancia */}

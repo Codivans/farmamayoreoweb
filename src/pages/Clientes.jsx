@@ -1,6 +1,6 @@
 import { useEffect, useState } from "react";
 import { Header_admin } from '../components/Header_admin'
-import { collection, getDocs, query, orderBy } from "firebase/firestore";
+import { collection, getDocs, query, orderBy, doc, updateDoc } from "firebase/firestore";
 import { db } from "../firebase/firebaseConfig"; // importa tu instancia
 import { IoIosArrowDown } from "react-icons/io";
 
@@ -42,7 +42,25 @@ export const Clientes = () => {
     fetchClientes();
   }, []);
 
-  const uriPdf = clientes.find((item) => item.id === openPdf?.uid)
+  const uriPdf = clientes.find((item) => item.id === openPdf?.uid);
+
+   // 🔹 Función para actualizar el status en Firestore
+  const toggleStatus = async (id, currentStatus) => {
+    try {
+      const userRef = doc(db, "usuarios", id);
+      await updateDoc(userRef, { status: !currentStatus });
+
+      // 🔹 Actualiza el cliente localmente
+      setClientes(prev =>
+        prev.map(cliente =>
+          cliente.id === id ? { ...cliente, status: !currentStatus } : cliente
+        )
+      );
+    } catch (error) {
+      console.error("Error al actualizar status:", error);
+    }
+  };
+
   
 
   return (
@@ -59,6 +77,7 @@ export const Clientes = () => {
                 <th>Status</th>
                 <th>Fecha Registro</th>
                 <th>Acciones</th>
+                <th>Activar/Desactivar</th>
               </tr>
             </thead>
             <tbody>
@@ -85,11 +104,22 @@ export const Clientes = () => {
                         {expanded === cliente.id ? "Ocultar " : "Ver direcciones"}
                       </button>
                     </td>
+                    <td>
+                      <div
+                        className={`toggle-switch ${cliente.status ? "on" : "off"}`}
+                        onClick={() => toggleStatus(cliente.id, cliente.status)}
+                      >
+                        <div className="toggle-knob"></div>
+                        <span className="toggle-label">
+                          {cliente.status ? "ON" : "OFF"}
+                        </span>
+                      </div>
+                    </td>
                   </tr>
 
                   {expanded === cliente.id && cliente.direcciones && (
                     <tr className="row_expanded">
-                      <td colSpan={7}>
+                      <td colSpan={8}>
                         <ul>
                           {cliente.direcciones.map((dir, i) => (
                             <li key={i}>
