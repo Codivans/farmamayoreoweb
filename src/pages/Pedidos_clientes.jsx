@@ -70,7 +70,7 @@ export const Pedidos_clientes = () => {
                         <div>
                             <div className='title_order'>
                                 <h3>Orden Id: {ped.uidPedido}</h3>
-                                <p>{formatUnixTimestamp(ped.fechaPedido)}</p>
+                                <p>{formatUnixTimestamp(ped.fecha)}</p>
                             </div>
                             <div className='footer_order_pleca'>
                                 <p>Estatus: {ped.estatus}</p>
@@ -89,12 +89,14 @@ export const Pedidos_clientes = () => {
                         <div className={`container_products_order ${activeOrder === i ? 'active_container_products_order' : ''}`}>
                             {
                                 ped.pedido?.map((p , i) => (
-                                    <div className='row_product_detalle_shop' key={p.codigo}>
-                                        <img className='img_product_detalle' loading="lazy" onError={imagenDefault} src={`https://farmacias2web.com/imagenes/${p.codigo}.jpg`}/>
-                                        <div className='detalle_data_product'>
-                                            <span className='code_product_d'>{p.codigo}</span>
-                                            <p className='name_product_d'>{p.nombre}</p>
-                                            <p className='price_product_d'>{formatoMoneda(p.precio)} x {p.pedido} pzs = <b>{formatoMoneda(p.importe)}</b></p>
+                                    <div className='row_mis_pedidos' key={p.codigo}>
+                                        <img className='img_row' loading="lazy" onError={imagenDefault} src={`https://farmacias2web.com/imagenes/${p.codigo}.jpg`}/>
+                                        <div className='detalle_row'>
+                                            <p className='code_row'>{p.codigo}</p>
+                                            <p className='name_row'>{p.nombre}</p>
+                                            <p className='price_row'>Precio: {formatoMoneda(p.precio)}</p>
+                                            <p className='cantidad_row'>Cantidad: {p.pedido}</p>
+                                            <p className='importe_row'>Importe: {formatoMoneda(p.importe)}</p>
                                         </div>
                                     </div>
                                 ))

@@ -42,7 +42,7 @@ function App() {
           <Route path='/admin/clientes' element={<Clientes />} />
 
           <Route path='/admin/alta/catalogo' element={<AltaCatalogo />} />
-          <Route path='/admin/alta/config' element={<ConfigShop />} />
+          <Route path='/admin/configuraciones' element={<ConfigShop />} />
           <Route path='/documentos' element={<UploadConstancia />}/>
         </Routes>
       </CarritoProvider>

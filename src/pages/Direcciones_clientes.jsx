@@ -70,13 +70,12 @@ export const Direcciones_clientes = () => {
                 <div className='container_formularios_direcciones'>
                     {
                         showForm != true ? (
-                        <div className={`container_rows_direcciones animate__animated  ${showForm ? 'animate__bounceOutLeft' : 'animate__bounceInLeft'}`}>
+                        <div className={`container_rows_direcciones animate__animated  ${showForm ? 'animate__fadeIn' : 'animate__fadeIn'}`}>
                             <div className='botonera_perfil'>
                                 <button className='btn_add_data' onClick={() => handleClick()}>+ Nueva dirección</button>
                             </div>
 
                             <div className='container_cards_address'>
-
                                 {
                                     direcciones.map((dir, i) => (
                                         <div className='row_direccion' key={i}>

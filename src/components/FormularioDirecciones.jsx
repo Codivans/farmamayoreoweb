@@ -120,9 +120,14 @@ export const FormularioDirecciones = ({ direccionEditar, onGuardado, showForm, s
     };
 
   return (
-    <div className={`container_form_add_direccion animate__animated  ${showForm ? 'animate__bounceInRight' : 'animate__bounceOutRight'}`}>
+    <div className={`container_form_add_direccion animate__animated  ${showForm ? 'animate__fadeIn' : 'animate__fadeIn'}`}>
         <div className='title_form'>
-            <button onClick={() => setShowForm(false)}><IoArrowBackCircleSharp /> Regresar</button>
+            <button 
+                onClick={() => setShowForm(false)}
+                className='btn_return'
+            >
+                <IoArrowBackCircleSharp /> Regresar
+            </button>
             <p>{direccionEditar ? 'Editar Dirección' : 'Nueva Dirección'}</p>
         </div>
         <form onSubmit={guardar}>

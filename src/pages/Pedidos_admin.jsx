@@ -124,10 +124,6 @@ export const Pedidos_admin = () => {
     setShowPedido(!showPedido);
   }
 
-  
-
-  console.log(datosPagina, detail)
-
   return (
     <div className="container_pedidos_admin">
       {/* <div className="menu_admin">

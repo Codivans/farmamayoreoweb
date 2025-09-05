@@ -1,5 +1,6 @@
 import React, { useEffect, useState } from 'react';
 // import { toast } from 'react-toastify';
+import { getUnixTime } from 'date-fns';
 // import 'react-toastify/dist/ReactToastify.css';
 // import toast, { Toaster } from 'react-hot-toast';
 
@@ -8,28 +9,50 @@ const ContextoCarrito = React.createContext();
 
 const CarritoProvider = ({children}) =>{
     const [productosCarrito, setProductosCarrito] = useState([]);
+    const [fechaCreacion, setFechaCreacion] = useState(null);
     const [click, setClick] = useState(false);
     const [productDeliting, setProductDeliting] = useState('')
     
-  useEffect(() => {
-    let data = localStorage.getItem('CarritoCedifa');
-    // setProductosCarrito(JSON.parse(data));
-    if(data != null){
-      setProductosCarrito(JSON.parse(data));
-    }else{
-      setProductosCarrito([]);
-    }
-  },[click])
+    useEffect(() => {
+      let data = localStorage.getItem('CarritoCedifa');
+      if(data){
+        const parsed = JSON.parse(data);
+        setProductosCarrito(parsed.productos || []);
+        setFechaCreacion(parsed.fecha_creacion || null);
+      }
+    },[])
+      // Cada vez que cambia el carrito, guardar en localStorage
+    useEffect(() => {
+      if(productosCarrito.length > 0){
+        localStorage.setItem('CarritoCedifa', JSON.stringify({
+          fecha_creacion: fechaCreacion ?? getUnixTime(new Date()), // si no existe, crearla
+          productos: productosCarrito
+        }));
+        if(!fechaCreacion) setFechaCreacion(getUnixTime(new Date()));
+      }else{
+        localStorage.removeItem('CarritoCedifa');
+        setFechaCreacion(null);
+      }
+    }, [productosCarrito]);
+
+
 
     //Agregar producto al carrito
     const addProductoCart = ({codigo, nombre, pedido, precio, cantidad}) => {      
         if(!productosCarrito.find(product => product.codigo === codigo)){
-            setProductosCarrito([...productosCarrito, {codigo: codigo, nombre: nombre, pedido: pedido, precio, importe: precio * pedido}]);
+            setProductosCarrito([
+              ...productosCarrito,
+               {codigo: codigo, nombre: nombre, pedido: pedido, precio, importe: precio * pedido}
+            ]);
             localStorage.setItem('CarritoCedifa', JSON.stringify([...productosCarrito, {codigo: codigo, nombre: nombre, pedido: pedido, precio, importe: precio * pedido}]))
-            setClick(!click)
+            
             // toast.success('Se agrego productos al carrito');
         }else{
-            setProductosCarrito(productosCarrito.map(p => (p.codigo === codigo ? {...p, pedido: parseInt(p.pedido) + parseInt(pedido), importe : p.precio * (p.pedido + pedido) } : p)))
+            setProductosCarrito(productosCarrito.map(p => 
+              (p.codigo === codigo 
+                ? {...p, pedido: parseInt(p.pedido) + parseInt(pedido), importe : p.precio * (p.pedido + pedido) } 
+                : p
+              )))
             // toast.success(`Se agrego ${pedido} ${pedido > 1 ? 'piezas' : 'pieza'} más`);
         }
     }

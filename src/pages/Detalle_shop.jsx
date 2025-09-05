@@ -25,7 +25,7 @@ export const Detalle_shop = () => {
     const [formaPago, setFormaPago] = useState('transferencia');
     const [showForm, setShowForm] = useState(false);
     const [stepEnvio, setStepEnvio] = useState(true);
-    const { productosCarrito, firstciarCarrito, deleteProductoCart, productDeliting, addProductoCart, importeCart, vaciarCarrito } = useContext(ContextoCarrito);
+    const { productosCarrito, removeProductCart, deleteProductoCart, productDeliting, addProductoCart, importeCart, vaciarCarrito } = useContext(ContextoCarrito);
     const [direcciones, setDirecciones] = useState([]);
     const [direccionEditando, setDireccionEditando] = useState(null);
     const [userData, setUserData] = useState([])
@@ -221,7 +221,7 @@ export const Detalle_shop = () => {
                                                     <div  className='column_detalle_cart column_prices'>
                                                         <div className='container_controller_detalle_shop'>
                                                             <div className='container_btn_controllers'>
-                                                                <button onClick={() => removeProductCart({codigo: parseInt(item.codigo), disminuir: 1, agregados: productoAgregado.pedido})}>-</button>
+                                                                <button onClick={() => removeProductCart({codigo: parseInt(item.codigo), disminuir: 1, agregados: item.pedido})}>-</button>
                                                                 <input
                                                                 type='text'
                                                                 data-codigo={item.codigo}
@@ -278,6 +278,7 @@ export const Detalle_shop = () => {
                                                     </>
                                                 ) : (
                                                     <div className='container_cards_address'>
+                                                      
                                                         {
                                                             direcciones?.length > 0 ?
                                                             (
@@ -285,8 +286,16 @@ export const Detalle_shop = () => {
                                                                 {
                                                                     direcciones?.map((dir, i) => (
                                                                         <div key={i} className={`item_address ${selectAddress === dir.tipoDireccion ? 'actived_address': ''}`}>
-                                                                            <input type='radio' name={dir.tipoDireccion} value='' checked={dir.tipoDireccion === selectAddress} onChange={() => setSelectAddress(dir.tipoDireccion)} id={dir.tipoDireccion}  />
-                                                                            <label htmlFor={dir.tipoDireccion} >{dir.tipoDireccion}</label>
+                                                                            <input 
+                                                                                type='radio' 
+                                                                                name={dir.tipoDireccion} 
+                                                                                checked={dir.tipoDireccion === selectAddress} 
+                                                                                onChange={() => setSelectAddress(dir.tipoDireccion)} 
+                                                                                id={dir.tipoDireccion}  
+                                                                            />
+
+                                                                            <label htmlFor={dir.tipoDireccion} style={{textTransform: 'Capitalize'}}>{dir.tipoDireccion}</label>
+
                                                                             <p>Calle:{dir.calle} Num. Ext:{dir.numeroExt}, Num. Int:{dir.numeroInt}, Colonia o Alcaldia:{dir.colonia}</p>
                                                                             <p>Municipio o Localidad:{dir.municipio}, CP:{dir.cp}, Referencias:{dir.referencias}</p>
                                                                         </div>
@@ -371,7 +380,7 @@ export const Detalle_shop = () => {
                                                 {
                                                     formaPago === 'tarjeta' ? (
                                                         <div>
-                                                            terminal
+                                                            <p>Te llevaremos la terminal para tu pago con tarjeta.</p>
                                                         </div>
                                                     ) : ('')
                                                 }

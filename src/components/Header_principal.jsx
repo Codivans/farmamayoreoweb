@@ -7,7 +7,7 @@ import iconlogo from './../assets/icon_logo.png';
 import { IoSearch } from "react-icons/io5";
 import { IoMdCart } from "react-icons/io";
 import { TiUser } from "react-icons/ti";
-
+import { PlecaAnuncios } from './PlecaAnuncios';
 import { Flag_Header } from './Flag_Header';
 import { Formulario_session } from './Formulario_session';
 import { useAuth } from '../context/AuthContext';
@@ -45,7 +45,8 @@ export const Header_principal = () => {
 
   return (
     <div id='header_page'>
-        <Flag_Header />
+        {/* <Flag_Header /> */}
+        <PlecaAnuncios />
         <div id="header_top">
             <div className='container_brand_menu'>
                 <div id='container_logo'>
