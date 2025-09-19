@@ -2,7 +2,8 @@ import React from 'react';
 import { Routes, Route } from "react-router-dom";
 import { Home, Search, AltaCatalogo, Formularios_session, Perfil_Cliente, Direcciones_clientes, Shop, ConfigShop, Detalle_shop, 
   UploadConstancia, UploadFile, Order_send, Pedidos_clientes, Pedidos_admin, 
-  Clientes} from './pages/index';
+  Clientes,
+  AltaProductosTop} from './pages/index';
 import './App.css';
 import 'animate.css';
 import { CarritoProvider } from './context/cartContext';
@@ -31,7 +32,7 @@ function App() {
 
           <Route element={<ProtectedRoute />}>
             <Route path='/search/:modulo/:searchTerm/' element={<Search />}/>
-            <Route path='/shop/:nameShop' element={<Shop />}/>
+            <Route path='/shop/:nameShop/shopid/:shopid' element={<Shop />}/>
             <Route path='/detalle_shop' element={<Detalle_shop/>}/>
             <Route path='/order_send/:orden' element={<Order_send/>}/>
 
@@ -42,6 +43,7 @@ function App() {
           <Route path='/admin/clientes' element={<Clientes />} />
 
           <Route path='/admin/alta/catalogo' element={<AltaCatalogo />} />
+          <Route path='/admin/alta/catalogotop' element={<AltaProductosTop />} />
           <Route path='/admin/configuraciones' element={<ConfigShop />} />
           <Route path='/documentos' element={<UploadConstancia />}/>
         </Routes>

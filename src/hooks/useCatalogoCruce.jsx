@@ -2,7 +2,7 @@ import { useEffect, useState } from "react";
 import { doc, getDoc } from "firebase/firestore";
 import { db } from "./../firebase/firebaseConfig";
 
-export const useCatalogoCruce = (rutaDocumentoPequeno) => {
+export const useCatalogoCruce = (shopId) => {
   const [productos, setProductos] = useState([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
@@ -10,7 +10,11 @@ export const useCatalogoCruce = (rutaDocumentoPequeno) => {
   useEffect(() => {
     const obtenerCruceCatalogo = async () => {
       try {
-        const refPequeno = doc(db, "shops", ...rutaDocumentoPequeno.split("/"));
+        if (!shopId) return;
+
+        // 🔹 Documento de la tienda
+        const refPequeno = doc(db, "shops", shopId);
+        // 🔹 Documento del catálogo general
         const refCompleto = doc(db, "catalogo", "farmaMayoreo");
 
         const [snapPequeno, snapCompleto] = await Promise.all([
@@ -19,8 +23,8 @@ export const useCatalogoCruce = (rutaDocumentoPequeno) => {
         ]);
 
         if (snapPequeno.exists() && snapCompleto.exists()) {
-          const arrayPequeno = snapPequeno.data().catalogo;
-          const arrayCompleto = snapCompleto.data().catalogo;
+          const arrayPequeno = snapPequeno.data().catalogo || [];
+          const arrayCompleto = snapCompleto.data().catalogo || [];
 
           const mapaCompleto = new Map(
             arrayCompleto.map((prod) => [prod.codigo, prod])
@@ -32,13 +36,14 @@ export const useCatalogoCruce = (rutaDocumentoPequeno) => {
               if (encontrado) {
                 return {
                   ...encontrado,
-                  marca: item.marca, // añadimos la marca del array pequeño
-                  store: item.store, // añadimos la marca del array pequeño
+                  marca: item.marca, // atributos extra del pequeño
+                  productosTop: item.productosTop,
+                  productosCarrusel: item.productosCarrusel,
                 };
               }
               return null;
             })
-            .filter((item) => item !== null);
+            .filter(Boolean);
 
           setProductos(resultado);
         } else {
@@ -53,7 +58,7 @@ export const useCatalogoCruce = (rutaDocumentoPequeno) => {
     };
 
     obtenerCruceCatalogo();
-  }, [rutaDocumentoPequeno]);
+  }, [shopId]);
 
   return { productos, loading, error };
 };

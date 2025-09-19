@@ -10,14 +10,8 @@ import 'swiper/css/pagination';
 import { FreeMode, Pagination, Autoplay, Navigation } from 'swiper/modules';
 import { Card_product } from './Card_product';
 
-const portadas = {
-    nivea: portada_nivea,
-    electrolit: portada_electrolit,
-};
 
-export const Carrusel_store_shop = ({productos, nameShop}) => {
-
-    const portadasSrc = portadas[nameShop];
+export const Carrusel_store_shop = ({productos, img}) => {
 
      // Define el estado para almacenar el tamaño de la ventana
      const [windowSize, setWindowSize] = useState({
@@ -43,7 +37,10 @@ export const Carrusel_store_shop = ({productos, nameShop}) => {
         };
     }, []); // El array vacío asegura que se ejecute solo una vez al montar
 
-    let widthContainer = windowSize.width * 1
+   let widthContainerPrimary = windowSize.width * 1
+    let widthContainer =  windowSize.width <= 490 ? windowSize.width : widthContainerPrimary - 390
+    let widthCardAuto = (widthContainer / 5) - 10
+    let countCards = Math.floor(widthContainer / widthCardAuto)
 
     let totalCardsWidth = 235;
     if(widthContainer <= 480 ){
@@ -54,16 +51,13 @@ export const Carrusel_store_shop = ({productos, nameShop}) => {
     if(widthContainer <= 440){
       margenCard = ((widthContainer/2) - ((widthContainer / 2)-10))/2
     }
-
-    let productosStore = productos.filter((item) => item.store === 'store')
-
-
     
   return (
     <div className='container_products_column container_swiper_responsive'>
         <div className='img_portada'>
-            <img src={portadasSrc} />
+            <img src={img} />
         </div>
+        
         <div className='container_carousel_column'>
             <Swiper
                 slidesPerView={Math.floor(widthContainer / totalCardsWidth)}
@@ -81,7 +75,7 @@ export const Carrusel_store_shop = ({productos, nameShop}) => {
                 style={{marginTop: '20px !important'}}
             >
                 {
-                    productosStore.map((item) => <SwiperSlide style={{width : totalCardsWidth}}  key={item.CODIGO}>
+                    productos.map((item) => <SwiperSlide style={{width : totalCardsWidth}}  key={item.CODIGO}>
                                                 <Card_product item={item}/>
                                             </SwiperSlide>)
                 }

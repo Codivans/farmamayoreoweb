@@ -2,8 +2,6 @@ import React, { useEffect, useRef, useState } from "react";
 import "./../BannerSlider.css";
 
 export const Banner_principal = () => {
-    const [index, setIndex] = useState(0);
-    const timeoutRef = useRef(null);
 
     const images = [
       "https://assets1.farmaciasanpablo.com.mx/banners/slider/SliderPrincipal-Haleon-01_07-Jun-d-v2.jpg",
@@ -11,39 +9,40 @@ export const Banner_principal = () => {
       "https://assets1.farmaciasanpablo.com.mx/landings/institucionales/_natural/img/alNatural/Slider-SPN-01-07jun-d-v2.jpg"
     ];
 
-      const nextImage = () => {
-    setIndex((prev) => (prev + 1) % images.length);
-  };
+    const [currentIndex, setCurrentIndex] = useState(0);
 
-  const prevImage = () => {
-    setIndex((prev) => (prev - 1 + images.length) % images.length);
-  };
+    useEffect(() => {
+      if (!images || images.length === 0) return;
 
-  const resetTimer = () => {
-    clearTimeout(timeoutRef.current);
-    timeoutRef.current = setTimeout(nextImage, 3000);
-  };
+      const interval = setInterval(() => {
+        setCurrentIndex((prev) => (prev + 1) % images.length);
+      }, 3000); // ⏳ cambia cada 3 segundos
 
-  useEffect(() => {
-    resetTimer();
-    return () => clearTimeout(timeoutRef.current);
-  }, [index]);
+      return () => clearInterval(interval);
+    }, [images]);
 
-  return (
-     <div className="slider-container">
-      <div className="slider-wrapper" style={{ transform: `translateX(-${index * 100}%)` }}>
-        {images.map((img, i) => (
-          <img key={i} src={img} alt={`Slide ${i}`} className="slider-image" />
+    if (!images || images.length === 0) return null;
+
+    return (
+      <div className="slider-container slider_principal">
+      {images.map((img, index) => (
+        <img
+          key={index}
+          src={img}
+          alt={`banner-${index}`}
+          className={index === currentIndex ? "active" : ""}
+        />
+      ))}
+
+      <div className="slider-indicators">
+        {images.map((_, index) => (
+          <span
+            key={index}
+            className={index === currentIndex ? "active" : ""}
+            onClick={() => setCurrentIndex(index)}
+          ></span>
         ))}
       </div>
-
-      {/* Botones de navegación */}
-      <button className="slider-button left" onClick={() => { prevImage(); resetTimer(); }}>
-        ❮
-      </button>
-      <button className="slider-button right" onClick={() => { nextImage(); resetTimer(); }}>
-        ❯
-      </button>
     </div>
-  )
+    )
 }

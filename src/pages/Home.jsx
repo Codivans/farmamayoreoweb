@@ -22,15 +22,22 @@ export function Home() {
       {/* ==============   banner   ==============*/}
         <Banner_principal />
       {/* ==============   Grid Offer   ==============*/}
-        <Carousel_products_top />
+       
 
-        {
-          shopNames.map((item) => (
-            <Portada_shop_grid nameShop={item}/>
-          ))
-        }    
+      {
+        shopNames.map((shop, index) => (
+          <React.Fragment key={shop.id}>
+            {/* Siempre mostrar tienda */}
+            <Portada_shop_grid nameShop={shop.name} img={shop.images?.bannerFront} shopId={shop.id}/>
 
-        <Carousel_store />
+            {/* Insertar elementos fijos en posiciones específicas */}
+            {index === 0 &&  <Carousel_products_top />}
+            {index === 1 && <Carousel_store />}
+          </React.Fragment>
+        ))
+      }
+
+        
         <Menu_Bottom />
     </>
   )

@@ -17,53 +17,51 @@ const plecas = {
     electrolit: pleca_electrolit,
 };
 
-export const Portada_shop_grid = ({nameShop}) => {
-    const { productos, loading, error } = useCatalogoCruce(nameShop);
+export const Portada_shop_grid = ({nameShop, img, shopId}) => {
+    const { productos, loading, error } = useCatalogoCruce(shopId);
 
-    const plecaSrc = plecas[nameShop];
+    // Define el estado para almacenar el tamaño de la ventana
+    const [windowSize, setWindowSize] = useState({
+        width: window.innerWidth,
+        height: window.innerHeight
+    });
 
-        // Define el estado para almacenar el tamaño de la ventana
-        const [windowSize, setWindowSize] = useState({
-            width: window.innerWidth,
-            height: window.innerHeight
+    // Define una función que se ejecuta cuando se redimensiona la ventana
+    const handleResize = () => {
+        setWindowSize({
+        width: window.innerWidth,
+        height: window.innerHeight
         });
-    
-        // Define una función que se ejecuta cuando se redimensiona la ventana
-        const handleResize = () => {
-            setWindowSize({
-            width: window.innerWidth,
-            height: window.innerHeight
-            });
-        };
-    
-        useEffect(() => {
-            // Agrega un event listener para manejar el cambio de tamaño de la ventana
-            window.addEventListener('resize', handleResize);
-    
-            // Limpia el event listener al desmontar el componente
-            return () => {
-            window.removeEventListener('resize', handleResize);
-            };
-        }, []); // El array vacío asegura que se ejecute solo una vez al montar
-    
-        let widthContainer = windowSize.width * .90
-        let widthCardAuto = (widthContainer / 5) - 10
+    };
 
-        let totalCardsWidth = 235;
-        if(widthContainer <= 480 ){
+    useEffect(() => {
+        // Agrega un event listener para manejar el cambio de tamaño de la ventana
+        window.addEventListener('resize', handleResize);
+
+        // Limpia el event listener al desmontar el componente
+        return () => {
+        window.removeEventListener('resize', handleResize);
+        };
+    }, []); // El array vacío asegura que se ejecute solo una vez al montar
+
+    let widthContainer = windowSize.width * .90
+    let widthCardAuto = (widthContainer / 5) - 10
+
+    let totalCardsWidth = 235;
+    if(widthContainer <= 480 ){
         totalCardsWidth = (widthContainer / 2)-10
-        }
-        let margenCard = 10;
-        
-        if(widthContainer <= 440){
+    }
+    let margenCard = 10;
+    
+    if(widthContainer <= 440){
         margenCard = ((widthContainer/2) - ((widthContainer / 2)-10))/2
-        }
+    }
 
 
   return (
     <div className='container_products_category container_swiper_responsive'>
-        <Link className='img_category' to={`/shop/${nameShop}`}>
-            <img src={plecaSrc} />
+        <Link className='img_category' to={`/shop/${nameShop}/shopid/${shopId}`}>
+            <img src={img} />
         </Link>
         <div className='container_carousel_category'>
             <Swiper
@@ -81,7 +79,7 @@ export const Portada_shop_grid = ({nameShop}) => {
                 className="mySwiper carrusel_shop"
             >
                 {
-                    productos.map((item) => <SwiperSlide style={{ width: `${widthCardAuto}px !important` }} key={item.CODIGO}>
+                    productos.map((item, index) => <SwiperSlide style={{ width: `${widthCardAuto}px !important` }} key={index} >
                                                 <Card_product widthCard={widthCardAuto} item={item} />
                                             </SwiperSlide>)
                 }

@@ -2,7 +2,7 @@ import React, { useContext } from 'react'
 import { ContextoCarrito } from './../context/cartContext';
 import formatoMoneda from './../functions/formatoMoneda';
 import { VscAdd, VscChromeMinimize  } from "react-icons/vsc";
-import { IoDocumentTextOutline } from "react-icons/io5";
+import { IoDocumentText } from "react-icons/io5";
 import { Link } from 'react-router-dom';
 
 export const Card_product = ({item}) => {
@@ -68,7 +68,7 @@ export const Card_product = ({item}) => {
     <div className='card_product'>
         <p className='item_grupo'>
           {
-            item.grupo === 'GRUPO IV (ANTIBIOTICO)' && <span><IoDocumentTextOutline /> Producto Antibiótico</span>
+            item.grupo === 'GRUPO IV (ANTIBIOTICO)' && <span className='item_antibiotico'><IoDocumentText /> Producto Antibiótico</span>
           }  
         </p>
         <div className='card_header'>
@@ -86,7 +86,9 @@ export const Card_product = ({item}) => {
             </p>
           </div>
         </div>
-        <div className='card_footer'>
+        <>
+        
+       
           {
             productoAgregado 
             ? <div className='container_btn_controllers'>
@@ -104,13 +106,17 @@ export const Card_product = ({item}) => {
                 />
                 <button onClick={() => addProductoCart({codigo: parseInt(item.codigo), nombre: item.nombre, pedido: 1, precio: item.oferta > 0 ? item.oferta : item.precio, existencia: item.existencia})}>+</button>
               </div>
-            : <button onClick={() => addProductoCart({codigo: parseInt(item.codigo), nombre: item.nombre, pedido: 1, precio: item.oferta > 0 ? item.oferta : item.precio, existencia: item.existencia})}>
-                Agregar
-              </button>
+            : (
+              <div className='card_footer'>
+                <button onClick={() => addProductoCart({codigo: parseInt(item.codigo), nombre: item.nombre, pedido: 1, precio: item.oferta > 0 ? item.oferta : item.precio, existencia: item.existencia})}>
+                  Agregar
+                </button>
+              </div>
+            )
             
             }
-          
-        </div>
+         </>
+
     </div>
   )
 }

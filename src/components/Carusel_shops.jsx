@@ -51,6 +51,8 @@ export const Carusel_shops = ({productos}) => {
       margenCard = ((widthContainer/2) - ((widthContainer / 2)-10))/2
     }
 
+    
+
   return (
     <div className='container_products_top container_swiper_responsive'>
         <Swiper

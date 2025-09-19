@@ -8,6 +8,10 @@
     margin: 10px auto;
 }
 
+.slider_principal{
+    width: 90% !important;
+}
+
 .slider-wrapper {
     display: flex;
     transition: transform 0.8s ease-in-out;

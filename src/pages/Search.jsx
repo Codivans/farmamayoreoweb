@@ -1,104 +1,208 @@
-import React , { useState, useEffect, CSSProperties  }from 'react'
+import React, { useState, useEffect } from 'react'
 import { useParams } from 'react-router-dom';
 import { Header_principal } from '../components/Header_principal'
-import { Flag_Header } from '../components/Flag_Header'
 import { Card_product } from '../components/Card_product'
 import Pagination from './../components/Pagination';
 import searchCatalog from '../hooks/searchCatalog';
-
 import ClipLoader from "react-spinners/ClipLoader";
 
 export const Search = () => {
     const [results, setResults] = useState([]);
+    const [filteredResults, setFilteredResults] = useState([]);
+    const [selectedDeps, setSelectedDeps] = useState([]); 
+    const [selectedLabs, setSelectedLabs] = useState([]); 
+    const [selectedGroups, setSelectedGroups] = useState([]); 
+
     const { modulo, searchTerm } = useParams();
     const [loading, setLoading] = useState(false);
-    console.log('Modulo: ', modulo, searchTerm)
 
-
- 
     useEffect(() => {
         const fetchResults = async () => {
             setLoading(true);
             try {
-                const searchResults = await searchCatalog({modulo,searchTerm});
+                const searchResults = await searchCatalog({ modulo, searchTerm });
                 setResults(searchResults);
-                setCurrentPage(1)  
+                setFilteredResults(searchResults);
+                setCurrentPage(1);
             } catch (error) {
                 console.error('Error al buscar el producto', error);
                 setResults([]);
-            }finally{
-                setLoading(false)
+                setFilteredResults([]);
+            } finally {
+                setLoading(false);
             }
-            
         };
-
         fetchResults();
     }, [searchTerm]);
-    
 
     const productsPerPage = 100;
     const [currentPage, setCurrentPage] = useState(1);
     const widthCardAuto = 250;
 
-      // Calcula el índice de los productos actuales
+    // 1️⃣ Filtrar por departamento primero
+    const resultsByDep = selectedDeps.length > 0
+        ? results.filter(item => selectedDeps.includes(item.departamento))
+        : results;
+
+    // 2️⃣ A partir de los departamentos seleccionados, sacar labs y grupos disponibles
+    const deps = [...new Set(results?.map(x => x.departamento))].sort((a, b) =>
+        a.localeCompare(b, 'es', { sensitivity: 'base' })
+    );
+
+    const labs = [...new Set(resultsByDep.map(x => x.laboratorio))].sort((a, b) =>
+        a.localeCompare(b, 'es', { sensitivity: 'base' })
+    );
+
+    const groups = [...new Set(resultsByDep.map(x => x.grupo))].sort((a, b) =>
+        a.localeCompare(b, 'es', { sensitivity: 'base' })
+    );
+
+
+    // 3️⃣ Filtrar por laboratorios y grupos seleccionados (dentro de resultsByDep)
+    useEffect(() => {
+        let filtered = resultsByDep;
+
+        if (selectedLabs.length > 0) {
+            filtered = filtered.filter(item => selectedLabs.includes(item.laboratorio));
+        }
+        if (selectedGroups.length > 0) {
+            filtered = filtered.filter(item => selectedGroups.includes(item.grupo));
+        }
+
+        setFilteredResults(filtered);
+        setCurrentPage(1);
+    }, [selectedDeps, selectedLabs, selectedGroups, results]);
+
+    // Paginación
     const indexOfLastProduct = currentPage * productsPerPage;
     const indexOfFirstProduct = indexOfLastProduct - productsPerPage;
-    const currentProducts = results.slice(indexOfFirstProduct, indexOfLastProduct);
+    const currentProducts = filteredResults.slice(indexOfFirstProduct, indexOfLastProduct);
 
-    // Cambia la página
     const handlePageChange = (pageNumber) => {
         setCurrentPage(pageNumber);
-        window.scrollTo({
-            top: 0,
-            left: 0,
-            behavior: "smooth"
-          });
+        window.scrollTo({ top: 0, left: 0, behavior: "smooth" });
     };
 
-  return (
-    <>
-        <Header_principal />
+    // Manejar check/uncheck genérico
+    const toggleSelection = (value, selectedArray, setSelectedArray) => {
+        if (selectedArray.includes(value)) {
+            setSelectedArray(selectedArray.filter(v => v !== value));
+        } else {
+            setSelectedArray([...selectedArray, value]);
+        }
+    };
 
-        <div className='container_result_search'>
-            <h4>Se encontraron <span>({results.length})</span> resultados con. <br /><span>"{searchTerm}"</span></h4>
+    // Limpiar filtros
+    const clearFilters = () => {
+        setSelectedDeps([]);
+        setSelectedLabs([]);
+        setSelectedGroups([]);
+    };
 
-            {
-                loading ? (
-                    <div className='container_searching_products'>
-                        <div className='content_spinner'>
-                            <ClipLoader
-                                color='#66e6f1'
-                                loading={loading}
-                                // cssOverride={override}
-                                size={50}
-                                aria-label="Loading Spinner"
-                                data-testid="loader"
-                            /> <br  />
-                            <span>Buscando...</span>
+    return (
+        <>
+            <Header_principal />
+
+            <div className='container_result_search'>
+                <div className='filtro_research'>
+                    <div className='cabeceras_filtros'>
+                        <h4>Filtros</h4>
+                        <button onClick={clearFilters}>Limpiar filtros</button>
+                    </div>
+
+                    {/* 🔹 Filtro padre: Departamentos */}
+                    <h5>Departamentos {`(${deps.length})`}</h5>
+                    <div className='content_data_filters'>
+                        <ul>
+                            {deps.map((dep, index) => (
+                                <li key={index}>
+                                    <label>
+                                        <input
+                                            type="checkbox"
+                                            checked={selectedDeps.includes(dep)}
+                                            onChange={() => toggleSelection(dep, selectedDeps, setSelectedDeps)}
+                                        />
+                                        {dep}
+                                    </label>
+                                </li>
+                            ))}
+                        </ul>
+                    </div>
+
+                    {/* 🔹 Filtro dependiente: Laboratorios */}
+                    <h5>Laboratorios {`(${labs.length})`}</h5>
+                    <div className='content_data_filters'>
+                        <ul>
+                            {labs.map((lab, index) => (
+                                <li key={index}>
+                                    <label>
+                                        <input
+                                            type="checkbox"
+                                            checked={selectedLabs.includes(lab)}
+                                            onChange={() => toggleSelection(lab, selectedLabs, setSelectedLabs)}
+                                        />
+                                        {lab}
+                                    </label>
+                                </li>
+                            ))}
+                        </ul>
+                    </div>
+
+                    {/* 🔹 Filtro dependiente: Grupos */}
+                    <h5>Grupos {`(${groups.length})`}</h5>
+                    <div className='content_data_filters'>
+                        <ul>
+                            {groups.map((group, index) => (
+                                <li key={index}>
+                                    <label>
+                                        <input
+                                            type="checkbox"
+                                            checked={selectedGroups.includes(group)}
+                                            onChange={() => toggleSelection(group, selectedGroups, setSelectedGroups)}
+                                        />
+                                        {group}
+                                    </label>
+                                </li>
+                            ))}
+                        </ul>
+                    </div>
+                </div>
+
+                {/* Productos */}
+                <div className='container_cards_results'>
+                    {loading ? (
+                        <div className='container_searching_products'>
+                            <div className='content_spinner'>
+                                <ClipLoader
+                                    color='#66e6f1'
+                                    loading={loading}
+                                    size={50}
+                                    aria-label="Loading Spinner"
+                                    data-testid="loader"
+                                /> <br />
+                                <span>Buscando...</span>
+                            </div>
                         </div>
-                    </div>
+                    ) : (
+                        <>
+                            
+                            <div className='container_result_products'>
+                                {currentProducts.map((item, i) => (
+                                    <Card_product widthCardAuto={widthCardAuto} item={item} key={i} />
+                                ))}
+                            </div>
+                        </>
+                    )}
 
-                ):(
-                    <div className='container_result_products'>
-                        {
-                            currentProducts.map((item, i) => <Card_product widthCardAuto={widthCardAuto} item={item} key={i}/>) 
-                        }
-                    </div>
-                )
-            }
-
-            {
-                currentProducts.length > 0 ? (
-                    <Pagination
-                        currentPage={currentPage}
-                        totalPages={Math.ceil(results.length / productsPerPage)}
-                        onPageChange={handlePageChange}
-                    />
-                ) : ('')
-            }
-
-            
-        </div>
-    </>
-  )
+                    {currentProducts.length > 0 && (
+                        <Pagination
+                            currentPage={currentPage}
+                            totalPages={Math.ceil(filteredResults.length / productsPerPage)}
+                            onPageChange={handlePageChange}
+                        />
+                    )}
+                </div>
+            </div>
+        </>
+    )
 }
