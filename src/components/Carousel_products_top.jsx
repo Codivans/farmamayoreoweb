@@ -98,8 +98,9 @@ export const Carousel_products_top = () => {
   
 
   return (
-    <div className='container_products_top container_swiper_responsive'>
-        <h4 className='title_carrusel'>Productos Top</h4>
+    <div className='container_slide_width'>
+      <div className='container_products_top container_swiper_responsive'>
+        <h4 className='title_carrusel'>Productos + vendidos</h4>
         <Swiper
             slidesPerView={Math.floor(widthContainer / totalCardsWidth)}
             spaceBetween={margenCard}
@@ -120,7 +121,7 @@ export const Carousel_products_top = () => {
                                     </SwiperSlide>)
         }
         </Swiper>
-
+      </div>
     </div>
   )
 }

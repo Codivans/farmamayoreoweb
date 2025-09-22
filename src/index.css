@@ -947,7 +947,11 @@ body{
 }
 
 
-
+.container_slide_width{
+    background: #033E7E;
+    background: linear-gradient(0deg, rgba(3, 62, 126, 1) 0%, rgba(20, 116, 219, 1) 100%);
+    padding-top: 20px;
+}
 
 .container_products_top{
     margin: 20px auto;
@@ -964,9 +968,11 @@ body{
 }
 
 .title_carrusel{
-    color: #404040;
-    font-size: 16px;
-    font-weight: 500;
+    color: white;
+    font-size: 32px;
+    line-height: 20px;
+    text-align: center;
+    font-weight: 900;
     text-indent: 10px;
 }
 
