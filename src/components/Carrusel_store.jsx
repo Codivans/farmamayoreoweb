@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { Swiper, SwiperSlide } from 'swiper/react';
-import productos from './../data/products_carrousel';
-import imgPortada from './../assets/portada.jpg';
+import { useGetProductos } from "../hooks/useGetProductos";
+import img from '../assets/portada.jpg'
 
 // Import Swiper styles
 import 'swiper/css';
@@ -10,7 +10,11 @@ import 'swiper/css/pagination';
 import { FreeMode, Pagination, Autoplay, Navigation } from 'swiper/modules';
 import { Card_product } from './Card_product';
 
-export const Carousel_store = () => {
+
+export const Carrusel_store = ({departamento}) => {
+    
+    const { productos, loading, error } = useGetProductos(departamento);
+    
 
      // Define el estado para almacenar el tamaño de la ventana
      const [windowSize, setWindowSize] = useState({
@@ -54,8 +58,9 @@ export const Carousel_store = () => {
   return (
     <div className='container_products_column container_swiper_responsive'>
         <div className='img_portada'>
-            <img src={imgPortada} />
+            <img src={img} />
         </div>
+        
         <div className='container_carousel_column'>
             <Swiper
                 slidesPerView={Math.floor(widthContainer / totalCardsWidth)}
@@ -63,18 +68,18 @@ export const Carousel_store = () => {
                 freeMode={true}
                 autoplay={{
                 delay: 2500,
-                disableOnInteraction: false,
+                        disableOnInteraction: false,
                 }}
                 pagination={{
-                clickable: true,
+                    clickable: true,
                 }}
                 modules={[Autoplay, FreeMode, Navigation]}
                 className="mySwiper"
                 style={{marginTop: '20px !important'}}
             >
                 {
-                    productos.map((item) => <SwiperSlide style={{ width: `${widthCardAuto}px !important` }}  key={item.CODIGO}>
-                                                <Card_product widthCard={widthCardAuto} item={item}/>
+                    productos?.map((item, index) => <SwiperSlide style={{width : totalCardsWidth}}  key={index}>
+                                                <Card_product item={item}/>
                                             </SwiperSlide>)
                 }
             </Swiper>

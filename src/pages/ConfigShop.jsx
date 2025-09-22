@@ -52,9 +52,12 @@ export const ConfigShop = () => {
 
       if (tipo === "banner_back") {
         const fileArray = Array.from(files);
-        setBannerBackFiles(fileArray);
-        setImgBannerBacks(fileArray.map(file => URL.createObjectURL(file))); // Previews múltiples
+
+        // acumulamos lo que ya existía + lo nuevo
+        setBannerBackFiles((prev) => [...prev, ...fileArray]);
+        setImgBannerBacks((prev) => [...prev, ...fileArray.map(file => URL.createObjectURL(file))]);
       }
+
 
       if (tipo === "banner_carrusel") {
         setBannerCarrusel(files[0]);
@@ -116,6 +119,8 @@ export const ConfigShop = () => {
       alert("❌ Error al guardar tienda");
     }
   };
+
+  console.log(bannerBackFiles)
 
   return (
     <div className="container_pedidos_admin">

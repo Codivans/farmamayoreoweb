@@ -4,9 +4,8 @@ import "./../BannerSlider.css";
 export const Banner_principal = () => {
 
     const images = [
-      "https://assets1.farmaciasanpablo.com.mx/banners/slider/SliderPrincipal-Haleon-01_07-Jun-d-v2.jpg",
-      "https://assets1.farmaciasanpablo.com.mx/landings/_Apego/banners/2506-junio/slider01-apego-1q-jun25-d-v3.jpg",
-      "https://assets1.farmaciasanpablo.com.mx/landings/institucionales/_natural/img/alNatural/Slider-SPN-01-07jun-d-v2.jpg"
+      "https://firebasestorage.googleapis.com/v0/b/farmamayoreoapp.firebasestorage.app/o/banners%2Fbanner1.jpg?alt=media&token=98f78762-4dbc-4ab9-bd4c-eb924c66f57f",
+      "https://firebasestorage.googleapis.com/v0/b/farmamayoreoapp.firebasestorage.app/o/banners%2Fbanner2.jpg?alt=media&token=133a6414-5b14-45dd-be71-15aa01851150",
     ];
 
     const [currentIndex, setCurrentIndex] = useState(0);
@@ -16,7 +15,7 @@ export const Banner_principal = () => {
 
       const interval = setInterval(() => {
         setCurrentIndex((prev) => (prev + 1) % images.length);
-      }, 3000); // ⏳ cambia cada 3 segundos
+      }, 5000); // ⏳ cambia cada 3 segundos
 
       return () => clearInterval(interval);
     }, [images]);
