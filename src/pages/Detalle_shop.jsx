@@ -16,6 +16,7 @@ import { FormularioDirecciones } from '../components/FormularioDirecciones';
 import { getUnixTime } from 'date-fns';
 import { Menu_Bottom } from '../components/Menu_Bottom';
 import toast from 'react-hot-toast';
+import { Footer } from '../components/Footer';
 
 export const Detalle_shop = () => {
     const [stepShop, setStepShop] = useState(0);
@@ -179,11 +180,6 @@ export const Detalle_shop = () => {
         obtenerDirecciones();
     };
 
-
-    console.log(direcciones)
-
-
-
   return (
     <>
         <Header_principal />
@@ -201,7 +197,7 @@ export const Detalle_shop = () => {
                     <div className='container_steps_details'>
                         {
                             stepShop === 0 && (
-                                <div className='detalle_shop'>
+                                <div className='detalle_shop content_row_shop'>
                                     {
                                         productosCarrito.map((item) => (
                                             <div className='row_product_detalle_shop' key={item.codigo}>
@@ -223,15 +219,15 @@ export const Detalle_shop = () => {
                                                             <div className='container_btn_controllers'>
                                                                 <button onClick={() => removeProductCart({codigo: parseInt(item.codigo), disminuir: 1, agregados: item.pedido})}>-</button>
                                                                 <input
-                                                                type='text'
-                                                                data-codigo={item.codigo}
-                                                                data-nombre={item.nombre}
-                                                                data-precio={item.precio}
-                                                                data-existencia={item.existencia}
-                                                                placeholder={item.pedido}
-                                                                className='count_add_cart' 
-                                                                onChange={handleChange} 
-                                                                onKeyDown={handleKey}
+                                                                    type='text'
+                                                                    data-codigo={item.codigo}
+                                                                    data-nombre={item.nombre}
+                                                                    data-precio={item.precio}
+                                                                    data-existencia={item.existencia}
+                                                                    placeholder={item.pedido}
+                                                                    className='count_add_cart' 
+                                                                    onChange={handleChange} 
+                                                                    onKeyDown={handleKey}
                                                                 />
                                                                 <button onClick={() => addProductoCart({codigo: parseInt(item.codigo), nombre: item.nombre, pedido: 1, precio: item.oferta > 0 ? item.oferta : item.precio, existencia: item.existencia})}>+</button>
                                                             </div>
@@ -460,20 +456,11 @@ export const Detalle_shop = () => {
                                 </div>
                             )}
                         </div>
-
-
-
-                        
-
-                        {/* {
-                            <pre style={{ marginTop: '1rem', background: '#f4f4f4', padding: '1rem' }}>
-                                {JSON.stringify(dataLayout, null, 2)}
-                            </pre>
-                        } */}
                     </div>
                 </div>
             </div>
         </main>
+        <Footer />
         <Menu_Bottom />
     </>
   )

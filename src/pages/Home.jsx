@@ -7,6 +7,9 @@ import { Portada_shop_grid } from './../components/Portada_shop_grid';
 import { Carrusel_store } from './../components/Carrusel_store';
 import useShopNames from '../hooks/useShopNames';
 import { Menu_Bottom } from '../components/Menu_Bottom';
+import LogoSlider from '../components/LogoSlider';
+import { MdVerified } from "react-icons/md";
+import { Footer } from '../components/Footer';
 
 
 export function Home() {
@@ -14,6 +17,14 @@ export function Home() {
   const { shopNames, loading } = useShopNames();
 
   console.log(shopNames)
+
+    // transformamos shopNames -> props para LogoSlider
+  const logos = shopNames.map((shop) => ({
+    id: shop.id,
+    name: shop.name,
+    src: shop.images.logotipo, // usamos la URL del logotipo
+    url: `/proveedor/${shop.id}`, // o la ruta que uses en tu app
+  }));
   
   return (
     <>
@@ -21,9 +32,10 @@ export function Home() {
         <Header_principal />
       {/* ==============   banner   ==============*/}
         <Banner_principal />
-      {/* ==============   Grid Offer   ==============*/}
-       
-
+        <div className='container_slider_shops'>
+          <h4>Tiendas oficiales <MdVerified /> </h4>
+          <LogoSlider logos={logos} duration={18} height="70px" />  
+        </div>  
       {
         shopNames.map((shop, index) => (
           <React.Fragment key={shop.id}>
@@ -36,9 +48,8 @@ export function Home() {
           </React.Fragment>
         ))
       }
-
-        
-        <Menu_Bottom />
+      <Footer />
+      <Menu_Bottom />
     </>
   )
 }

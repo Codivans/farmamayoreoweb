@@ -4,6 +4,7 @@ import { Header_principal } from '../components/Header_principal'
 import { Menu_perfil } from '../components/Menu_perfil'
 import { collection, onSnapshot, query, where, orderBy } from "firebase/firestore";
 import formatoMoneda from '../functions/formatoMoneda';
+import { Footer } from '../components/Footer';
 
 export const Pedidos_clientes = () => {
     const [pedidos, setPedidos] = useState([]);
@@ -106,12 +107,9 @@ export const Pedidos_clientes = () => {
                     </div>
                     ))
                 }
-
-                
-
             </div>
-
         </div>
+        <Footer />
     </>
   )
 }

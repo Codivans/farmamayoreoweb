@@ -9,6 +9,7 @@ import { Carrusel_store_shop } from '../components/Carrusel_store_shop';
 import { useCatalogoCruce } from "./../hooks/useCatalogoCruce";
 import { useSearchShop } from "./../hooks/useSearchShop";
 import { useParams } from 'react-router-dom';
+import { Footer } from '../components/Footer';
 
 
 
@@ -76,6 +77,7 @@ export const Shop = () => {
                     }
                 </div>
             </div>
+            <Footer />
     </>
   )
 }

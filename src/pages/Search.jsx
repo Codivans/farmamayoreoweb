@@ -1,18 +1,18 @@
-import React, { useState, useEffect } from 'react'
+import { useState, useEffect } from 'react'
 import { useParams } from 'react-router-dom';
 import { Header_principal } from '../components/Header_principal'
 import { Card_product } from '../components/Card_product'
 import Pagination from './../components/Pagination';
 import searchCatalog from '../hooks/searchCatalog';
 import ClipLoader from "react-spinners/ClipLoader";
+import { Breadcrum } from '../components/Breadcrum';
+import { Footer } from '../components/Footer';
 
 export const Search = () => {
     const [results, setResults] = useState([]);
     const [filteredResults, setFilteredResults] = useState([]);
     const [selectedDeps, setSelectedDeps] = useState([]); 
-    const [selectedLabs, setSelectedLabs] = useState([]); 
-    const [selectedGroups, setSelectedGroups] = useState([]); 
-
+    const [selectedLabs, setSelectedLabs] = useState([]);
     const { modulo, searchTerm } = useParams();
     const [loading, setLoading] = useState(false);
 
@@ -53,9 +53,6 @@ export const Search = () => {
         a.localeCompare(b, 'es', { sensitivity: 'base' })
     );
 
-    const groups = [...new Set(resultsByDep.map(x => x.grupo))].sort((a, b) =>
-        a.localeCompare(b, 'es', { sensitivity: 'base' })
-    );
 
 
     // 3️⃣ Filtrar por laboratorios y grupos seleccionados (dentro de resultsByDep)
@@ -65,13 +62,9 @@ export const Search = () => {
         if (selectedLabs.length > 0) {
             filtered = filtered.filter(item => selectedLabs.includes(item.laboratorio));
         }
-        if (selectedGroups.length > 0) {
-            filtered = filtered.filter(item => selectedGroups.includes(item.grupo));
-        }
-
         setFilteredResults(filtered);
         setCurrentPage(1);
-    }, [selectedDeps, selectedLabs, selectedGroups, results]);
+    }, [selectedDeps, selectedLabs, results]);
 
     // Paginación
     const indexOfLastProduct = currentPage * productsPerPage;
@@ -96,13 +89,12 @@ export const Search = () => {
     const clearFilters = () => {
         setSelectedDeps([]);
         setSelectedLabs([]);
-        setSelectedGroups([]);
     };
 
     return (
         <>
             <Header_principal />
-
+            <Breadcrum />
             <div className='container_result_search'>
                 <div className='filtro_research'>
                     <div className='cabeceras_filtros'>
@@ -147,25 +139,6 @@ export const Search = () => {
                             ))}
                         </ul>
                     </div>
-
-                    {/* 🔹 Filtro dependiente: Grupos */}
-                    <h5>Grupos {`(${groups.length})`}</h5>
-                    <div className='content_data_filters'>
-                        <ul>
-                            {groups.map((group, index) => (
-                                <li key={index}>
-                                    <label>
-                                        <input
-                                            type="checkbox"
-                                            checked={selectedGroups.includes(group)}
-                                            onChange={() => toggleSelection(group, selectedGroups, setSelectedGroups)}
-                                        />
-                                        {group}
-                                    </label>
-                                </li>
-                            ))}
-                        </ul>
-                    </div>
                 </div>
 
                 {/* Productos */}
@@ -185,7 +158,22 @@ export const Search = () => {
                         </div>
                     ) : (
                         <>
-                            
+                            <div className='content_items_result'>
+                                {
+                                    selectedDeps.map((item, index) => {
+                                        return(
+                                            <div className='item_result'>{item}</div>
+                                        );
+                                    })
+                                }
+                                {
+                                    selectedLabs.map((item, index) => {
+                                        return(
+                                            <div className='item_result'>{item}</div>
+                                        );
+                                    })
+                                }
+                            </div>
                             <div className='container_result_products'>
                                 {currentProducts.map((item, i) => (
                                     <Card_product widthCardAuto={widthCardAuto} item={item} key={i} />
@@ -203,6 +191,7 @@ export const Search = () => {
                     )}
                 </div>
             </div>
+            <Footer />
         </>
     )
 }

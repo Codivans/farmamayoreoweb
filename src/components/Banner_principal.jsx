@@ -4,8 +4,8 @@ import "./../BannerSlider.css";
 export const Banner_principal = () => {
 
     const images = [
-      "https://firebasestorage.googleapis.com/v0/b/farmamayoreoapp.firebasestorage.app/o/banners%2Fbanner1.jpg?alt=media&token=98f78762-4dbc-4ab9-bd4c-eb924c66f57f",
-      "https://firebasestorage.googleapis.com/v0/b/farmamayoreoapp.firebasestorage.app/o/banners%2Fbanner2.jpg?alt=media&token=133a6414-5b14-45dd-be71-15aa01851150",
+      "https://firebasestorage.googleapis.com/v0/b/farmamayoreoapp.firebasestorage.app/o/banners%2Fbanner1.jpg?alt=media&token=375e7c2d-e82c-41d1-8565-1978314b8a87",
+      "https://firebasestorage.googleapis.com/v0/b/farmamayoreoapp.firebasestorage.app/o/banners%2Fbanner2.jpg?alt=media&token=8f451dea-5d3b-4ed5-8772-9973a952b152",
     ];
 
     const [currentIndex, setCurrentIndex] = useState(0);

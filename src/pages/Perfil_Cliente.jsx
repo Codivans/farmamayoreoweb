@@ -7,6 +7,7 @@ import { HiDocumentCheck } from "react-icons/hi2";
 import { IoMdCart } from "react-icons/io";
 import { CiEdit } from "react-icons/ci";
 import direccionesDeEnvio from '../hooks/direccionesDeEnvio';
+import { Footer } from '../components/Footer';
 
 export const Perfil_Cliente = () => {
 
@@ -86,6 +87,7 @@ export const Perfil_Cliente = () => {
 
 
         </div>
+        <Footer />
     </>
   )
 }

@@ -1,11 +1,10 @@
 .slider-container {
-    /* border-radius: 10px; */
-    width: 90%;
-    height: 250px;
+    width: 60%;
     max-height: 100vh;
     overflow: hidden;
     position: relative;
     margin: 10px auto;
+    background-color: #f2f2f2;
 }
 
 .slider_principal{
@@ -63,5 +62,22 @@
 @media (min-width: 768px) {
     .slider-container {
         height: 400px;
+    }
+
+}
+
+@media (min-width: 600px) and (max-width: 1390px){
+    .slider_principal{
+        height: 600px;
+    }
+}
+
+@media  (min-width: 1390px){
+    .slider-container{
+        width: 1500px !important;
+        border-radius: 10px !important;
+    }
+    .slider_principal{
+        height: 600px;
     }
 }

@@ -25,7 +25,7 @@ const searchCatalog = async ({modulo, searchTerm}) => {
           item.nombre.toLowerCase().includes(searchTermLower) ||
           (item.sustancia && item.sustancia.toLowerCase().includes(searchTermLower))
         );
-      } else if (modulo === 'familia') {
+      } else if (modulo === 'familia'|| modulo === 'departamento') {
         // Filtrar por familia o departamento
         results = catalogo.filter(item => 
           item.familia.toLowerCase().includes(searchTermLower) ||

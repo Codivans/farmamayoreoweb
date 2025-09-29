@@ -6,6 +6,7 @@ import { Header_principal } from '../components/Header_principal';
 import { Menu_perfil } from '../components/Menu_perfil';
 import ic_pdf from './../assets/ic-pdf.svg'
 import { RiFileUploadLine } from "react-icons/ri";
+import { Footer } from '../components/Footer';
 
 export function UploadConstancia() {
   const [archivoConstancia, setArchivoConstancia] = useState(null);
@@ -192,6 +193,7 @@ export function UploadConstancia() {
           )}
         </div>
       </div>
+      <Footer />
     </>
   );
 }
