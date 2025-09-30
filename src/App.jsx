@@ -1,4 +1,4 @@
-import React from 'react';
+
 import { Routes, Route } from "react-router-dom";
 import { Home, Search, AltaCatalogo, Formularios_session, Perfil_Cliente, Direcciones_clientes, Shop, ConfigShop, Detalle_shop, 
   UploadConstancia, UploadFile, Order_send, Pedidos_clientes, Pedidos_admin, 
@@ -10,6 +10,7 @@ import { CarritoProvider } from './context/cartContext';
 import { AuthProvider } from './context/AuthContext';
 import { ProtectedRoute } from './components/ProtectedRoute';
 import { Toaster } from 'react-hot-toast';
+import { ScrollToTop } from "./components/ScrollToTop"
 
 
 function App() {
@@ -20,9 +21,12 @@ function App() {
       position="top-center"
       reverseOrder={false}
     />
+    <ScrollToTop />
     <AuthProvider>
       <CarritoProvider>
         <Routes>
+          
+          
           <Route path='/' element={<Home />}/>
           <Route path='/login' element={<Formularios_session />}/>
           <Route path='/mi_perfil' element={<Perfil_Cliente />}/>

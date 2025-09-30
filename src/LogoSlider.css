@@ -17,29 +17,23 @@
 .container_slider_shops h4 svg{
   color: #007bff;
 }
-
-.logo-slider {
-  position: relative;
-  width: 100%;
+.slider{
+  width: 90vw;
+  height: auto;
+  margin: auto;
   overflow: hidden;
-  padding: 8px 0;
 }
 
-/* Track */
-.logo-slider__track {
+.slider .slide_track{
   display: flex;
-  align-items: center;
-  gap: 32px;
-  flex-wrap: nowrap;
-  animation: logo-scroll linear infinite;
+  animation: scroll 15s linear infinite;
+  -webkit-animation: scroll 15s linear infinite;
+  width: calc(350px * 9);
 }
 
-/* Items */
-.logo-slider__item {
-  flex: 0 0 auto;
-  display: flex;
-  align-items: center;
-  justify-content: center;
+.slider .slide{
+  width: 350px !important;
+  overflow: hidden;
 }
 
 .logo-slider__img {
@@ -48,12 +42,11 @@
   object-fit: contain;
 }
 
-/* 🔹 Animación de scroll infinito */
-@keyframes logo-scroll {
-  0% {
-    transform: translateX(0%);
+@keyframes scroll {
+  0%{
+    transform: translateX(0)
   }
-  100% {
-    transform: translateX(-33.333%); /* se recorre solo 1/3 del total */
+  100%{
+    transform: translateX(calc(-350px * 3));
   }
 }

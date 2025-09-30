@@ -23,7 +23,7 @@ export function Home() {
     id: shop.id,
     name: shop.name,
     src: shop.images.logotipo, // usamos la URL del logotipo
-    url: `/proveedor/${shop.id}`, // o la ruta que uses en tu app
+    url: `/shop/${shop.name}/shopid/${shop.id}`, // o la ruta que uses en tu app
   }));
   
   return (
@@ -34,7 +34,7 @@ export function Home() {
         <Banner_principal />
         <div className='container_slider_shops'>
           <h4>Tiendas oficiales <MdVerified /> </h4>
-          <LogoSlider logos={logos} duration={18} height="70px" />  
+          <LogoSlider logos={logos}/>  
         </div>  
       {
         shopNames.map((shop, index) => (

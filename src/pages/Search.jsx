@@ -1,4 +1,5 @@
 import { useState, useEffect } from 'react'
+import useShopNames from '../hooks/useShopNames';
 import { useParams } from 'react-router-dom';
 import { Header_principal } from '../components/Header_principal'
 import { Card_product } from '../components/Card_product'
@@ -7,6 +8,7 @@ import searchCatalog from '../hooks/searchCatalog';
 import ClipLoader from "react-spinners/ClipLoader";
 import { Breadcrum } from '../components/Breadcrum';
 import { Footer } from '../components/Footer';
+import { SliderBannersShops } from '../components/SliderBannersShops';
 
 export const Search = () => {
     const [results, setResults] = useState([]);
@@ -15,6 +17,16 @@ export const Search = () => {
     const [selectedLabs, setSelectedLabs] = useState([]);
     const { modulo, searchTerm } = useParams();
     const [loading, setLoading] = useState(false);
+
+    const { shopNames } = useShopNames();
+
+        // transformamos shopNames -> props para LogoSlider
+    const shops = shopNames.map((shop) => ({
+        id: shop.id,
+        name: shop.name,
+        src: shop.images.bannerFront, // usamos la URL del logotipo
+        url: `/shop/${shop.name}/shopid/${shop.id}`, // o la ruta que uses en tu app
+    }));
 
     useEffect(() => {
         const fetchResults = async () => {
@@ -143,6 +155,8 @@ export const Search = () => {
 
                 {/* Productos */}
                 <div className='container_cards_results'>
+                    <SliderBannersShops shops={shops}/>
+
                     {loading ? (
                         <div className='container_searching_products'>
                             <div className='content_spinner'>
