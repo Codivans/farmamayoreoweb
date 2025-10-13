@@ -79,7 +79,7 @@ export const Carrusel_store = ({departamento}) => {
             >
                 {
                     productos?.map((item, index) => <SwiperSlide style={{width : totalCardsWidth}}  key={index}>
-                                                <Card_product item={item}/>
+                                                <Card_product item={item} index={index}/>
                                             </SwiperSlide>)
                 }
             </Swiper>

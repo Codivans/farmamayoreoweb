@@ -252,7 +252,8 @@ export const Detalle_shop = () => {
                                             <h3>Selecciona una dirección de entrega</h3>
                                             <div className='container_toggle_entrega'>
                                                 <button className={`btn_toggle ${toggleEntrega === 'pickUp' ? 'active_toggle' : ''}`} name='pickUp' onClick={handleChangeToggleTipoEntrega}>PickUp</button>
-                                                <button className={`btn_toggle ${toggleEntrega === 'envio' ? 'active_toggle' : ''}`} name='envio' onClick={handleChangeToggleTipoEntrega}>Envio</button>
+                                                <span>ó</span>
+                                                <button className={`btn_toggle ${toggleEntrega === 'envio' ? 'active_toggle' : ''}`} name='envio' onClick={handleChangeToggleTipoEntrega}>Envio a domicilio</button>
                                             </div>
 
                                             {

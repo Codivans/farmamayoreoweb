@@ -10,6 +10,8 @@ export const Form_login = ({selectForm, setSelectForm, setShowForm, showForm}) =
         email: '',
         password: ''
     });
+    const [error, setError] = useState(null)
+
     const { setEstatus } = useAuth();
 
     const navigate = useNavigate();
@@ -38,7 +40,31 @@ export const Form_login = ({selectForm, setSelectForm, setShowForm, showForm}) =
               // setShowForm(!showForm)
               // setShowForm(false)
             } catch (error) {
-              console.log('Hubo un error, upsss!', error)
+               console.log(error)
+
+                  // Capturar errores específicos
+                  switch (error.code) {
+                    case "auth/invalid-email":
+                    setError("El correo electrónico no es válido.");
+                    break;
+                    case "auth/user-not-found":
+                    setError("No se encontró un usuario con este correo.");
+                    break;
+                    case "auth/wrong-password":
+                    setError("La contraseña es incorrecta.");
+                    break;
+                    case "auth/email-already-in-use":
+                    setError("Este correo ya está registrado.");
+                    break;
+                    case "auth/weak-password":
+                    setError("La contraseña debe tener al menos 6 caracteres.");
+                    break;
+                    case "auth/invalid-credential":
+                    setError("Tus datos son erroneos, intenta de nuevo");
+                    break
+                    default:
+                    setError("Ocurrió un error. Intenta de nuevo.");
+                }
             }
           
         }
@@ -65,6 +91,10 @@ export const Form_login = ({selectForm, setSelectForm, setShowForm, showForm}) =
         </form>
         <button className='btn_forgot'>Recuperar contraseña</button>
         <p className='txt_form_footer'>¿No tienes una cuenta? <span onClick={() => setSelectForm(true)}> Registrarme</span></p>
+        
+        {
+            error === null ? ("") : (<span className='msg_error'>{error}</span>)
+        }
 
     </div>
   )

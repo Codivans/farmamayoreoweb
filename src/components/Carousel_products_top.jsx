@@ -116,8 +116,8 @@ export const Carousel_products_top = () => {
             className="mySwiper swiper_top"
         >
         {
-            productos.map((item) => <SwiperSlide  key={item.codigo} className='content_swiper_top' style={{width : totalCardsWidth}}>
-                                        <Card_product  item={item}/>
+            productos.map((item, index) => <SwiperSlide  key={item.codigo} className='content_swiper_top' style={{width : totalCardsWidth}}>
+                                        <Card_product  item={item} index={index}/>
                                     </SwiperSlide>)
         }
         </Swiper>

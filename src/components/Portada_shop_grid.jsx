@@ -80,7 +80,7 @@ export const Portada_shop_grid = ({nameShop, img, shopId}) => {
             >
                 {
                     productos.map((item, index) => <SwiperSlide style={{ width: `${widthCardAuto}px !important` }} key={index} >
-                                                <Card_product widthCard={widthCardAuto} item={item} />
+                                                <Card_product widthCard={widthCardAuto} item={item} index={index}/>
                                             </SwiperSlide>)
                 }
             </Swiper>

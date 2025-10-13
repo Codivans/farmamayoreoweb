@@ -2,7 +2,6 @@ import { useState } from 'react'
 
 import { createUserWithEmailAndPassword, updateProfile } from "firebase/auth";
 import { auth, storage, db } from "./../firebase/firebaseConfig"; // asegúrate de tener estas referencias
-import { ref, uploadBytes, getDownloadURL } from "firebase/storage";
 import { doc, setDoc } from "firebase/firestore";
 import { useNavigate } from 'react-router-dom';
 

@@ -1,11 +1,12 @@
 import React, { useContext } from 'react'
 import { ContextoCarrito } from './../context/cartContext';
 import formatoMoneda from './../functions/formatoMoneda';
-import { VscAdd, VscChromeMinimize  } from "react-icons/vsc";
+import { useAuth } from '../context/AuthContext';
 import { IoDocumentText } from "react-icons/io5";
 import { Link } from 'react-router-dom';
 
-export const Card_product = ({item}) => {
+export const Card_product = ({item, index}) => {
+    const {usuario, userName } = useAuth();
 
     const imagenDefault = (e) =>{
       e.target.src =  'https://farmacias2web.com/imagenes/predeterminada.jpg' 
@@ -79,12 +80,37 @@ export const Card_product = ({item}) => {
           <p className='codigo_item'>{item.codigo}</p>
           <p className='txt_name_product'>{item.nombre}</p>
           <p className='existencia_item'>{disponibilidad(item.existencia)}</p>
+
           <div className='container_price_product'>
-            <p className='price_item'>
-              <span className={item.oferta > 0 ? 'price_tachado' : ''}>{formatoMoneda(item.precio)}</span>
-              <span className='price_oferta'>{item.oferta > 0 ? formatoMoneda(item.oferta) : ''}</span>
-            </p>
+            {usuario ? (
+              <p className='price_item'>
+                <span className={item.oferta > 0 ? 'price_tachado' : ''}>
+                  {formatoMoneda(item.precio)}
+                </span>
+                <span className='price_oferta'>
+                  {item.oferta > 0 ? formatoMoneda(item.oferta) : ''}
+                </span>
+              </p>
+            ) : (
+              index % 2 === 0 ? (
+                <p className='price_item'>
+                  <span className={item.oferta > 0 ? 'price_tachado' : ''}>
+                    {formatoMoneda(item.precio)}
+                  </span>
+                  <span className='price_oferta'>
+                    {item.oferta > 0 ? formatoMoneda(item.oferta) : ''}
+                  </span>
+                </p>
+              ) : (
+                <p className='price_item inicia_sesion_text'>
+                  <Link to="/login">Inicia sesión</Link>
+                </p>
+              )
+            )}
           </div>
+
+
+
         </div>
         <>
         
@@ -107,8 +133,11 @@ export const Card_product = ({item}) => {
                 <button onClick={() => addProductoCart({codigo: parseInt(item.codigo), nombre: item.nombre, pedido: 1, precio: item.oferta > 0 ? item.oferta : item.precio, existencia: item.existencia})}>+</button>
               </div>
             : (
+              
               <div className='card_footer'>
-                <button onClick={() => addProductoCart({codigo: parseInt(item.codigo), nombre: item.nombre, pedido: 1, precio: item.oferta > 0 ? item.oferta : item.precio, existencia: item.existencia})}>
+                <button onClick={() => addProductoCart({codigo: parseInt(item.codigo), nombre: item.nombre, pedido: 1, precio: item.oferta > 0 ? item.oferta : item.precio, existencia: item.existencia})}
+                  disabled={usuario ? false : true}  
+                >
                   Agregar
                 </button>
               </div>
