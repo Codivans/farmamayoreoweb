@@ -2,13 +2,6 @@ import React, { useState, useEffect, useRef } from 'react';
 import { IoChevronBack, IoChevronForward } from "react-icons/io5";
 import { count, doc, getDoc } from "firebase/firestore";
 import { db } from "./../firebase/firebaseConfig"; // Ajusta según tu ruta
-
-
-// Import Swiper styles
-// import 'swiper/css';
-// import 'swiper/css/free-mode';
-// import 'swiper/css/pagination';
-// import { FreeMode, Pagination, Autoplay, Navigation } from 'swiper/modules';
 import { Card_product } from './Card_product';
 
 export const Carousel_products_top = ({intervalo = 2500}) => {
@@ -111,7 +104,7 @@ export const Carousel_products_top = ({intervalo = 2500}) => {
     <div className="container_shop_home slider_top">
       <h4 className='title_carrusel'>Productos + vendidos</h4>
       <div
-          className="slider-container"
+          className="slider-container container_cards_top"
           onMouseEnter={() => setIsPaused(true)}
           onMouseLeave={() => setIsPaused(false)}
       >

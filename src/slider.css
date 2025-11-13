@@ -114,9 +114,34 @@
     .container_shop_home{
         width: 98%;
     }
-    .slide-item {
-        width: 200px;
+
+    .slider_top{
+        width: 100%;
     }
+
+    .container_cards_top{
+        width: 96% !important;
+        padding-inline: 4px;
+    }
+
+    .slide-item {
+        width: 240px;
+    }
+    .slide-item .card_product{
+        width: 100%;
+    }
+
+    .slide-item .card_product .card_header{
+        width: 100% !important;
+        height: 100% !important;
+    }
+
+    .slide-item .card_product .card_header img{
+        min-width: 240px;
+        min-height: 240px;
+    }
+
+
     .btn-scroll {
         display: none;
     }
