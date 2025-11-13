@@ -11,6 +11,10 @@ import { doc, setDoc } from "firebase/firestore";
 
 export const ConfigShop = () => {
   const [catalogo, setCatalogo] = useState([]);
+
+  const [logotipoLab, setLogotipoLab] = useState(null);
+  const [imgLogotipo, setImgLogotipo] = useState(null);
+
   const [bannerFront, setBannerFront] = useState(null);
   const [imgBannerFront, setImgBannerFront] = useState(null);
 
@@ -44,6 +48,11 @@ export const ConfigShop = () => {
   const handleFileChange = (e, tipo) => {
       const files = e.target.files;
       if (!files.length) return;
+
+      if (tipo === "logotipo_img") {
+        setLogotipoLab(files[0]);
+        setImgLogotipo(URL.createObjectURL(files[0]));
+      }
 
       if (tipo === "banner_front") {
         setBannerFront(files[0]);
@@ -120,7 +129,7 @@ export const ConfigShop = () => {
     }
   };
 
-  console.log(bannerBackFiles)
+  console.log(imgLogotipo, logotipoLab, bannerBackFiles)
 
   return (
     <div className="container_pedidos_admin">
@@ -136,6 +145,27 @@ export const ConfigShop = () => {
                 onChange={(e)=>setStoreName(e.target.value)}
               />
           </div>
+
+          {/* 🔹 Logotipo */}
+          <div className='div_step'>
+            <p><span className='circle_step'>1</span> Carga logotipo</p>
+            <div className='content_flex_icons'>
+                <label className='btn-file'>
+                    <div className='content_input_file'>
+                        <CiImageOn />
+                        <span> Click para cargar Imagen</span>
+                        <input 
+                            hidden 
+                            accept=".jpg,.png,.webp" 
+                            type="file"
+                            onChange={(e) => handleFileChange(e, "logotipo_img")}
+                        />
+                    </div>
+                </label>
+                { imgBannerFront && <FaCheckCircle /> }
+            </div>
+          </div>
+
 
           {/* 🔹 Paso 1 */}
           <div className='div_step'>
@@ -175,13 +205,6 @@ export const ConfigShop = () => {
                     </div>
                 </label>
                 { imgBannerBacks.length > 0 && <FaCheckCircle /> }
-            </div>
-
-            {/* Previews de todas */}
-            <div className='preview_images'>
-              {imgBannerBacks.map((src, i) => (
-                <img key={i} src={src} alt={`bannerBack ${i}`} width={100} className="m-2"/>
-              ))}
             </div>
           </div>
 
@@ -224,6 +247,38 @@ export const ConfigShop = () => {
           <div>
             <button className='btn_save' onClick={handleSave}>Guardar</button>
           </div>
+        </div>
+        <div className='content_data_view'>    
+            
+            <div className='preview_images'>
+              <p>1- Logotipo</p>
+              <img src={imgLogotipo} alt={`bannerBack`} width={300} className="m-2"/>
+            </div>
+
+            <div className='preview_images'>
+              <p>1- Banner portada</p>
+              <img src={imgBannerFront} alt={`bannerBack`} width={700} className="m-2"/>
+            </div>
+
+            {/* Previews de todas */}
+            <div className='preview_images cat_banners'>
+              <p>3.- banners</p>
+              {imgBannerBacks.map((src, i) => (
+                <img key={i} src={src} alt={`bannerBack ${i}`} width={700} className="m-2"/>
+              ))}
+            </div>
+
+            <div className='preview_images'>
+              <p>1- Portada Carrusel</p>
+              <img src={imgBannerCarrusel} alt={`bannerBack`} width={450} className="m-2"/>
+            </div>
+
+            <div className='preview_images'>
+              <p>1- Portada Carrusel</p>
+              <img src={imgBannerCarrusel} alt={`bannerBack`} width={450} className="m-2"/>
+            </div>
+
+
         </div>
       </div>
     </div>

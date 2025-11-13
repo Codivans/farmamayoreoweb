@@ -18,7 +18,7 @@ export const Pedidos_clientes = () => {
                 const consultarUser = query(
                     collection(db, 'pedidos'),
                     where('usuario', '==', user.uid),
-                    // orderBy("fecha", "desc")
+                    orderBy("fecha", "desc")
                 );
 
             const unsuscribe = onSnapshot(

@@ -1,14 +1,17 @@
-import { useEffect } from "react"
+import { useEffect } from "react";
 import { useLocation } from "react-router-dom";
 
 export const ScrollToTop = () => {
-    const { pathname } = useLocation();
+  const { pathname } = useLocation();
 
-    useEffect(() => {
-        window.scrollTo({
-            top: 0,
-            behavior: "smooth"
-        });
-    }, [pathname]);
+  useEffect(() => {
+    console.log("Cambia a:", pathname); // 👈 Agrega esto
+    window.scrollTo({
+      top: 0,
+      left: 0,
+      behavior: "instant" // cambia a instant para probar
+    });
+  }, [pathname]);
+
   return null;
-}
+};

@@ -1,47 +1,62 @@
-import { useEffect,  useState } from "react";
+import React, { useState, useEffect, useRef } from "react";
 import "./../BannerSlider.css";
 
 export const Banner_principal = () => {
+    const [current, setCurrent] = useState(0);
+    const [paused, setPaused] = useState(false);
+    const timeoutRef = useRef(null);
 
     const images = [
-      "https://firebasestorage.googleapis.com/v0/b/farmamayoreoapp.firebasestorage.app/o/banners%2Fbanner1.jpg?alt=media&token=375e7c2d-e82c-41d1-8565-1978314b8a87",
-      "https://firebasestorage.googleapis.com/v0/b/farmamayoreoapp.firebasestorage.app/o/banners%2Fbanner2.jpg?alt=media&token=8f451dea-5d3b-4ed5-8772-9973a952b152",
+      {src:"https://firebasestorage.googleapis.com/v0/b/farmamayoreoapp.firebasestorage.app/o/banners%2Fbanner1.jpg?alt=media&token=375e7c2d-e82c-41d1-8565-1978314b8a87"},
+      {src:"https://firebasestorage.googleapis.com/v0/b/farmamayoreoapp.firebasestorage.app/o/banners%2Fbanner2.jpg?alt=media&token=8f451dea-5d3b-4ed5-8772-9973a952b152"},
     ];
+    let intervalo = 2500
 
-    const [currentIndex, setCurrentIndex] = useState(0);
+     // --- Autoplay con loop ---
+  useEffect(() => {
+    const nextSlide = () => {
+      setCurrent((prev) => (prev + 1) % images.length);
+    };
 
-    useEffect(() => {
-      if (!images || images.length === 0) return;
+    // if (!paused) {
+      timeoutRef.current = setTimeout(nextSlide, intervalo);
+    // }
 
-      const interval = setInterval(() => {
-        setCurrentIndex((prev) => (prev + 1) % images.length);
-      }, 5000); // ⏳ cambia cada 3 segundos
+    return () => clearTimeout(timeoutRef.current);
+  }, [current, paused, images, intervalo]);
 
-      return () => clearInterval(interval);
-    }, [images]);
+  return (
+    <div
+      className="hero-slider-container"
+      onMouseEnter={() => setPaused(true)}
+      onMouseLeave={() => setPaused(false)}
+    >
+      <div
+        className="hero-slider-wrapper"
+        style={{ transform: `translateX(-${current * 100}%)` }}
+      >
+        {images.map((img, index) => (
+          <div className="hero-slide" key={index}>
+            <img src={img.src} alt={img.alt || `banner-${index}`} />
+            {img.caption && (
+              <div className="hero-caption">
+                <h2>{img.caption}</h2>
+              </div>
+            )}
+          </div>
+        ))}
+      </div>
 
-    if (!images || images.length === 0) return null;
-
-    return (
-      <div className="slider-container slider_principal">
-      {images.map((img, index) => (
-        <img
-          key={index}
-          src={img}
-          alt={`banner-${index}`}
-          className={index === currentIndex ? "active" : ""}
-        />
-      ))}
-
-      <div className="slider-indicators">
+      {/* Indicadores */}
+      <div className="hero-indicators">
         {images.map((_, index) => (
-          <span
+          <button
             key={index}
-            className={index === currentIndex ? "active" : ""}
-            onClick={() => setCurrentIndex(index)}
-          ></span>
+            className={`hero-dot ${index === current ? "active" : ""}`}
+            onClick={() => setCurrent(index)}
+          ></button>
         ))}
       </div>
     </div>
-    )
-}
+  );
+};

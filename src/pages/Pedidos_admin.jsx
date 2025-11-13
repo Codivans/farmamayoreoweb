@@ -4,6 +4,7 @@ import { db } from "./../firebase/firebaseConfig"; // Asegúrate de tener tu fir
 import logo from './../assets/farmamayoreo.svg';
 import { Link } from "react-router-dom";
 import { Header_admin } from "../components/Header_admin";
+import formatoMoneda from "../functions/formatoMoneda";
 
 export const Pedidos_admin = () => {
     const [pedidosOriginales, setPedidosOriginales] = useState([]);
@@ -116,26 +117,96 @@ export const Pedidos_admin = () => {
   if (loading) return <p>Cargando datos...</p>;
 
   let detail = idPedidoDetail != null ? datosPagina?.filter((x) => x.idPedido === idPedidoDetail) : [];
-
-  
+  const pedidoItems = detail?.[0]?.pedido || [];
 
   const showPedidoDetails = (e) => {
     setIdPedidoDetail(e);
     setShowPedido(!showPedido);
   }
 
+  const handlePrint = () => {
+    setTimeout(() => {
+      const content = document.getElementById("pedido_pop");
+      if (!content) return;
+
+      const printWindow = window.open("", "_blank");
+      printWindow.document.write(`
+        <html>
+          <head>
+            <title>Pedido</title>
+            <style>
+              p{
+                font-family: arial;
+                font-size: 12px;
+              }
+              button{
+                display: none;
+              }
+              table{
+                  width: auto; 
+                  font-size: 12px;
+                  font-family: Arial;
+              }
+              table thead th{
+                border: 1px solid black;
+              }
+
+              table thead th:nth-child(6){
+                  display: none;
+              }
+
+              table tbody td{
+                  border: 1px solid black;
+                  font-size: 12px;
+              }
+              table tbody td:nth-child(1){
+                  width: 45px;
+                  text-align: right;
+              }
+              table tbody td:nth-child(2), td:nth-child(4){
+                  width: 30px;
+                  text-align: center;
+              }
+              table tbody td:nth-child(3){
+                  width: 120px;
+                  white-space: nowrap;
+                  text-overflow: ellipsis;
+                  overflow: hidden;
+              }
+              table tbody td:nth-child(4){
+                  width: 70px;
+                  text-align: center;
+              }
+
+              table tbody td:nth-child(6){
+                  display: none;
+              }
+
+              table tbody td:nth-child(7) span{
+                width: 100px;
+                overflow: hidden;
+                white-space: nowrap;
+                text-overflow: ellipsis;
+              }
+              
+
+
+              </style>
+          </head>
+          <body>
+            ${content.innerHTML}
+          </body>
+        </html>
+      `);
+      printWindow.document.close();
+      printWindow.print();
+    }, 100); // 🔥 pequeño delay para dejar que React pinte
+  };
+
+  
+
   return (
     <div className="container_pedidos_admin">
-      {/* <div className="menu_admin">
-        <div className="margin_menu_admin">
-          <img src={logo} className="logo_admin" />
-          <ul>
-            <li><Link to='/admin/pedidos'>Pedidos</Link></li>
-            <li><Link to='/admin/pedidos'>Clientes</Link></li>
-            <li><Link to='/admin/pedidos'>Configuraciones</Link></li>
-          </ul>
-        </div>
-      </div> */}
       <Header_admin />
 
         <div className="container_filtros_pedidos">
@@ -210,8 +281,8 @@ export const Pedidos_admin = () => {
                 </tr>
             </thead>
             <tbody>
-                {datosPagina.map((item) => (
-                    <tr key={item.idPedido}>
+                {datosPagina.map((item, index) => (
+                    <tr key={index}>
                         <td style={{textAlign: 'center'}}>{item.idPedido}</td>
                         <td style={{textTransform: 'Capitalize'}}>{item.usuario?.nombre} {item.usuario?.apellidoPaterno} {item.usuario?.apellidoMaterno}</td>
                         <td>
@@ -223,7 +294,7 @@ export const Pedidos_admin = () => {
                         <td style={{textTransform: 'Capitalize'}}>{item.pedido?.formaPago}</td>
                         <td>$ {item.pedido?.importePedido}</td>           
                         <td><span className={`item_estatus item_${item.pedido.estatus}`}> {item.pedido.estatus} </span></td>
-                        <td><button onClick={() => showPedidoDetails(item.idPedido)}>Imprimir</button></td>
+                        <td><button onClick={() => showPedidoDetails(item.idPedido)}>Ver detalle</button></td>
                         <td>
                           <select>
                             <option>Surtiendo</option>
@@ -255,16 +326,55 @@ export const Pedidos_admin = () => {
           showPedido &&(
             <div className="container_popup_pedido">
               <div className="popup_pedido">
-                  {
-                    detail?.map((item) => {
-                      return(
-                        <div>
-                            <p>Id pedido: {item.idPedido}</p>
-                        </div>
-                      )
-                    })
-                  }
+                  <button onClick={() => setShowPedido(!showPedido)} className="btn_close_pop">Cerrar</button>
+                  <div id="pedido_pop">
+                    {detail.map((item, index) => (
+                      <div key={index}>
+                        {/* ID del pedido */}
+                        <h2>Pedido: {item.idPedido}</h2>
 
+                        {/* Datos del usuario */}
+                        <h3>Datos del usuario</h3>
+                        <p>
+                          <strong>Nombre:</strong> {item.usuario.nombre}{" "}
+                          {item.usuario.apellidoPaterno} {item.usuario.apellidoMaterno}
+                        </p>
+
+                        {item.pedido.direccion?.map((dir, i) => (
+                          <div key={i}>
+                            <p><strong>Calle:</strong> {dir.calle} #Ext: {dir.numeroExt} Int: {dir.numeroInt} <strong>Colonia:</strong> {dir.colonia} <strong>Municipio:</strong> {dir.municipio} <strong>Estado:</strong> {dir.estado} <strong>CP:</strong> {dir.cp}</p>
+                            <p><strong>Referencias:</strong> {dir.referencias}</p>
+                          </div>
+                        ))}
+
+                        <button onClick={handlePrint} className="btn_print_ped">Imprimir</button>
+
+                        {/* Tabla con los productos del pedido */}
+                        <table className="table_orden">
+                          <thead>
+                            <tr>
+                              <th>Código</th>
+                              <th>Cantidad</th>
+                              <th>Nombre</th>
+                              <th>Precio</th>
+                              <th>Importe</th>
+                            </tr>
+                          </thead>
+                          <tbody>
+                            {item.pedido.pedido?.map((prod, idx) => (
+                              <tr key={idx}>
+                                <td>{prod.codigo}</td>
+                                <td>{prod.pedido}</td>
+                                <td>{prod.nombre}</td>
+                                <td>{formatoMoneda(prod.precio)}</td>
+                                <td>{formatoMoneda(prod.importe)}</td>
+                              </tr>
+                            ))}
+                          </tbody>
+                        </table>
+                      </div>
+                    ))}
+                  </div>
               </div>
             </div>
           )

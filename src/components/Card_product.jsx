@@ -1,4 +1,4 @@
-import React, { useContext } from 'react'
+import { useContext } from 'react'
 import { ContextoCarrito } from './../context/cartContext';
 import formatoMoneda from './../functions/formatoMoneda';
 import { useAuth } from '../context/AuthContext';
@@ -14,13 +14,20 @@ export const Card_product = ({item, index}) => {
 
     const disponibilidad = (existencia) => {
       if(existencia >= 50){
-        return <span className='txt_disponible txt_color_green'>Disponibilidad Alta</span>
+        return  <div class="status">
+                  <span class="status-dot green"></span>
+                  <span>Disponibilidad Alta</span>
+                </div>
       }else if(existencia >=30 & existencia <= 49){
-        return <span className='txt_disponible txt_color_yellow'>Disponibilidad Media</span>
+        return  <div class="status">
+                  <span class="status-dot orange"></span>
+                  <span>Disponibilidad Media</span>
+                </div>
       }else if(existencia >=1 & existencia <= 29){
-        return <span className='txt_disponible txt_color_orange'>Disponibilidad Baja</span>
-      }else if(existencia <= 0){
-        return <span className='txt_disponible txt_color_red'>Sin Disponibilidad</span>
+        return  <div class="status">
+                  <span class="status-dot red"></span>
+                  <span>Disponibilidad Baja</span>
+                </div>
       }
     }
 
@@ -63,7 +70,7 @@ export const Card_product = ({item, index}) => {
           e.target.value= ''
       }
     }
-      
+
 
   return (
     <div className='card_product'>

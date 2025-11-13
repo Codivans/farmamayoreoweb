@@ -3,14 +3,17 @@ import { auth } from '../firebase/firebaseConfig';
 import { signInWithEmailAndPassword,  signOut } from "firebase/auth";
 import searchUser from '../hooks/searchUser';
 import { useAuth } from './../context/AuthContext';
-import { useNavigate } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
+import { VscEye , VscEyeClosed} from "react-icons/vsc";
+
 
 export const Form_login = ({selectForm, setSelectForm, setShowForm, showForm}) => {
     const [dataLogin, setDataLogin] = useState({
         email: '',
         password: ''
     });
-    const [error, setError] = useState(null)
+    const [error, setError] = useState(null);
+    const [showPass, setShowPass] = useState(false);
 
     const { setEstatus } = useAuth();
 
@@ -80,16 +83,24 @@ export const Form_login = ({selectForm, setSelectForm, setShowForm, showForm}) =
         console.log('logout')
       }
 
+      const handleShowPass = () => {
+        setShowPass(!showPass)
+      }
+
   return (
     <div className={`container_form_style animate__animated  ${selectForm ? 'animate__bounceOutLeft' : 'animate__bounceInLeft'}`} >
         <form onSubmit={handleSubmitLogin}>
         <h3>Iniciar sesión</h3>
         <input name='email' type='email' placeholder='Email' onChange={handleChangeLogin} className='inp_email'/>
-        <input name='password' type='text' placeholder='password' onChange={handleChangeLogin} className='inp_pass'/>
+        <div className='input_pass'>
+          <input name='password' type={showPass ? 'text' : 'password'} placeholder='password' onChange={handleChangeLogin} className='inp_pass'/>
+          <span onClick={handleShowPass}> {showPass ? <VscEyeClosed /> : <VscEye />}</span>
+        </div>
+        
         <button className='btn_blue' onClick={handleSubmitLogin}>Entrar</button>
 
         </form>
-        <button className='btn_forgot'>Recuperar contraseña</button>
+        <Link to="/recuperar" className='btn_forgot'>Recuperar contraseña</Link>
         <p className='txt_form_footer'>¿No tienes una cuenta? <span onClick={() => setSelectForm(true)}> Registrarme</span></p>
         
         {

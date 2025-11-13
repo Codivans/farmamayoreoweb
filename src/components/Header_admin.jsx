@@ -10,6 +10,7 @@ export const Header_admin = () => {
             <ul>
             <li><Link to='/admin/pedidos'>Pedidos</Link></li>
             <li><Link to='/admin/clientes'>Clientes</Link></li>
+            <li><Link to='/admin/alta/catalogo'>Catálogo</Link></li>
             <li><Link to='/admin/configuraciones'>Configuraciones</Link></li>
             </ul>
         </div>

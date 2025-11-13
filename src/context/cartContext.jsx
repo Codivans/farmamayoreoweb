@@ -2,7 +2,7 @@ import React, { useEffect, useState } from 'react';
 // import { toast } from 'react-toastify';
 import { getUnixTime } from 'date-fns';
 // import 'react-toastify/dist/ReactToastify.css';
-// import toast, { Toaster } from 'react-hot-toast';
+import toast, { Toaster } from 'react-hot-toast';
 
 
 const ContextoCarrito = React.createContext();
@@ -37,35 +37,83 @@ const CarritoProvider = ({children}) =>{
 
 
 
-    //Agregar producto al carrito
-    const addProductoCart = ({codigo, nombre, pedido, precio, cantidad}) => {      
-        if(!productosCarrito.find(product => product.codigo === codigo)){
+    //Agregar producto al carrito (versión corregida)
+    const addProductoCart = ({ codigo, nombre, pedido, precio, existencia }) => {
+      // Aseguramos que todo sea numérico
+      pedido = parseInt(pedido) || 0;
+      precio = parseFloat(precio) || 0;
+      existencia = parseInt(existencia) || 0;
+
+      if (existencia <= 0) {
+        toast.error(`No hay existencia disponible de ${nombre}.`);
+        return;
+      }
+
+      const productoExistente = productosCarrito.find(product => product.codigo === codigo);
+
+      // Si no existe aún en el carrito
+      if (!productoExistente) {
+        if (pedido > existencia) {
+          toast.error(`Solo hay ${existencia} piezas disponibles de ${nombre}.`);
+          if (existencia > 0) {
             setProductosCarrito([
               ...productosCarrito,
-               {codigo: codigo, nombre: nombre, pedido: pedido, precio, importe: precio * pedido}
+              { codigo, nombre, pedido: existencia, precio, importe: precio * existencia, existencia }
             ]);
-            localStorage.setItem('CarritoCedifa', JSON.stringify([...productosCarrito, {codigo: codigo, nombre: nombre, pedido: pedido, precio, importe: precio * pedido}]))
-            
-            // toast.success('Se agrego productos al carrito');
-        }else{
-            setProductosCarrito(productosCarrito.map(p => 
-              (p.codigo === codigo 
-                ? {...p, pedido: parseInt(p.pedido) + parseInt(pedido), importe : p.precio * (p.pedido + pedido) } 
-                : p
-              )))
-            // toast.success(`Se agrego ${pedido} ${pedido > 1 ? 'piezas' : 'pieza'} más`);
+            toast.success(`Se agregaron ${existencia} piezas (máximo disponible).`);
+          }
+          return;
         }
-    }
+
+        setProductosCarrito([
+          ...productosCarrito,
+          { codigo, nombre, pedido, precio, importe: precio * pedido, existencia }
+        ]);
+        toast.success(`Se agregó al carrito.`);
+        return;
+      }
+
+      // Si ya existe en el carrito
+      const pedidoActual = parseInt(productoExistente.pedido) || 0;
+      const totalDeseado = pedidoActual + pedido;
+
+      if (totalDeseado > existencia) {
+        const disponibles = existencia - pedidoActual;
+
+        if (disponibles > 0) {
+          setProductosCarrito(productosCarrito.map(p =>
+            p.codigo === codigo
+              ? { ...p, pedido: existencia, importe: p.precio * existencia, existencia }
+              : p
+          ));
+          toast.error(`Solo se agregaron ${disponibles} más (máximo ${existencia} disponibles).`);
+        } else {
+          toast.error(`No hay más piezas disponibles de ${nombre}.`);
+        }
+        return;
+      }
+
+      // Si hay suficiente existencia
+      setProductosCarrito(productosCarrito.map(p =>
+        p.codigo === codigo
+          ? { ...p, pedido: totalDeseado, importe: p.precio * totalDeseado, existencia }
+          : p
+      ));
+      toast.success(`Se agregaron ${pedido} ${pedido > 1 ? 'piezas' : 'pieza'} más.`);
+    };
+
+
+
 
     const removeProductCart = ({codigo, disminuir, agregados}) => {
         if(productosCarrito.find(product => product.codigo === codigo && disminuir == 1)){
             setProductosCarrito(productosCarrito.map(p => (p.codigo === codigo ? {...p, pedido: p.pedido - 1, importe: p.precio * (p.pedido - 1)} : p)))
-            // toast.success('Se quito 1 pieza');
+            toast.success('Se quito 1 pieza');
         }
         if(productosCarrito.find(product => product.codigo === codigo && disminuir == 1 && agregados == 1)){
           let newProductItem = productosCarrito.filter( x => x.codigo != codigo);
           setProductosCarrito(newProductItem);
-          // toast.success('Se elimino el producto del carrito');
+          toast.success('Se elimino el producto del carrito');
 
         }
     }
@@ -76,7 +124,7 @@ const CarritoProvider = ({children}) =>{
             let newCarrito = productosCarrito.filter( x => x.codigo != codigo);
             setProductosCarrito(newCarrito);
             setProductDeliting('');
-            // toast.success('Se elimino el producto del carrito');
+            toast.success('Se elimino el producto del carrito');
           }, 1000);
         
     }

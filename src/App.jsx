@@ -1,5 +1,5 @@
 
-import { Routes, Route } from "react-router-dom";
+import { Routes, Route, Router } from "react-router-dom";
 import { Home, Search, AltaCatalogo, Formularios_session, Perfil_Cliente, Direcciones_clientes, Shop, ConfigShop, Detalle_shop, 
   UploadConstancia, UploadFile, Order_send, Pedidos_clientes, Pedidos_admin, 
   Clientes,
@@ -21,12 +21,14 @@ function App() {
       position="top-center"
       reverseOrder={false}
     />
-    <ScrollToTop />
+    
     <AuthProvider>
       <CarritoProvider>
-        <Routes>
-          
-          
+
+        <ScrollToTop />      
+
+
+        <Routes>  
           <Route path='/' element={<Home />}/>
           <Route path='/login' element={<Formularios_session />}/>
           <Route path='/mi_perfil' element={<Perfil_Cliente />}/>

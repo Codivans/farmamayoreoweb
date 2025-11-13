@@ -1,0 +1,123 @@
+.container_shop_home{
+    width: 90%;
+    margin: 10px auto;
+}
+
+.slider_top{
+    background: #033E7E;
+    background: linear-gradient(0deg, rgba(3, 62, 126, 1) 0%, rgba(20, 116, 219, 1) 100%);
+    width: 100%;
+    padding-block: 20px;
+}
+
+.slider_top .slider-container{
+    width: 90% !important;
+}
+
+.img_category{
+    width: 100%;
+    overflow: hidden;
+    margin-block: 30px;
+    height: 150px;
+}
+.img_category img{
+    width: 100%;
+    display: block;
+    transition: all ease-out 0.3s;
+}
+
+.img_category img:hover{
+    transform: scale(1.01);
+    transition: all ease-in 0.2s;
+}
+
+
+/* Slider products */
+ .slider-container {
+    position: relative;
+    width: 100% !important;
+    margin: 30px auto;
+    display: flex;
+    align-items: center;
+    overflow: visible;
+}
+
+.slider-wrapper {
+    display: flex;
+    gap: 10px;
+    overflow-x: auto;
+    scroll-behavior: smooth;
+    padding: 10px 0;
+    scrollbar-width: none;
+}
+
+.slider-wrapper::-webkit-scrollbar {
+    display: none;
+}
+
+.slide-item {
+    flex: 0 0 auto;
+    width: auto;
+    scroll-snap-align: start;
+}
+
+/* Botones laterales */
+.btn-scroll {
+    background-color: white;
+    border: 1px solid #ccc;
+    border-radius: 50%;
+    width: 40px;
+    height: 40px;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    position: absolute;
+    z-index: 10;
+    transition: all 0.3s ease;
+}
+
+.btn-scroll svg {
+    font-size: 24px;
+    color: #033E7E;
+}
+
+.btn-scroll:hover {
+    background-color: #033E7E;
+    border-color: #033E7E;
+}
+
+.btn-scroll:hover svg {
+    color: white;
+}
+
+.btn-scroll.left {
+    left: 10px;
+}
+
+.btn-scroll.right {
+    right: 10px;
+}
+
+/* Responsive */
+@media (max-width: 768px) {
+  .slide-item {
+    width: 45%;
+  }
+  .btn-scroll {
+    width: 30px;
+    height: 30px;
+  }
+}
+
+@media (max-width: 480px) {
+    .container_shop_home{
+        width: 98%;
+    }
+    .slide-item {
+        width: 200px;
+    }
+    .btn-scroll {
+        display: none;
+    }
+}

@@ -109,15 +109,14 @@ export const Detalle_shop = () => {
               alert('Debes seleccionar un valor')
               
           }else{
-              addProductoCart(
-                  {
-                      codigo: parseInt(event.target.dataset.codigo), 
-                      nombre: event.target.dataset.nombre, 
-                      pedido: productoAgregado ? parseInt(event.target.value) - productoAgregado.pedido : parseInt(event.target.value) ,
-                      precio: event.target.dataset.precio, 
-                      existencia: event.target.dataset.existencia
-                  }
-              )
+            addProductoCart({
+                codigo: parseInt(event.target.dataset.codigo),
+                nombre: event.target.dataset.nombre,
+                pedido: productoAgregado ? parseInt(event.target.value) - productoAgregado.pedido : parseInt(event.target.value),
+                precio: parseFloat(event.target.dataset.precio),
+                existencia: parseInt(event.target.dataset.existencia) // ✅ conversión numérica
+            });
+
           }
           
       }
@@ -125,15 +124,14 @@ export const Detalle_shop = () => {
 
     const handleKey = (e) => {
       if(e.keyCode === 13){
-          addProductoCart(
-              {
-                  codigo: parseInt(e.target.dataset.codigo), 
-                  nombre:e.target.dataset.nombre, 
-                  pedido: e.target.value - e.target.placeholder, 
-                  precio: e.target.dataset.precio, 
-                  existencia: e.target.dataset.existencia
-              }
-          )
+        addProductoCart({
+            codigo: parseInt(e.target.dataset.codigo),
+            nombre: e.target.dataset.nombre,
+            pedido: parseInt(e.target.value) - parseInt(e.target.placeholder),
+            precio: parseFloat(e.target.dataset.precio),
+            existencia: parseInt(e.target.dataset.existencia) // ✅ conversión numérica
+        });
+
           e.target.value= ''
       }
     }
@@ -229,7 +227,20 @@ export const Detalle_shop = () => {
                                                                     onChange={handleChange} 
                                                                     onKeyDown={handleKey}
                                                                 />
-                                                                <button onClick={() => addProductoCart({codigo: parseInt(item.codigo), nombre: item.nombre, pedido: 1, precio: item.oferta > 0 ? item.oferta : item.precio, existencia: item.existencia})}>+</button>
+                                                                <button
+                                                                    onClick={() =>
+                                                                        addProductoCart({
+                                                                        codigo: parseInt(item.codigo),
+                                                                        nombre: item.nombre,
+                                                                        pedido: 1,
+                                                                        precio: item.oferta > 0 ? item.oferta : item.precio,
+                                                                        existencia: parseInt(item.existencia) // ✅ conversión numérica
+                                                                        })
+                                                                    }
+                                                                >
+                                                                    +
+                                                                </button>
+
                                                             </div>
                                                         </div>
                                                         <p className='importe_product_d'>{formatoMoneda(item.importe)}</p>

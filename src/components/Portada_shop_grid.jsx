@@ -1,8 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { Swiper, SwiperSlide } from 'swiper/react';
 import { useCatalogoCruce } from "./../hooks/useCatalogoCruce";
-import pleca_nivea from './../assets/pleca_nivea.jpg';
-import pleca_electrolit from './../assets/pleca_electrolit.jpg';
 
 // Import Swiper styles
 import 'swiper/css';
@@ -12,13 +10,10 @@ import { FreeMode, Autoplay, Navigation } from 'swiper/modules';
 import { Card_product } from './Card_product';
 import { Link } from 'react-router-dom';
 
-const plecas = {
-    nivea: pleca_nivea,
-    electrolit: pleca_electrolit,
-};
-
 export const Portada_shop_grid = ({nameShop, img, shopId}) => {
     const { productos, loading, error } = useCatalogoCruce(shopId);
+
+    console.log(productos)
 
     // Define el estado para almacenar el tamaño de la ventana
     const [windowSize, setWindowSize] = useState({

@@ -1,126 +1,135 @@
-import React, { useState, useEffect } from 'react';
-import { Swiper, SwiperSlide } from 'swiper/react';
-// import productos from './../data/products_carrousel';
+import React, { useState, useEffect, useRef } from 'react';
+import { IoChevronBack, IoChevronForward } from "react-icons/io5";
 import { count, doc, getDoc } from "firebase/firestore";
 import { db } from "./../firebase/firebaseConfig"; // Ajusta según tu ruta
 
 
 // Import Swiper styles
-import 'swiper/css';
-import 'swiper/css/free-mode';
-import 'swiper/css/pagination';
-import { FreeMode, Pagination, Autoplay, Navigation } from 'swiper/modules';
+// import 'swiper/css';
+// import 'swiper/css/free-mode';
+// import 'swiper/css/pagination';
+// import { FreeMode, Pagination, Autoplay, Navigation } from 'swiper/modules';
 import { Card_product } from './Card_product';
 
-export const Carousel_products_top = () => {
+export const Carousel_products_top = ({intervalo = 2500}) => {
 
-    const [productos, setProductos] = useState([]);
-    const [loading, setLoading] = useState(true);
-    const [error, setError] = useState(null);
+  const [productos, setProductos] = useState([]);
+  // const [loading, setLoading] = useState(true);
+  // const [error, setError] = useState(null);
+  const sliderRef = useRef(null);
+  const [isPaused, setIsPaused] = useState(false);
+  const [currentIndex, setCurrentIndex] = useState(0);
 
-    useEffect(() => {
-        const obtenerCatalogoTopCompleto = async () => {
-          try {
-            const refTop = doc(db, "catalogo", "catalogo_top");
-            const refCompleto = doc(db, "catalogo", "farmaMayoreo");
-    
-            const [topSnap, completoSnap] = await Promise.all([
-              getDoc(refTop),
-              getDoc(refCompleto),
-            ]);
-    
-            if (topSnap.exists() && completoSnap.exists()) {
-              const topArray = topSnap.data().catalogo;
-              const completoArray = completoSnap.data().catalogo;
-    
-              const mapaCompleto = new Map(
-                completoArray.map((prod) => [prod.codigo, prod])
-              );
-    
-              const resultado = topArray
-                .map((itemTop) => mapaCompleto.get(itemTop.codigo))
-                .filter((item) => item !== undefined);
-    
-              setProductos(resultado);
-            } else {
-              throw new Error("Uno o ambos documentos no existen");
-            }
-          } catch (err) {
-            console.error("Error obteniendo catálogo top:", err);
-            setError(err);
-          } finally {
-            setLoading(false);
-          }
-        };
-    
-        obtenerCatalogoTopCompleto();
-      }, []);
+  useEffect(() => {
+    const obtenerCatalogoTopCompleto = async () => {
+      try {
+        const refTop = doc(db, "catalogo", "catalogo_top");
+        const refCompleto = doc(db, "catalogo", "farmaMayoreo");
 
+        const [topSnap, completoSnap] = await Promise.all([
+          getDoc(refTop),
+          getDoc(refCompleto),
+        ]);
 
+        if (topSnap.exists() && completoSnap.exists()) {
+          const topArray = topSnap.data().catalogo;
+          const completoArray = completoSnap.data().catalogo;
 
-    // Define el estado para almacenar el tamaño de la ventana
-    const [windowSize, setWindowSize] = useState({
-        width: window.innerWidth,
-        height: window.innerHeight
-    });
+          const mapaCompleto = new Map(
+            completoArray.map((prod) => [prod.codigo, prod])
+          );
 
-    // Define una función que se ejecuta cuando se redimensiona la ventana
-    const handleResize = () => {
-        setWindowSize({
-        width: window.innerWidth,
-        height: window.innerHeight
-        });
+          const resultado = topArray
+            .map((itemTop) => mapaCompleto.get(itemTop.codigo))
+            .filter((item) => item !== undefined);
+
+          setProductos(resultado);
+        } else {
+          throw new Error("Uno o ambos documentos no existen");
+        }
+      } catch (err) {
+        console.error("Error obteniendo catálogo top:", err);
+        setError(err);
+      } finally {
+        setLoading(false);
+      }
     };
 
-    useEffect(() => {
-        // Agrega un event listener para manejar el cambio de tamaño de la ventana
-        window.addEventListener('resize', handleResize);
+    obtenerCatalogoTopCompleto();
+  }, []);
 
-        // Limpia el event listener al desmontar el componente
-        return () => {
-        window.removeEventListener('resize', handleResize);
-        };
-    }, []); // El array vacío asegura que se ejecute solo una vez al montar
+  const totalSlides = productos.length;
 
-    let widthContainer = windowSize.width * 1
+  // --- Movimiento automático tipo carrusel ---
+  useEffect(() => {
+    const slider = sliderRef.current;
+    if (!slider || totalSlides === 0) return;
 
-    let totalCardsWidth = 235;
-    if(widthContainer <= 480 ){
-      totalCardsWidth = (widthContainer / 2)-10
+    const slideWidth = slider.querySelector(".slide-item")?.offsetWidth || 0;
+
+    const moveNext = () => {
+    if (!isPaused) {
+      let newIndex = currentIndex + 1;
+      if (newIndex >= totalSlides) {
+        newIndex = 0;
+        slider.scrollTo({ left: 0, behavior: "smooth" });
+      } else {
+        slider.scrollTo({
+          left: newIndex * (slideWidth + 10),
+          behavior: "smooth",
+        });
+      }
+      setCurrentIndex(newIndex);
     }
-    let margenCard = 10;
-    
-    if(widthContainer <= 440){
-      margenCard = ((widthContainer/2) - ((widthContainer / 2)-10))/2
-    }
+    };
+
+    const interval = setInterval(moveNext, intervalo);
+    return () => clearInterval(interval);
+  }, [isPaused, currentIndex, intervalo, productos.length]);
+
+  const scrollManual = (direction) => {
+    const slider = sliderRef.current;
+    const slideWidth = slider.querySelector(".slide-item")?.offsetWidth || 0;
+    let newIndex =
+    direction === "left" ? currentIndex - 1 : currentIndex + 1;
+
+    if (newIndex < 0) newIndex = totalSlides - 1;
+    if (newIndex >= totalSlides) newIndex = 0;
+
+    slider.scrollTo({
+    left: newIndex * (slideWidth + 10),
+    behavior: "smooth",
+    });
+
+    setCurrentIndex(newIndex);
+  };
 
 
   
 
   return (
-    <div className='container_slide_width'>
-      <div className='container_products_top container_swiper_responsive'>
-        <h4 className='title_carrusel'>Productos + vendidos</h4>
-        <Swiper
-            slidesPerView={Math.floor(widthContainer / totalCardsWidth)}
-            spaceBetween={margenCard}
-            freeMode={true}
-            autoplay={{
-                delay: 2500,
-                disableOnInteraction: false,
-            }}
-            pagination={{
-                clickable: true,
-            }}
-            modules={[Autoplay, FreeMode, Navigation]}
-            className="mySwiper swiper_top"
-        >
-        {
-            productos.map((item, index) => <SwiperSlide  key={item.codigo} className='content_swiper_top' style={{width : totalCardsWidth}}>
-                                        <Card_product  item={item} index={index}/>
-                                    </SwiperSlide>)
-        }
-        </Swiper>
+    <div className="container_shop_home slider_top">
+      <h4 className='title_carrusel'>Productos + vendidos</h4>
+      <div
+          className="slider-container"
+          onMouseEnter={() => setIsPaused(true)}
+          onMouseLeave={() => setIsPaused(false)}
+      >
+          <button className="btn-scroll left" onClick={() => scrollManual("left")}>
+              <IoChevronBack />
+          </button>
+
+          <div className="slider-wrapper" ref={sliderRef}>
+              {productos.concat(productos).map((item, index) => (
+              <div className="slide-item" key={index}>
+                  <Card_product item={item} index={index} />
+              </div>
+              ))}
+          </div>
+
+          <button className="btn-scroll right" onClick={() => scrollManual("right")}>
+              <IoChevronForward />
+          </button>
       </div>
     </div>
   )

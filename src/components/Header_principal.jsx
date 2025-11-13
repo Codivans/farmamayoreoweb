@@ -24,7 +24,7 @@ export const Header_principal = () => {
     const [showForm, setShowForm] = useState(false);    
     const navigate = useNavigate();
     const { countCart } = useContext(ContextoCarrito);
-    const {usuario, userName } = useAuth();
+    const {usuario, userName, setEstatus } = useAuth();
 
 
     const handleKeyPress = (event) => {
@@ -38,9 +38,12 @@ export const Header_principal = () => {
       
     const logOut = async () => {
         await signOut(auth)
-        setEstatus(true)
+        console.log('hace el signout')
+        setEstatus(true);
+        console.log('cambia el eststus')
+        navigate('/');
+
         localStorage.removeItem('UserState')
-        navigate('/')
     }
 
   return (

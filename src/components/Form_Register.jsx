@@ -16,6 +16,7 @@ export const Form_Register = ({selectForm, setSelectForm}) => {
         password: "",
         documento: null,
       });
+      const [error, setError] = useState(null);
 
       function capitalizar(str) {
           return str.replace(/\w\S*/g, function(txt){
@@ -47,10 +48,11 @@ export const Form_Register = ({selectForm, setSelectForm}) => {
             nombre: capitalizar(form.nombre),
             apellidoPaterno: capitalizar(form.apellidoPaterno),
             apellidoMaterno: capitalizar(form.apellidoMaterno),
+            fechaRegistro: new Date(),
             telefono: form.telefono,
             uid: user.uid,
             roll: 'cliente',
-            status: false,
+            status: true,
           });
 
           console.log("Datos guardados en Firestore");
@@ -65,7 +67,28 @@ export const Form_Register = ({selectForm, setSelectForm}) => {
 
         } catch (error) {
           console.error("Error en el registro:", error);
-          alert("Ocurrió un error durante el registro");
+          switch (error.code) {
+            case "auth/invalid-email":
+            setError("El correo electrónico no es válido.");
+            break;
+            case "auth/user-not-found":
+            setError("No se encontró un usuario con este correo.");
+            break;
+            case "auth/wrong-password":
+            setError("La contraseña es incorrecta.");
+            break;
+            case "auth/email-already-in-use":
+            setError("Este correo ya está registrado.");
+            break;
+            case "auth/weak-password":
+            setError("La contraseña debe tener al menos 6 caracteres.");
+            break;
+            case "auth/invalid-credential":
+            setError("Tus datos son erroneos, intenta de nuevo");
+            break
+            default:
+            setError("Ocurrió un error. Intenta de nuevo.");
+          }
         }
       };
 
@@ -85,6 +108,9 @@ export const Form_Register = ({selectForm, setSelectForm}) => {
           </button>
         </form>
         <p className='txt_form_footer'>¿Ya tienes una cuenta? <span onClick={() => setSelectForm(false)}> Inicia sesión</span></p>
+        {
+            error === null ? ("") : (<span className='msg_error'>{error}</span>)
+        }
     </div>
   )
 }

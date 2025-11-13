@@ -69,6 +69,7 @@ export const AltaCatalogo = () => {
                         <th>Departamento</th>
                         <th>Sustancia</th>
                         <th>Laboratorio</th>
+                        <th>Grupo</th>
                     </tr>
                 </thead>
                 <tbody>
@@ -85,6 +86,7 @@ export const AltaCatalogo = () => {
                                     <td>{product.departamento}</td>
                                     <td>{product.sustancia}</td>
                                     <td>{product.laboratorio}</td>
+                                    <td>{product.grupo}</td>
                                 </tr>
                             )
                         })

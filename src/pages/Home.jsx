@@ -10,13 +10,12 @@ import { Menu_Bottom } from '../components/Menu_Bottom';
 import LogoSlider from '../components/LogoSlider';
 import { MdVerified } from "react-icons/md";
 import { Footer } from '../components/Footer';
+import { SliderProductos } from '../components/SliderProducts';
 
 
 export function Home() {
 
   const { shopNames, loading } = useShopNames();
-
-  console.log(shopNames)
 
     // transformamos shopNames -> props para LogoSlider
   const logos = shopNames.map((shop) => ({
@@ -36,15 +35,18 @@ export function Home() {
           <h4>Tiendas oficiales <MdVerified /> </h4>
           <LogoSlider logos={logos}/>  
         </div>  
+
       {
         shopNames.map((shop, index) => (
           <React.Fragment key={shop.id}>
             {/* Siempre mostrar tienda */}
-            <Portada_shop_grid nameShop={shop.name} img={shop.images?.bannerFront} shopId={shop.id}/>
+            {/* <Portada_shop_grid nameShop={shop.name} img={shop.images?.bannerFront} shopId={shop.id}/> */}
+            <SliderProductos velocidad={20} nameShop={shop.name} img={shop.images?.bannerFront} shopId={shop.id}/>
 
             {/* Insertar elementos fijos en posiciones específicas */}
             {index === 0 &&  <Carousel_products_top />}
-            {index === 1 && <Carrusel_store departamento='GENERICOS'/>}
+            {/* {index === 1 && <Carrusel_store departamento='GENERICOS'/>} */}
+            
           </React.Fragment>
         ))
       }
