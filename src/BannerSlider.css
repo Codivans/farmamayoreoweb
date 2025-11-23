@@ -72,18 +72,20 @@
 
 @media (max-width: 768px) {
   .hero-slider-container {
-    aspect-ratio: 16 / 9;
+    aspect-ratio: 16 / 6;
     width: 100%;
     border-radius: 0px;
   }
+
   .hero-slider-container .hero-slide{
-    background-color: red;
+    background-color: #edecec;
     width: auto;
   }
 
   .hero-slider-container .hero-slide img{
     width: auto;
   }
+
   .hero-caption {
     font-size: 0.9rem;
     left: 20px;

@@ -1,56 +1,57 @@
-import React, { useState, useEffect } from 'react';
-import { Swiper, SwiperSlide } from 'swiper/react';
-import portada_nivea from './../assets/portada_nivea.jpg';
-import portada_electrolit from './../assets/portada_electrolit.jpg';
-
-// Import Swiper styles
-import 'swiper/css';
-import 'swiper/css/free-mode';
-import 'swiper/css/pagination';
-import { FreeMode, Pagination, Autoplay, Navigation } from 'swiper/modules';
+import React, { useState, useEffect, useRef } from 'react';
+import { IoChevronBack, IoChevronForward } from "react-icons/io5";
 import { Card_product } from './Card_product';
 
 
-export const Carrusel_store_shop = ({productos, img}) => {
-
-     // Define el estado para almacenar el tamaño de la ventana
-     const [windowSize, setWindowSize] = useState({
-        width: window.innerWidth,
-        height: window.innerHeight
-    });
-
-    // Define una función que se ejecuta cuando se redimensiona la ventana
-    const handleResize = () => {
-        setWindowSize({
-        width: window.innerWidth,
-        height: window.innerHeight
-        });
-    };
-
-    useEffect(() => {
-        // Agrega un event listener para manejar el cambio de tamaño de la ventana
-        window.addEventListener('resize', handleResize);
-
-        // Limpia el event listener al desmontar el componente
-        return () => {
-        window.removeEventListener('resize', handleResize);
-        };
-    }, []); // El array vacío asegura que se ejecute solo una vez al montar
-
-   let widthContainerPrimary = windowSize.width * 1
-    let widthContainer =  windowSize.width <= 490 ? windowSize.width : widthContainerPrimary - 390
-    let widthCardAuto = (widthContainer / 5) - 10
-    let countCards = Math.floor(widthContainer / widthCardAuto)
-
-    let totalCardsWidth = 235;
-    if(widthContainer <= 480 ){
-      totalCardsWidth = (widthContainer / 2)-10
-    }
-    let margenCard = 10;
+export const Carrusel_store_shop = ({productos, img, intervalo = 2500}) => {
+      const sliderRef = useRef(null);
+      const [isPaused, setIsPaused] = useState(false);
+      const [currentIndex, setCurrentIndex] = useState(0);    
+      const totalSlides = productos.length;
     
-    if(widthContainer <= 440){
-      margenCard = ((widthContainer/2) - ((widthContainer / 2)-10))/2
-    }
+      // --- Movimiento automático tipo carrusel ---
+      useEffect(() => {
+        const slider = sliderRef.current;
+        if (!slider || totalSlides === 0) return;
+    
+        const slideWidth = slider.querySelector(".slide-item")?.offsetWidth || 0;
+    
+        const moveNext = () => {
+        if (!isPaused) {
+          let newIndex = currentIndex + 1;
+          if (newIndex >= totalSlides) {
+            newIndex = 0;
+            slider.scrollTo({ left: 0, behavior: "smooth" });
+          } else {
+            slider.scrollTo({
+              left: newIndex * (slideWidth + 10),
+              behavior: "smooth",
+            });
+          }
+          setCurrentIndex(newIndex);
+        }
+        };
+    
+        const interval = setInterval(moveNext, intervalo);
+        return () => clearInterval(interval);
+      }, [isPaused, currentIndex, intervalo, productos.length]);
+    
+      const scrollManual = (direction) => {
+        const slider = sliderRef.current;
+        const slideWidth = slider.querySelector(".slide-item")?.offsetWidth || 0;
+        let newIndex =
+        direction === "left" ? currentIndex - 1 : currentIndex + 1;
+    
+        if (newIndex < 0) newIndex = totalSlides - 1;
+        if (newIndex >= totalSlides) newIndex = 0;
+    
+        slider.scrollTo({
+        left: newIndex * (slideWidth + 10),
+        behavior: "smooth",
+        });
+    
+        setCurrentIndex(newIndex);
+      };
     
   return (
     <div className='container_products_column container_swiper_responsive'>
@@ -58,29 +59,27 @@ export const Carrusel_store_shop = ({productos, img}) => {
             <img src={img} />
         </div>
         
-        <div className='container_carousel_column'>
-            <Swiper
-                slidesPerView={Math.floor(widthContainer / totalCardsWidth)}
-                spaceBetween={margenCard}
-                freeMode={true}
-                autoplay={{
-                delay: 2500,
-                disableOnInteraction: false,
-                }}
-                pagination={{
-                clickable: true,
-                }}
-                modules={[Autoplay, FreeMode, Navigation]}
-                className="mySwiper"
-                style={{marginTop: '20px !important'}}
-            >
-                {
-                    productos.map((item) => <SwiperSlide style={{width : totalCardsWidth}}  key={item.CODIGO}>
-                                                <Card_product item={item}/>
-                                            </SwiperSlide>)
-                }
-            </Swiper>
-        </div>
+      <div
+          className="slider-container container_cards_top"
+          onMouseEnter={() => setIsPaused(true)}
+          onMouseLeave={() => setIsPaused(false)}
+      >
+          <button className="btn-scroll left" onClick={() => scrollManual("left")}>
+              <IoChevronBack />
+          </button>
+
+          <div className="slider-wrapper" ref={sliderRef}>
+              {productos.concat(productos).map((item, index) => (
+              <div className="slide-item" key={index}>
+                  <Card_product item={item} index={index} />
+              </div>
+              ))}
+          </div>
+
+          <button className="btn-scroll right" onClick={() => scrollManual("right")}>
+              <IoChevronForward />
+          </button>
+      </div>
     </div>
   )
 }

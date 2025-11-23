@@ -8,7 +8,6 @@ import { IoSearch } from "react-icons/io5";
 import { IoMdCart } from "react-icons/io";
 import { TiUser } from "react-icons/ti";
 import { PlecaAnuncios } from './PlecaAnuncios';
-import { Flag_Header } from './Flag_Header';
 import { Formulario_session } from './Formulario_session';
 import { useAuth } from '../context/AuthContext';
 import { MenuFamilias } from './MenuFamilias';
@@ -118,19 +117,11 @@ export const Header_principal = () => {
                     ?(<span className='count_cart animate__animated animate__bounceIn'>{countCart > 99 ? '99+' : countCart}</span>) 
                     :('')
                    }
-                   
                 </button>
-               
             </div>
         </div>
-        {
-            showCart && <Cart_slide showCart={showCart} setShowCart={setShowCart}/>
-        }
-
-        {
-            showForm && <Formulario_session showForm={showForm} setShowForm={setShowForm} />
-        }
-        
+        {showCart && <Cart_slide showCart={showCart} setShowCart={setShowCart}/>}
+        {showForm && <Formulario_session showForm={showForm} setShowForm={setShowForm} />}
         
     </div>
   )

@@ -13,17 +13,17 @@ export const Banner_principal = () => {
     let intervalo = 2500
 
      // --- Autoplay con loop ---
-  useEffect(() => {
-    const nextSlide = () => {
-      setCurrent((prev) => (prev + 1) % images.length);
-    };
+    useEffect(() => {
+      const nextSlide = () => {
+        setCurrent((prev) => (prev + 1) % images.length);
+      };
 
-    // if (!paused) {
-      timeoutRef.current = setTimeout(nextSlide, intervalo);
-    // }
+      // if (!paused) {
+        timeoutRef.current = setTimeout(nextSlide, intervalo);
+      // }
 
-    return () => clearTimeout(timeoutRef.current);
-  }, [current, paused, images, intervalo]);
+      return () => clearTimeout(timeoutRef.current);
+    }, [current, paused, images, intervalo]);
 
   return (
     <div

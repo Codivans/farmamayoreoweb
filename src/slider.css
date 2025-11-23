@@ -42,6 +42,12 @@
     overflow: visible;
 }
 
+.container_shop_carrusel{
+    width: 90% !important;
+}
+
+
+
 .slider-wrapper {
     display: flex;
     gap: 10px;

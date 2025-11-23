@@ -6,9 +6,9 @@ import { Card_product } from '../components/Card_product'
 import Pagination from './../components/Pagination';
 import searchCatalog from '../hooks/searchCatalog';
 import ClipLoader from "react-spinners/ClipLoader";
-import { Breadcrum } from '../components/Breadcrum';
 import { Footer } from '../components/Footer';
 import { SliderBannersShops } from '../components/SliderBannersShops';
+import { FiFilter } from "react-icons/fi";
 
 export const Search = () => {
     const [results, setResults] = useState([]);
@@ -17,6 +17,7 @@ export const Search = () => {
     const [selectedLabs, setSelectedLabs] = useState([]);
     const { modulo, searchTerm } = useParams();
     const [loading, setLoading] = useState(false);
+    const [showFiltros, setShowFiltros] = useState(false);
 
     const { shopNames } = useShopNames();
 
@@ -106,55 +107,65 @@ export const Search = () => {
     return (
         <>
             <Header_principal />
-            <Breadcrum />
             <div className='container_result_search'>
-                <div className='filtro_research'>
-                    <div className='cabeceras_filtros'>
-                        <h4>Filtros</h4>
-                        <button onClick={clearFilters}>Limpiar filtros</button>
-                    </div>
+                <div className={`filtro_responsive ${showFiltros ? 'active_filtros' : 'desactive_filtros'}`}>
+                    <div className='filtro_research'>
+                        <div className='cabeceras_filtros'>
+                            <h4>Filtros <FiFilter /></h4>
+                            <button onClick={clearFilters}>Limpiar filtros</button>
+                        </div>
 
-                    {/* 🔹 Filtro padre: Departamentos */}
-                    <h5>Departamentos {`(${deps.length})`}</h5>
-                    <div className='content_data_filters'>
-                        <ul>
-                            {deps.map((dep, index) => (
-                                <li key={index}>
-                                    <label>
-                                        <input
-                                            type="checkbox"
-                                            checked={selectedDeps.includes(dep)}
-                                            onChange={() => toggleSelection(dep, selectedDeps, setSelectedDeps)}
-                                        />
-                                        {dep}
-                                    </label>
-                                </li>
-                            ))}
-                        </ul>
-                    </div>
+                        {/* 🔹 Filtro padre: Departamentos */}
+                        <h5>Departamentos {`(${deps.length})`}</h5>
+                        <div className='content_data_filters'>
+                            <ul>
+                                {deps.map((dep, index) => (
+                                    <li key={index}>
+                                        <label>
+                                            <input
+                                                type="checkbox"
+                                                checked={selectedDeps.includes(dep)}
+                                                onChange={() => toggleSelection(dep, selectedDeps, setSelectedDeps)}
+                                            />
+                                            {dep}
+                                        </label>
+                                    </li>
+                                ))}
+                            </ul>
+                        </div>
 
-                    {/* 🔹 Filtro dependiente: Laboratorios */}
-                    <h5>Laboratorios {`(${labs.length})`}</h5>
-                    <div className='content_data_filters'>
-                        <ul>
-                            {labs.map((lab, index) => (
-                                <li key={index}>
-                                    <label>
-                                        <input
-                                            type="checkbox"
-                                            checked={selectedLabs.includes(lab)}
-                                            onChange={() => toggleSelection(lab, selectedLabs, setSelectedLabs)}
-                                        />
-                                        {lab}
-                                    </label>
-                                </li>
-                            ))}
-                        </ul>
+                        {/* 🔹 Filtro dependiente: Laboratorios */}
+                        <h5>Laboratorios {`(${labs.length})`}</h5>
+                        <div className='content_data_filters'>
+                            <ul>
+                                {labs.map((lab, index) => (
+                                    <li key={index}>
+                                        <label>
+                                            <input
+                                                type="checkbox"
+                                                checked={selectedLabs.includes(lab)}
+                                                onChange={() => toggleSelection(lab, selectedLabs, setSelectedLabs)}
+                                            />
+                                            {lab}
+                                        </label>
+                                    </li>
+                                ))}
+                            </ul>
+                        </div>
+                        {
+                            showFiltros
+                            ? (<button className='close_filtros' onClick={() => setShowFiltros(!showFiltros)}>Cerrar Filtros</button>)
+                            : ''
+                        }
+                        
                     </div>
                 </div>
 
                 {/* Productos */}
                 <div className='container_cards_results'>
+                    <div className='barra_filtros'>
+                        <button onClick={() => setShowFiltros(!showFiltros)}>Filtrar <FiFilter/> </button>
+                    </div>
                     <SliderBannersShops shops={shops}/>
 
                     {loading ? (

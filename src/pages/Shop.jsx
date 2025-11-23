@@ -23,7 +23,7 @@ export const Shop = () => {
     let widthCardAuto = 250
 
     const images = data?.images?.bannerBack || []
-
+    
       // Agrupar por marca
     const agrupadoPorMarca = productos.reduce((acc, prod) => {
         const marca = prod.marca || "Sin marca";

@@ -1,81 +1,79 @@
-import React, { useState, useEffect } from 'react';
-import { Swiper, SwiperSlide } from 'swiper/react';
-// import productos from './../data/products_carrousel';
-import { doc, getDoc } from "firebase/firestore";
-import { db } from "./../firebase/firebaseConfig"; // Ajusta según tu ruta
-
-
-// Import Swiper styles
-import 'swiper/css';
-import 'swiper/css/free-mode';
-import 'swiper/css/pagination';
-import { FreeMode, Pagination, Autoplay, Navigation } from 'swiper/modules';
+import React, { useState, useEffect, useRef } from 'react';
+import { IoChevronBack, IoChevronForward } from "react-icons/io5";
 import { Card_product } from './Card_product';
 
-export const Carusel_shops = ({productos}) => {
+export const Carusel_shops = ({productos, intervalo = 2500}) => {
 
-    // Define el estado para almacenar el tamaño de la ventana
-    const [windowSize, setWindowSize] = useState({
-        width: window.innerWidth,
-        height: window.innerHeight
-    });
+    const sliderRef = useRef(null);
+    const [isPaused, setIsPaused] = useState(false);
+    const [currentIndex, setCurrentIndex] = useState(0);
+    const totalSlides = productos.length;
+    
+    // --- Movimiento automático tipo carrusel ---
+    useEffect(() => {
+    const slider = sliderRef.current;
+    if (!slider || totalSlides === 0) return;
 
-    // Define una función que se ejecuta cuando se redimensiona la ventana
-    const handleResize = () => {
-        setWindowSize({
-        width: window.innerWidth,
-        height: window.innerHeight
+    const slideWidth = slider.querySelector(".slide-item")?.offsetWidth || 0;
+
+    const moveNext = () => {
+    if (!isPaused) {
+        let newIndex = currentIndex + 1;
+        if (newIndex >= totalSlides) {
+        newIndex = 0;
+        slider.scrollTo({ left: 0, behavior: "smooth" });
+        } else {
+        slider.scrollTo({
+            left: newIndex * (slideWidth + 10),
+            behavior: "smooth",
         });
+        }
+        setCurrentIndex(newIndex);
+    }
     };
 
-    useEffect(() => {
-        // Agrega un event listener para manejar el cambio de tamaño de la ventana
-        window.addEventListener('resize', handleResize);
-
-        // Limpia el event listener al desmontar el componente
-        return () => {
-        window.removeEventListener('resize', handleResize);
-        };
-    }, []); // El array vacío asegura que se ejecute solo una vez al montar
-
-    let widthContainer = windowSize.width * .90
-    let widthCardAuto = (widthContainer / 6) - 10
-
-    let totalCardsWidth = 235;
-    if(widthContainer <= 480 ){
-      totalCardsWidth = (widthContainer / 2)-10
-    }
-    let margenCard = 10;
+    const interval = setInterval(moveNext, intervalo);
+    return () => clearInterval(interval);
+    }, [isPaused, currentIndex, intervalo, productos.length]);
     
-    if(widthContainer <= 440){
-      margenCard = ((widthContainer/2) - ((widthContainer / 2)-10))/2
-    }
+    const scrollManual = (direction) => {
+        const slider = sliderRef.current;
+        const slideWidth = slider.querySelector(".slide-item")?.offsetWidth || 0;
+        let newIndex =
+        direction === "left" ? currentIndex - 1 : currentIndex + 1;
 
-    
+        if (newIndex < 0) newIndex = totalSlides - 1;
+        if (newIndex >= totalSlides) newIndex = 0;
+
+        slider.scrollTo({
+            left: newIndex * (slideWidth + 10),
+            behavior: "smooth",
+        });
+
+        setCurrentIndex(newIndex);
+    };
 
   return (
-    <div className='container_products_top container_swiper_responsive'>
-        <Swiper
-            slidesPerView={Math.floor(widthContainer / totalCardsWidth)}
-            spaceBetween={margenCard}
-            freeMode={true}
-            autoplay={{
-                delay: 2500,
-                disableOnInteraction: false,
-            }}
-            pagination={{
-                clickable: true,
-            }}
-            modules={[Autoplay, FreeMode, Navigation]}
-            className="mySwiper"
-        >
-        {
-            productos.map((item) => <SwiperSlide  key={item.codigo}>
-                                        <Card_product widthCard={widthCardAuto} item={item} />
-                                    </SwiperSlide>)
-        }
-        </Swiper>
+      <div
+          className="slider-container container_shop_carrusel"
+          onMouseEnter={() => setIsPaused(true)}
+          onMouseLeave={() => setIsPaused(false)}
+      >
+          <button className="btn-scroll left" onClick={() => scrollManual("left")}>
+              <IoChevronBack />
+          </button>
 
-    </div>
+          <div className="slider-wrapper" ref={sliderRef}>
+              {productos.concat(productos).map((item, index) => (
+              <div className="slide-item" key={index}>
+                  <Card_product item={item} index={index} />
+              </div>
+              ))}
+          </div>
+
+          <button className="btn-scroll right" onClick={() => scrollManual("right")}>
+              <IoChevronForward />
+          </button>
+      </div>
   )
 }

@@ -7,8 +7,6 @@ import { Card_product } from './Card_product';
 export const Carousel_products_top = ({intervalo = 2500}) => {
 
   const [productos, setProductos] = useState([]);
-  // const [loading, setLoading] = useState(true);
-  // const [error, setError] = useState(null);
   const sliderRef = useRef(null);
   const [isPaused, setIsPaused] = useState(false);
   const [currentIndex, setCurrentIndex] = useState(0);

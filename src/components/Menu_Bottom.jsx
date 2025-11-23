@@ -9,11 +9,8 @@ import { Formulario_session } from './Formulario_session';
 
 export const Menu_Bottom = () => {
     const [isActive, setIsActive] = useState(1);
-    const [showForm, setShowForm] = useState(false);
     const navigate = useNavigate();
-
     const { countCart } = useContext(ContextoCarrito);
-
     const clickHome = () => {
         setIsActive(1)
         navigate('/')
@@ -29,18 +26,6 @@ export const Menu_Bottom = () => {
                     <Link to='/' className='btn_bottom_navigation'>
                         <HiOutlineHome />
                         <span>Home</span>
-                    </Link>
-                </li>
-                <li>
-                    <Link to='/' className='btn_bottom_navigation'>
-                        <IoMenu />
-                        <span>Categorias</span>
-                    </Link>
-                </li>
-                <li>
-                    <Link to='/' className='btn_bottom_navigation'>
-                        <MdOutlineLocalOffer />
-                        <span>Ofertas</span>
                     </Link>
                 </li>
                 <li>
