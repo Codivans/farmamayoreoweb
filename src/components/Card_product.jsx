@@ -14,18 +14,18 @@ export const Card_product = ({item, index}) => {
 
     const disponibilidad = (existencia) => {
       if(existencia >= 50){
-        return  <div class="status">
-                  <span class="status-dot green"></span>
+        return  <div className="status">
+                  <span className="status-dot green"></span>
                   <span>Disponibilidad Alta</span>
                 </div>
       }else if(existencia >=30 & existencia <= 49){
-        return  <div class="status">
-                  <span class="status-dot orange"></span>
+        return  <div className="status">
+                  <span className="status-dot orange"></span>
                   <span>Disponibilidad Media</span>
                 </div>
       }else if(existencia >=1 & existencia <= 29){
-        return  <div class="status">
-                  <span class="status-dot red"></span>
+        return  <div className="status">
+                  <span className="status-dot red"></span>
                   <span>Disponibilidad Baja</span>
                 </div>
       }

@@ -3,7 +3,9 @@ import { Routes, Route, Router } from "react-router-dom";
 import { Home, Search, AltaCatalogo, Formularios_session, Perfil_Cliente, Direcciones_clientes, Shop, ConfigShop, Detalle_shop, 
   UploadConstancia, UploadFile, Order_send, Pedidos_clientes, Pedidos_admin, 
   Clientes,
-  AltaProductosTop} from './pages/index';
+  AltaProductosTop,
+  Formularios_registro,
+  RecuperarPassword} from './pages/index';
 import './App.css';
 import 'animate.css';
 import { CarritoProvider } from './context/cartContext';
@@ -31,6 +33,9 @@ function App() {
         <Routes>  
           <Route path='/' element={<Home />}/>
           <Route path='/login' element={<Formularios_session />}/>
+          <Route path='/registro' element={<Formularios_registro />}/>
+          <Route path='/recuperar' element={<RecuperarPassword />}/>
+
           <Route path='/mi_perfil' element={<Perfil_Cliente />}/>
 
           <Route path='/direcciones_perfil' element={<Direcciones_clientes />}/>

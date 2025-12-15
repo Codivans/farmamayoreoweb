@@ -63,7 +63,7 @@ export const Cart_slide = ({showCart, setShowCart}) => {
             }
         </div>
         {
-          productosCarrito.length > 0 &&(
+          productosCarrito.length > 0 ?(
             <div className='cart_footer'>
               <div className='column_footer_cart'>
                 <p>Total: </p>
@@ -75,6 +75,12 @@ export const Cart_slide = ({showCart, setShowCart}) => {
               </div>
               
               
+            </div>
+          ):(
+            <div className='cart_footer'>
+              <div className='column_footer_cart wrap_close_cart'>
+                <button className='btn_finalizar_cart btn_close_cart' onClick={() => setShowCart(false)}>Seguir comprando</button>
+              </div>
             </div>
           )
         }

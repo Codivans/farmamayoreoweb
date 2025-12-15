@@ -74,7 +74,6 @@ export const Form_login = ({selectForm, setSelectForm, setShowForm, showForm}) =
       }
 
 
-
       const logout = async () => {
         await signOut(auth);
         localStorage.removeItem('UserState');

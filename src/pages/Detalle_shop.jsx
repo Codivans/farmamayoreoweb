@@ -271,7 +271,14 @@ export const Detalle_shop = () => {
                                                 toggleEntrega === 'pickUp' ? (
                                                     <>
                                                         <div className='container_cards_pickup'>
-                                                            <div className={`item_address ${selectEntrega === 'tienda' ? 'actived_address': ''}`}>
+
+                                                            <div className={`item_address ${selectEntrega === 'cerezos' ? 'actived_address': ''}`}>
+                                                                <input type='radio' name='tienda' checked={'tienda' === selectEntrega} onChange={handleChangeToggle} id='tienda'/>
+                                                                <label htmlFor='tienda'>Farma Mayoreo Neza</label>
+                                                                <p>Av. Pantitlán 617, La Perla, 57820 Cdad. Nezahualcóyotl, Méx.</p>
+                                                            </div>
+
+                                                            {/* <div className={`item_address ${selectEntrega === 'tienda' ? 'actived_address': ''}`}>
                                                                 <input type='radio' name='tienda' checked={'tienda' === selectEntrega} onChange={handleChangeToggle} id='tienda'/>
                                                                 <label htmlFor='tienda'>Tienda</label>
                                                                 <p>Rio churubusco s/n Central de Abastos, Pasillo E-F Local 30B, Iztapalapa, 09040, CDMX.</p>
@@ -281,7 +288,7 @@ export const Detalle_shop = () => {
                                                                 <input type='radio' name='anden' checked={'anden' === selectEntrega} onChange={handleChangeToggle} id='anden'/>
                                                                 <label htmlFor='anden'>Anden</label>
                                                                 <p>Rio churubusco s/n Central de Abastos, Anden estacionamiento 30B, Iztapalapa, 09040, CDMX.</p>
-                                                            </div>
+                                                            </div> */}
                                                         </div>
                                                     </>
                                                 ) : (
@@ -448,7 +455,7 @@ export const Detalle_shop = () => {
                             ) :(
                                 
                                 <div>
-                                    {
+                                    {/* {
                                         userData?.constancia?.url && userData?.aviso?.url ? (
                                             <div className='pendiente_box'>
                                                 <p>Estamos validando tu información, en cuanto terminemos te notificaremos el estatus de tu cuenta.</p>
@@ -463,7 +470,7 @@ export const Detalle_shop = () => {
                                                 <Link to="/documentos">Subir mis documentos</Link>
                                             </div>
                                         )
-                                    }
+                                    } */}
                                     
                                 </div>
                             )}

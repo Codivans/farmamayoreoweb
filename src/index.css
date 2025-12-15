@@ -537,6 +537,13 @@ body{
     font-size: 18px;
 }
 
+.wrap_close_cart{
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    padding-block: 10px;
+}
+
 .cart_footer .btn_vaciar_cart{
     background-color: transparent;
     cursor: pointer;
@@ -567,33 +574,15 @@ body{
 .container_form_session{
     background-color: white;
     width: 100%;
-    height: auto;
+    min-height: 60vh;
     display: flex;
     justify-content: center;
     align-items: center;
-}
-
-
-.container_forms{
-    border-radius: 10px;
-    width: 480px;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    margin-block: 50px;
-
-}
-
-.container_forms_column{
-    display: inline-block;
-    width: 100%;
 }
 
 .container_form_style{
     background-color: white;
     margin: 20px auto;
-    display:inline-block;
-    vertical-align:top;
     width: 380px;
     margin: 20px;
 }
@@ -603,7 +592,7 @@ body{
     font-size: 22px;
     font-weight: 600;
 }
-.container_form_style form input{
+.container_form_style  input{
     background-color: white;
     border: 1px solid #cecece;
     border-radius: 6px;
@@ -617,9 +606,10 @@ body{
 }
 
 
-.container_form_style form input:focus{
+.container_form_style  input:focus{
     outline: none;
 }
+
 .email_input, .pass_input{
     text-transform: lowercase !important;
 }
@@ -694,10 +684,6 @@ body{
     text-decoration: underline;
 }
 
-.form_register{
-    margin-top: -290px;
-}
-
 .msg_error{
     background-color: rgba(255, 0, 0, 0.6);
     border-radius: 6px;
@@ -710,14 +696,10 @@ body{
     padding: 10px;
 }
 
-
-
-
-
-
-
-
-
+.txt_recuperar{
+    color: #333;
+    text-align: center;
+}
 
 .container_session{
     background-color: white;
@@ -729,10 +711,7 @@ body{
     -moz-box-shadow: 1px 1px 11px 0px rgba(26,26,26,0.40);
     box-shadow: 1px 1px 11px 0px rgba(26,26,26,0.40)
 }
-.form_register{
-    height: 415px;
-    margin-top: clac(((100vh - 415)/ 2));
-}
+
 
 .container_session h3{
     color: #203266;
@@ -3311,6 +3290,13 @@ footer{
         padding: 10px;
     }
 
+    .input_pass{
+        font-size: 18px !important;
+        margin: 10px auto;
+        display: block;
+        padding: 10px;
+        width: 340px !important;
+    }
 
 
 
@@ -3423,19 +3409,32 @@ footer{
     }
 
     .row_product_detalle_shop .img_product_detalle{
-        width: 70px;
+        width: 60px;
     }
 
     .row_product_detalle_shop .detalle_data_product{
         display: block;
+        width: 100%;
     }
     .row_product_detalle_shop .detalle_data_product .column_name{
-        width: 100%;
+        width: 100% !important;
+    }
+    .row_product_detalle_shop .detalle_data_product .column_prices{
+        width: 100% !important;
     }
 
     .container_controller_detalle_shop{
-        width: 55%;
+        width: 45%;
     }
+    .container_controller_detalle_shop .count_add_cart{
+        width: 55px !important;
+        
+    }
+
+    .count_add_cart{
+        font-size: 18px !important;
+    }
+
     .column_prices .importe_product_d{
         color: #262626;
         text-align: right;

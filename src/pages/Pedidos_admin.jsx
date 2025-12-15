@@ -1,5 +1,5 @@
 import { useEffect, useState } from "react";
-import { collection, getDocs, doc, getDoc, onSnapshot  } from "firebase/firestore";
+import { collection, getDocs, doc, getDoc, onSnapshot, updateDoc  } from "firebase/firestore";
 import { db } from "./../firebase/firebaseConfig"; // Asegúrate de tener tu firebase config aquí
 import logo from './../assets/farmamayoreo.svg';
 import { Link } from "react-router-dom";
@@ -203,6 +203,24 @@ export const Pedidos_admin = () => {
     }, 100); // 🔥 pequeño delay para dejar que React pinte
   };
 
+
+    // 🔹 Actualizar estatus en Firebase
+    const actualizarEstatus = async (pedidoId, nuevoStatus) => {
+      console.log(pedidoId, nuevoStatus)
+      try {
+        const pedidoRef = doc(db, "pedidos", pedidoId);
+        await updateDoc(pedidoRef, { estatus: nuevoStatus });
+        
+        setPedidosOriginales((prev) =>
+          prev.map((p) =>
+            p.id === pedidoId ? { ...p, estatus: nuevoStatus } : p
+          )
+        );
+      } catch (error) {
+        console.error("Error al actualizar estatus:", error);
+      }
+    };
+
   
 
   return (
@@ -296,10 +314,16 @@ export const Pedidos_admin = () => {
                         <td><span className={`item_estatus item_${item.pedido.estatus}`}> {item.pedido.estatus} </span></td>
                         <td><button onClick={() => showPedidoDetails(item.idPedido)}>Ver detalle</button></td>
                         <td>
-                          <select>
-                            <option>Surtiendo</option>
-                            <option>Entregado</option>
-                            <option>Cancelado</option>
+                          <select
+                            value={item.pedido.estatus}
+                            onChange={(e) =>
+                              actualizarEstatus(item.idPedido, e.target.value)
+                            }
+                          >
+                            <option>Selecciona</option>
+                            <option value='surtiendo'>Surtiendo</option>
+                            <option value='entregado'>Entregado</option>
+                            <option value='cancelado'>Cancelado</option>
                           </select>
                         </td>
                     </tr>

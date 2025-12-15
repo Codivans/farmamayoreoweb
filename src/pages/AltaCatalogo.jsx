@@ -1,7 +1,7 @@
 import { useState } from 'react';
 import * as XLSX from 'xlsx';
-import { Header_principal } from '../components/Header_principal'
 import subirCatalogo from '../firebase/subirCatalogo';
+import { Header_admin } from '../components/Header_admin';
 
 export const AltaCatalogo = () => {
 
@@ -45,7 +45,7 @@ export const AltaCatalogo = () => {
 
   return (
     <>
-        <Header_principal />
+        <Header_admin />
         <div>
             <label onChange={(e) => {const file = e.target.files[0]; readExcel(file);}} className='btn-file'>
                 <div>
