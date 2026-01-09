@@ -1,5 +1,12 @@
 import React, { useState, useEffect, useRef } from "react";
 import "./../BannerSlider.css";
+import imgbanner1 from "./../assets/banners/banner1.jpg";
+import imgbanner2 from "./../assets/banners/banner2.jpg";
+import imgbanner3 from "./../assets/banners/banner3.jpg";
+
+import imgbanner1movil from "./../assets/banners/banner1_movil.jpg";
+import imgbanner2movil from "./../assets/banners/banner2_movil.jpg";
+import imgbanner3movil from "./../assets/banners/banner3_movil.jpg";
 
 export const Banner_principal = () => {
     const [current, setCurrent] = useState(0);
@@ -7,10 +14,19 @@ export const Banner_principal = () => {
     const timeoutRef = useRef(null);
 
     const images = [
-      {src:"https://firebasestorage.googleapis.com/v0/b/farmamayoreoapp.firebasestorage.app/o/banners%2Fbanner1.jpg?alt=media&token=375e7c2d-e82c-41d1-8565-1978314b8a87"},
-      {src:"https://firebasestorage.googleapis.com/v0/b/farmamayoreoapp.firebasestorage.app/o/banners%2Fbanner2.jpg?alt=media&token=8f451dea-5d3b-4ed5-8772-9973a952b152"},
+      {src:imgbanner1, movil: imgbanner1movil},
+      {src:imgbanner2, movil: imgbanner2movil},
+      {src:imgbanner3, movil: imgbanner3movil}
     ];
-    let intervalo = 2500
+
+    const imagesMovil = [
+      {src:imgbanner1},
+      {src:imgbanner2},
+      {src:imgbanner3}
+    ];
+
+
+    let intervalo = 3500
 
      // --- Autoplay con loop ---
     useEffect(() => {
@@ -37,7 +53,14 @@ export const Banner_principal = () => {
       >
         {images.map((img, index) => (
           <div className="hero-slide" key={index}>
-            <img src={img.src} alt={img.alt || `banner-${index}`} />
+            <picture>
+              <source
+                media="(min-width: 640px)"
+                srcSet={img.movil}
+              />
+              <img src={img.src} alt={img.alt || `banner-${index}`} />
+            </picture>
+            
             {img.caption && (
               <div className="hero-caption">
                 <h2>{img.caption}</h2>

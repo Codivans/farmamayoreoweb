@@ -49,7 +49,7 @@ export const Footer = () => {
 
   return (
     <footer>
-        <div
+        {/* <div
             className='newsletter'   
             style={{
                 backgroundImage: `url(${fondo})`,
@@ -67,11 +67,11 @@ export const Footer = () => {
                 </div>
             </div>
 
-        </div>
+        </div> */}
        <div className='content_cols_footer'>
             <div className='cols_footer'>
                 <img src={logo} className='logo_footer'/>
-                <p>Rio churubusco s/n Central de Abastos, Pasillo E-F Local 30B, Iztapalapa, 09040, CDMX.</p>
+                <p>Av. Pantitlán 617, La Perla, 57820 Cdad. Nezahualcóyotl, Méx.</p>
             </div>
             <div className='cols_footer'>
                 <h4>Navegación</h4>
@@ -104,9 +104,9 @@ export const Footer = () => {
             <div className='cols_footer'>
                 <h4>Contactanos</h4>
                 <ul>
-                    <li><Link to="/"><IoLogoFacebook /> farmamayoreo</Link></li>
-                    <li><Link to="/"><IoLogoInstagram /> farmamayoreo</Link></li>
-                    <li><Link to="/"><IoLogoTiktok /> farmamayoreo</Link></li>
+                    <li><Link to="https://www.facebook.com/p/FarmaMayoreo-Neza-100083206968508/"  target="_blank"><IoLogoFacebook /> farmamayoreo</Link></li>
+                    <li><Link to="/"  target="_blank"><IoLogoInstagram /> farmamayoreo</Link></li>
+                    <li><Link to="/"  target="_blank"><IoLogoTiktok /> farmamayoreo</Link></li>
                 </ul>
             </div>
        </div>
