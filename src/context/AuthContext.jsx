@@ -2,6 +2,9 @@ import React, { useContext, useEffect, useState } from 'react'
 import { auth } from '../firebase/firebaseConfig';
 import { onAuthStateChanged } from "firebase/auth";
 
+import { doc, getDoc } from "firebase/firestore";
+import { db } from "../firebase/firebaseConfig";
+
 //Creamos el contexto
 const AuthContext = React.createContext();
 
@@ -17,15 +20,30 @@ const AuthProvider = ({children}) => {
 	const [estatus, setEstatus] = useState(false)
 
 	useEffect(() => {
-		// Comprobamos si hay un usuario.
-		const cancelarSuscripcion = onAuthStateChanged( auth ,(usuario) => {
-			setUsuario(usuario);
+		const cancelarSuscripcion = onAuthStateChanged(auth, async (usuarioAuth) => {
+			setUsuario(usuarioAuth);
+
+			if (usuarioAuth) {
+			const ref = doc(db, "usuarios", usuarioAuth.uid);
+			const snap = await getDoc(ref);
+
+			if (snap.exists()) {
+				const data = snap.data();
+				setEstatus(data.status); // 👈 aquí
+			} else {
+				setEstatus(false);
+			}
+			} else {
+			setEstatus(false);
+			}
+
 			setCargando(false);
-			setUserName(JSON.parse(localStorage.getItem('UserState')))
-		})
+			setUserName(JSON.parse(localStorage.getItem("UserState")));
+		});
 
 		return cancelarSuscripcion;
-	}, [estatus]);
+	}, []);
+
 
 
     return (

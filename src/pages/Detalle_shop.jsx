@@ -17,6 +17,9 @@ import { getUnixTime } from 'date-fns';
 import { Menu_Bottom } from '../components/Menu_Bottom';
 import toast from 'react-hot-toast';
 import { Footer } from '../components/Footer';
+import imgTerminal from '../assets/iconos/terminal.png';
+import imgTransferencia from '../assets/iconos/transferencia.png';
+import imgEfectivo from '../assets/iconos/efectivo.png';
 
 export const Detalle_shop = () => {
     const [stepShop, setStepShop] = useState(0);
@@ -84,7 +87,7 @@ export const Detalle_shop = () => {
     const sendPedido = async (e) => {
         e.preventDefault();
 
-        if(userData?.status){
+        // if(userData?.status){
             try {
                 await createPedido(dataLayout);
                 setSelectAddress('');
@@ -95,9 +98,9 @@ export const Detalle_shop = () => {
             } catch (error) {
                 console.log(error)
             }
-        }else{
-            toast.error('Tu cuenta debe estar activa.')
-        }
+        // }else{
+        //     toast.error('Tu cuenta debe estar activa.')
+        // }
 
         
     }
@@ -258,11 +261,11 @@ export const Detalle_shop = () => {
                             stepShop === 1 && (
                                 <div className='detalle_shop'>
                                     {
-                                        auth?.currentUser ? (
+                                        // auth?.currentUser ? (
                                         <div className='container_tipo_entrega'>
-                                            <h3>Selecciona una dirección de entrega</h3>
+                                            <h3>Selecciona la forma de entrega de tu pedido</h3>
                                             <div className='container_toggle_entrega'>
-                                                <button className={`btn_toggle ${toggleEntrega === 'pickUp' ? 'active_toggle' : ''}`} name='pickUp' onClick={handleChangeToggleTipoEntrega}>PickUp</button>
+                                                <button className={`btn_toggle ${toggleEntrega === 'pickUp' ? 'active_toggle' : ''}`} name='pickUp' onClick={handleChangeToggleTipoEntrega}>Asistir a tienda</button>
                                                 <span>ó</span>
                                                 <button className={`btn_toggle ${toggleEntrega === 'envio' ? 'active_toggle' : ''}`} name='envio' onClick={handleChangeToggleTipoEntrega}>Envio a domicilio</button>
                                             </div>
@@ -270,25 +273,14 @@ export const Detalle_shop = () => {
                                             {
                                                 toggleEntrega === 'pickUp' ? (
                                                     <>
+                                                        <p style={{textAlign: 'center', marginTop: '50px'}}>Quieres recojer tu pedido en nuestra tienda, da click en "Recojer en tienda" para seguir adelante.</p>
                                                         <div className='container_cards_pickup'>
 
                                                             <div className={`item_address ${selectEntrega === 'cerezos' ? 'actived_address': ''}`}>
                                                                 <input type='radio' name='tienda' checked={'tienda' === selectEntrega} onChange={handleChangeToggle} id='tienda'/>
-                                                                <label htmlFor='tienda'>Farma Mayoreo Neza</label>
+                                                                <label htmlFor='tienda'>Recojer e tienda</label>
                                                                 <p>Av. Pantitlán 617, La Perla, 57820 Cdad. Nezahualcóyotl, Méx.</p>
                                                             </div>
-
-                                                            {/* <div className={`item_address ${selectEntrega === 'tienda' ? 'actived_address': ''}`}>
-                                                                <input type='radio' name='tienda' checked={'tienda' === selectEntrega} onChange={handleChangeToggle} id='tienda'/>
-                                                                <label htmlFor='tienda'>Tienda</label>
-                                                                <p>Rio churubusco s/n Central de Abastos, Pasillo E-F Local 30B, Iztapalapa, 09040, CDMX.</p>
-                                                            </div>
-
-                                                            <div className={`item_address ${selectEntrega === 'anden' ? 'actived_address': ''}`}>
-                                                                <input type='radio' name='anden' checked={'anden' === selectEntrega} onChange={handleChangeToggle} id='anden'/>
-                                                                <label htmlFor='anden'>Anden</label>
-                                                                <p>Rio churubusco s/n Central de Abastos, Anden estacionamiento 30B, Iztapalapa, 09040, CDMX.</p>
-                                                            </div> */}
                                                         </div>
                                                     </>
                                                 ) : (
@@ -338,12 +330,12 @@ export const Detalle_shop = () => {
                                                 )
                                             }
                                         </div>
-                                        ) : (
-                                            <div>
-                                                <p>Para continuar es necesario iniciar seión</p>
-                                                <button>Iniciar sesion</button>
-                                            </div>
-                                        )
+                                        // ) : (
+                                        //     <div>
+                                        //         <p>Para continuar es necesario iniciar seión</p>
+                                        //         <button>Iniciar sesion</button>
+                                        //     </div>
+                                        // )
                                     }
                                 </div>
                             )
@@ -378,24 +370,37 @@ export const Detalle_shop = () => {
                                             <div className='info_pago'>
                                                 {
                                                     formaPago === 'transferencia' ? (
-                                                        <div>
-                                                            <h4>Banco Afirme</h4>
-                                                            <p><strong>Cuenta:</strong> 3494938943249842389</p>
-                                                            <p><strong>CLABE:</strong> 3492390493284944321</p>
+                                                        <div className='content_forma_pago'>
+                                                            <img src={imgTransferencia} />
+                                                            <div>
+                                                                <p>Para realizar el pago de esta manera, nos pondremos en contacto con tigo para confirmarte el monto.</p>
+                                                                <h4>Banco Afirme</h4>
+                                                                <p><strong>Cuenta:</strong> 3494938943249842389</p>
+                                                                <p><strong>CLABE:</strong> 3492390493284944321</p>
+                                                            </div>
+                                                            
                                                         </div>
                                                     ):('')
                                                 }
                                                 {
                                                     formaPago === 'efectivo' ? (
-                                                        <div>
-                                                            
+                                                        <div className='content_forma_pago'>
+                                                            <img src={imgEfectivo} />
+                                                            <div>
+                                                                <p>Al llegar a la sucursal, tu pedido estara listo y podras pasar al area de caja para poder pagar tu pedido.</p>
+                                                            </div>
                                                         </div>
                                                     ) : ('')
                                                 }
                                                 {
                                                     formaPago === 'tarjeta' ? (
-                                                        <div>
-                                                            <p>Te llevaremos la terminal para tu pago con tarjeta.</p>
+                                                        <div className='content_forma_pago'>
+                                                            <img src={imgTerminal} />
+                                                            <div>
+                                                                <p>Nuestro repartidor llevara la terminal para realizar el cobro en tu negocio.</p>
+                                                                <p>para mayor seguridad y comodidad.</p>
+                                                            </div>
+                                                            
                                                         </div>
                                                     ) : ('')
                                                 }
@@ -412,7 +417,7 @@ export const Detalle_shop = () => {
 
                     <div className='container_column_importes'>
                         <div>
-                            {userData?.status ? (
+                            {/* {userData?.status ? ( */}
                                 <>
                                     <div className='content_importe_ticket'>
                                         
@@ -423,7 +428,7 @@ export const Detalle_shop = () => {
                                     
                                         <div className='body_ticket'>
                                             <p><span>Subtotal</span> <span>{formatoMoneda(importeCart)}</span></p>
-                                            <p><span>Costo de envio</span> <span>{formatoMoneda(50)}</span></p>
+                                            <p><span>Costo de envio</span> <span>{formatoMoneda(0)}</span></p>
                                         </div>
                                         <div className='footer_ticket'>
                                             <h3>{formatoMoneda(importeCart)}</h3>
@@ -452,9 +457,9 @@ export const Detalle_shop = () => {
                                     }
                                 
                                 </>
-                            ) :(
+                            {/* ) :(
                                 
-                                <div>
+                                <div> */}
                                     {/* {
                                         userData?.constancia?.url && userData?.aviso?.url ? (
                                             <div className='pendiente_box'>
@@ -472,8 +477,8 @@ export const Detalle_shop = () => {
                                         )
                                     } */}
                                     
-                                </div>
-                            )}
+                                {/* </div>
+                            )} */}
                         </div>
                     </div>
                 </div>

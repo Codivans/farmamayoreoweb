@@ -2,7 +2,7 @@ import React, { useEffect, useState } from 'react';
 // import { toast } from 'react-toastify';
 import { getUnixTime } from 'date-fns';
 // import 'react-toastify/dist/ReactToastify.css';
-import toast, { Toaster } from 'react-hot-toast';
+import toast from 'react-hot-toast';
 
 
 const ContextoCarrito = React.createContext();

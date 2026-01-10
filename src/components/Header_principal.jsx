@@ -16,6 +16,7 @@ import { auth } from './../firebase/firebaseConfig';
 import { HiOutlineNewspaper } from "react-icons/hi2";
 import { LuUserCog } from "react-icons/lu";
 import { IoExitOutline } from "react-icons/io5";
+import DistanciaCP from './DistanciaCP';
 
 export const Header_principal = () => {
     const [searchTerm, setSearchTerm] = useState('');
@@ -24,6 +25,7 @@ export const Header_principal = () => {
     const navigate = useNavigate();
     const { countCart } = useContext(ContextoCarrito);
     const {usuario, userName, setEstatus } = useAuth();
+    const [showCp, setShowCp] = useState(false);
 
 
     const handleKeyPress = (event) => {
@@ -43,6 +45,10 @@ export const Header_principal = () => {
         navigate('/');
 
         localStorage.removeItem('UserState')
+    }
+
+    const cerrarCp = () => {
+        setShowCp(!showCp)
     }
 
   return (
@@ -88,6 +94,13 @@ export const Header_principal = () => {
                     onKeyDown={handleKeyPress}
                     placeholder='¿Que producto estas buscando?'/>
             </div>
+            <button className='btn_entregas' onClick={cerrarCp}>
+                Consulta zonas de entrega
+            </button>
+            {
+                showCp && (<DistanciaCP cerrarCp={cerrarCp}/>)
+            }
+            
 
             <div id='container_perfil'>
                 {

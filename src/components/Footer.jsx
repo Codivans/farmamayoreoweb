@@ -6,6 +6,7 @@ import { IoLogoFacebook } from "react-icons/io5";
 import { IoLogoInstagram } from "react-icons/io5";
 import { IoLogoTiktok } from "react-icons/io5";
 import fondo from "./../assets/imagenfooter.jpg"
+import { FaWhatsapp } from "react-icons/fa";
 
 export const Footer = () => {
       const [menu, setMenu] = useState([]);
@@ -72,6 +73,7 @@ export const Footer = () => {
             <div className='cols_footer'>
                 <img src={logo} className='logo_footer'/>
                 <p>Av. Pantitlán 617, La Perla, 57820 Cdad. Nezahualcóyotl, Méx.</p>
+                <p><FaWhatsapp /> 55 3551 0668</p>
             </div>
             <div className='cols_footer'>
                 <h4>Navegación</h4>

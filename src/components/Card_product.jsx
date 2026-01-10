@@ -4,10 +4,11 @@ import formatoMoneda from './../functions/formatoMoneda';
 import { useAuth } from '../context/AuthContext';
 import { IoDocumentText } from "react-icons/io5";
 import { Link } from 'react-router-dom';
+import toast from 'react-hot-toast';
 
 export const Card_product = ({item, index}) => {
-    const {usuario, userName } = useAuth();
-
+    const {usuario, estatus } = useAuth();
+    
     const imagenDefault = (e) =>{
       e.target.src =  'https://farmacias2web.com/imagenes/predeterminada.jpg' 
     }
@@ -37,7 +38,6 @@ export const Card_product = ({item, index}) => {
 
     const handleChange = (event) => {
       if(event.target.name === 'select-paquetes'){
-          console.log(event.target.dataset.pedido);
           if(event.target.value === 0){
               alert('Debes seleccionar un valor')
               
@@ -71,12 +71,16 @@ export const Card_product = ({item, index}) => {
       }
     }
 
+    const esAntibiotico = item.grupo === 'GRUPO IV (ANTIBIOTICO)';
+    const usuarioInactivo = usuario && estatus === false;
+    const bloquearAntibiotico = esAntibiotico && usuarioInactivo;
+  
 
   return (
     <div className='card_product'>
         <p className='item_grupo'>
           {
-            item.grupo === 'GRUPO IV (ANTIBIOTICO)' && <span className='item_antibiotico'><IoDocumentText /> Producto Antibiótico</span>
+            item.grupo === 'GRUPO IV (ANTIBIOTICO)' && <span className='item_antibiotico'><IoDocumentText /> Producto Antibiótico{usuarioInactivo}</span>
           }  
         </p>
         <div className='card_header'>
@@ -125,7 +129,15 @@ export const Card_product = ({item, index}) => {
           {
             productoAgregado 
             ? <div className='container_btn_controllers'>
-                <button onClick={() => removeProductCart({codigo: parseInt(item.codigo), disminuir: 1, agregados: productoAgregado.pedido})}>-</button>
+                <button 
+                  disabled={bloquearAntibiotico}
+                  onClick={() => {
+                    if(bloquearAntibiotico){
+                      alert("Ingresa tu documentación")
+                    }removeProductCart({codigo: parseInt(item.codigo), disminuir: 1, agregados: productoAgregado.pedido})}
+                  }
+                  
+                >-</button>
                 <input
                   type='text'
                   data-codigo={item.codigo}
@@ -137,16 +149,37 @@ export const Card_product = ({item, index}) => {
                   onChange={handleChange} 
                   onKeyDown={handleKey}
                 />
-                <button onClick={() => addProductoCart({codigo: parseInt(item.codigo), nombre: item.nombre, pedido: 1, precio: item.oferta > 0 ? item.oferta : item.precio, existencia: item.existencia})}>+</button>
+                <button 
+                  onClick={() => {
+                    if(bloquearAntibiotico){
+                      alert("Ingresa tu documentación")
+                    }addProductoCart({codigo: parseInt(item.codigo), nombre: item.nombre, pedido: 1, precio: item.oferta > 0 ? item.oferta : item.precio, existencia: item.existencia})}
+                  }
+                >+</button>
               </div>
             : (
               
               <div className='card_footer'>
-                <button onClick={() => addProductoCart({codigo: parseInt(item.codigo), nombre: item.nombre, pedido: 1, precio: item.oferta > 0 ? item.oferta : item.precio, existencia: item.existencia})}
-                  disabled={usuario ? false : true}  
+                <button
+                  disabled={!usuario || bloquearAntibiotico}
+                  onClick={() => {
+                    if (bloquearAntibiotico) {
+                      toast.error(`Para agregar productos antibioticos requerimos tu aviso de funcionamiento.`);
+                      return;
+                    }
+
+                    addProductoCart({
+                      codigo: parseInt(item.codigo),
+                      nombre: item.nombre,
+                      pedido: 1,
+                      precio: item.oferta > 0 ? item.oferta : item.precio,
+                      existencia: item.existencia
+                    });
+                  }}
                 >
-                  Agregar
+                  {bloquearAntibiotico ? 'Requiere documentación' : 'Agregar'}
                 </button>
+
               </div>
             )
             

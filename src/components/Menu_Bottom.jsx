@@ -6,6 +6,8 @@ import { MdOutlineLocalOffer } from "react-icons/md";
 import { HiOutlineUser } from "react-icons/hi2";
 import { Link, useNavigate } from 'react-router-dom';
 import { Formulario_session } from './Formulario_session';
+import { TbMapPinDollar } from "react-icons/tb";
+import DistanciaCP from './DistanciaCP';
 
 export const Menu_Bottom = () => {
     const [isActive, setIsActive] = useState(1);
@@ -14,6 +16,10 @@ export const Menu_Bottom = () => {
     const clickHome = () => {
         setIsActive(1)
         navigate('/')
+    }
+    const [showCp, setShowCp] = useState(false);
+    const cerrarCp = () => {
+        setShowCp(!showCp)
     }
 
 
@@ -29,6 +35,12 @@ export const Menu_Bottom = () => {
                     </Link>
                 </li>
                 <li>
+                    <button className='btn_bottom_navigation' onClick={cerrarCp}>
+                        <TbMapPinDollar />
+                        <span>Zona entrega</span>
+                    </button>
+                </li>
+                <li>
                     <Link to='/login' className='btn_bottom_navigation'>
                         <HiOutlineUser />
                         <span>Cuenta</span>
@@ -36,6 +48,10 @@ export const Menu_Bottom = () => {
                 </li>            
             </ul>
         </nav>
+        {
+            showCp &&(<DistanciaCP cerrarCp={cerrarCp}/>)
+        }
+        
     </>
   )
 }

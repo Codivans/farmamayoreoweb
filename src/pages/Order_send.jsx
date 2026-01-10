@@ -1,7 +1,11 @@
 import React from 'react'
-import { Header_principal } from '../components/Header_principal'
-import { Link } from 'react-router-dom'
-import { Footer } from '../components/Footer'
+import { Header_principal } from '../components/Header_principal';
+import { Link } from 'react-router-dom';
+import { Footer } from '../components/Footer';
+import imgRecibirPedido from '../assets/iconos/recibir_pedido.png'
+import imgSurtir from '../assets/iconos/surtir.png'
+import imgEscaner from '../assets/iconos/escaner.png'
+import imgpPedidoListo from '../assets/iconos/pedido_listo.png'
 
 export const Order_send = () => {
   return (
@@ -19,9 +23,17 @@ export const Order_send = () => {
             </div>
 
             <h3>Pedido generado correctamente</h3>
-            <p>Se envio un correo electrónico con el detalle de tu pedido</p>
-            <p>En breve se pondra en contacto uno de nuestros colaboradores para detallar temas acerca de tu pedido y la entrega del mismo.</p>
-            <p>Tambien puedes seguir el estatus de tu pedido en <Link to='/'>pedidosuser</Link>  </p>
+            <p>Se envio correctamente tu pedido a nuestro servidor</p>
+            <p>En breve atenderemos tu pedido y cualquier situación nos pondremos en contacto contigo</p>
+            <p>Gracias por tu preferencia!</p>
+            <p>Tambien puedes seguir el estatus de tu pedido en tu perfil <Link to='/pedidos_perfil'>ver mi pedido</Link>  </p>
+
+            <div className="loading-images">
+                <img src={imgRecibirPedido} alt="" />
+                <img src={imgSurtir} alt="" />
+                <img src={imgEscaner} alt="" />
+                <img src={imgpPedidoListo} alt="" />
+            </div>
         </div>
         <Footer />
 

@@ -53,14 +53,7 @@ export const Banner_principal = () => {
       >
         {images.map((img, index) => (
           <div className="hero-slide" key={index}>
-            <picture>
-              <source
-                media="(min-width: 640px)"
-                srcSet={img.movil}
-              />
               <img src={img.src} alt={img.alt || `banner-${index}`} />
-            </picture>
-            
             {img.caption && (
               <div className="hero-caption">
                 <h2>{img.caption}</h2>

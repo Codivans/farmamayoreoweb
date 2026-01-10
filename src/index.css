@@ -271,7 +271,7 @@ body{
     background-color: white;
     border-radius: 6px;
     border: 1px solid #dadada;
-    width: 50%;
+    width: 35%;
     display: flex;
     align-items: center;
     padding: 8px;
@@ -306,6 +306,73 @@ body{
     color: #364571;
 }
 
+.btn_entregas{
+    background-color: #007bff;
+    margin-left: 10px;
+    border: 1px solid #007bff;
+    border-radius: 4px;
+    color: white;
+    padding: 6px;
+    cursor: pointer;
+}
+
+.overlay_cp{
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100vw;
+    height: 100vh;
+    background: rgba(0, 0, 0, 0.6); /* fondo oscuro */
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    z-index: 9999;
+}
+
+.content_input_cp{
+    background-color: white;
+    border-radius: 8px;
+    width: 320px;
+    height: 250px;
+    padding: 10px;
+}
+
+.content_input_cp h3{
+    font-size: 14px;
+    font-weight: 500;
+    text-align: center;
+    line-height: 6px;
+}
+
+.content_inputs{
+    width: 90%;
+    margin: 10px auto;
+}
+
+
+.content_input_cp input{
+    border: 1px solid #cecece;
+    border-radius: 4px;
+    width: 90%;
+    margin: 10px 0px;
+    padding: 6px;
+    font-size: 16px;
+}
+
+.content_input_cp button{
+    background-color: #007bff;
+    border: 1px solid #0165d0;
+    border-radius: 4px;
+    color: white;
+    cursor: pointer;
+    padding: 4px 10px;
+    display: block;
+    width: 94%;
+}
+
+.txt_monto{
+    text-align: center !important;
+}
 
 
 
@@ -1167,6 +1234,11 @@ body{
 
 .card_footer button:hover{
     background-color: #364d94;
+}
+
+.card_footer button:disabled{
+    background-color: #d0d0d0;
+    color: #333;
 }
 
 
@@ -2150,13 +2222,13 @@ body{
 .container_toggle_entrega{
     background-color: #f3f3f3;
     border-radius: 4px;
-    width: 240px;
+    width: 340px;
     display: flex;
     justify-content: center;
     align-items: center;
-    padding: 4px;
+    padding: 8px;
     margin: 10px auto;
-    gap: 6px;
+    gap: 20px;
 }
 
 .container_toggle_entrega button{
@@ -2164,7 +2236,7 @@ body{
     border: 0px none;
     color: #0266d1;
     cursor: pointer;
-    padding: 4px;
+    padding: 8px;
     border-radius: 4px;
     width: 50%;
 }
@@ -2199,6 +2271,15 @@ body{
     width: 340px;
 }
 
+.content_forma_pago{
+    display: flex;
+    gap: 30px;
+    align-items: center;
+}
+.content_forma_pago img{
+    width: 120px;
+}
+
 
 .btn_perfil_tipo{
     margin: 50px auto;
@@ -2207,10 +2288,11 @@ body{
 .data_succes_order{
     width: 50%;
     margin: 50px auto;
+    height: 60vh;
 }
 
 .data_succes_order h3{
-    color: #047f27;
+    color: #0165d0;
     font-size: 22px;
     text-align: center;
 }
@@ -2219,6 +2301,11 @@ body{
     text-align: center;
     font-size: 14px;
     color: #262626;
+}
+
+.data_succes_order a{
+    color: #0165d0;
+    cursor: pointer;
 }
 
  .success-checkmark {
@@ -2311,6 +2398,45 @@ body{
   background-color: #FFFFFF;
   /* background: green; */
 }
+
+/* img Loading Ordenes pedido */
+.loading-images {
+  display: flex;
+  gap: 20px;
+  align-items: flex-end;
+  margin: 50px auto;
+  width: 300px;
+}
+
+.loading-images img {
+  width: 70px;           /* ajusta tamaño */
+  height: auto;
+  animation: bounce 1.2s infinite ease-in-out;
+}
+
+/* Desfase para efecto sincronizado tipo ola */
+.loading-images img:nth-child(1) { animation-delay: 0s; }
+.loading-images img:nth-child(2) { animation-delay: 0.1s; }
+.loading-images img:nth-child(3) { animation-delay: 0.2s; }
+.loading-images img:nth-child(4) { animation-delay: 0.3s; }
+
+@keyframes bounce {
+  0%, 80%, 100% {
+    transform: translateY(0);
+    opacity: 0.6;
+  }
+  40% {
+    transform: translateY(-15px);
+    opacity: 1;
+  }
+}
+
+
+
+
+
+
+
 
 .container_pedidos_cliente{
     width: calc(100% - 220px);
@@ -2687,6 +2813,7 @@ body{
   
   .btn_bottom_navigation{
     background-color: white;
+    border: 0px none;
     color: #454545;
     display: block;
     margin-top: 10px;
@@ -3220,6 +3347,10 @@ footer{
         display: none;
     }
 
+    .btn_entregas{
+        display: none;
+    }
+
     .card_product .card_footer input{
         font-size: 18px;
     }
@@ -3714,8 +3845,17 @@ footer{
     }
     .info_pago p{
         font-size: 16px;
-        line-height: 10px;
+        line-height: 14px;
     }
+
+    .content_forma_pago{
+        display: block;
+    }
+    .content_forma_pago img{
+        margin: 20px auto;
+        display: block;
+    }
+
 
 
     .content_cols_footer{
@@ -3760,6 +3900,11 @@ footer{
 
     .container_form_session{
         height: 80vh;
+    }
+
+
+    .data_succes_order{
+        width: 90%;
     }
 
 

@@ -5,7 +5,7 @@ import { Home, Search, AltaCatalogo, Formularios_session, Perfil_Cliente, Direcc
   Clientes,
   AltaProductosTop,
   Formularios_registro,
-  RecuperarPassword} from './pages/index';
+  RecuperarPassword, AdminRangosEnvio} from './pages/index';
 import './App.css';
 import 'animate.css';
 import { CarritoProvider } from './context/cartContext';
@@ -57,6 +57,7 @@ function App() {
           <Route path='/admin/alta/catalogotop' element={<AltaProductosTop />} />
           <Route path='/admin/configuraciones' element={<ConfigShop />} />
           <Route path='/documentos' element={<UploadConstancia />}/>
+          <Route path='/admin/rangos' element={<AdminRangosEnvio />} />
         </Routes>
       </CarritoProvider>
     </AuthProvider>
