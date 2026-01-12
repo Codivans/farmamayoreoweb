@@ -3262,6 +3262,86 @@ footer{
 
 
 
+
+  .header_table_catalogo{
+    margin-top: 10px;
+    padding: 10px;
+    width: 90%;
+  }
+  .header_table_catalogo button{
+    background-color: green;
+    color: white;
+    border: 1px solid #026202;
+    border-radius: 6px;
+    cursor: pointer;
+    padding: 10px;
+    margin-left: 10px;
+    width: 120px;
+  }
+
+
+  .content_master{
+    margin: 0px auto;
+    min-height: calc(100vh - 40px);
+    width: 100%;
+}
+
+.btn-file{
+    background-color: #fbfbfb;
+    border: 1px dashed #b2b2b2;
+    width: 400px;
+    padding: 30px 10px;
+    height: 100px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    text-align: center;
+    cursor: pointer;
+    margin: 20px auto;
+}
+.btn-file svg{
+    color: #42b72a;
+    font-size: 20px;
+    background-color: #f1f1f1;
+    width: 50px;
+    height: 50px;
+    padding: 10px;
+    border-radius: 50%;
+  }
+  .table_catalogo{
+    border-collapse: collapse;
+    width: 90%;
+    margin-top: 20px;
+  }
+  .table_catalogo thead{
+    background-color: green;
+    color: white;
+  }
+  .table_catalogo thead th{
+    padding: 10px;
+  }
+  .table_catalogo tbody tr:nth-child(odd){
+    background-color: #e2e2e2;
+  }
+
+  .table_catalogo tbody tr td{
+    font-size: 12px;
+    color: #3d3d3d;
+    padding: 4px;
+  }
+
+  .rigth_celda{
+    text-align: right;
+  }
+  .left_celda{
+    text-align: left;
+  }
+  .center_celda{
+    text-align: center;
+  }
+
+
+
 @media (min-width: 600px) and (max-width: 1390px){
     .item_shop{
         width: 1060px;

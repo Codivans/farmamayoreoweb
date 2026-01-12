@@ -95,7 +95,7 @@ export const Header_principal = () => {
                     placeholder='¿Que producto estas buscando?'/>
             </div>
             <button className='btn_entregas' onClick={cerrarCp}>
-                Consulta zonas de entrega
+                Zonas de entrega
             </button>
             {
                 showCp && (<DistanciaCP cerrarCp={cerrarCp}/>)

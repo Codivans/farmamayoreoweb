@@ -2,6 +2,7 @@ import { useEffect, useState } from "react";
 import { collection, addDoc, getDocs } from "firebase/firestore";
 import { db } from "../firebase/firebaseConfig";
 import formatoMoneda from '../functions/formatoMoneda';
+import { Header_admin } from "../components/Header_admin";
 
 export const AdminRangosEnvio = ()=> {
   const [kmMin, setKmMin] = useState("");
@@ -36,7 +37,8 @@ export const AdminRangosEnvio = ()=> {
   };
 
   return (
-    <div>
+    <div className="container_pedidos_admin">
+      <Header_admin />
       <h2>Rangos de Envío</h2>
 
       {/* FORM */}

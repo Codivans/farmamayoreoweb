@@ -42,7 +42,7 @@ export const Carousel_products_top = ({intervalo = 2500}) => {
         console.error("Error obteniendo catálogo top:", err);
         setError(err);
       } finally {
-        setLoading(false);
+        // setLoading(false);
       }
     };
 

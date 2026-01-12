@@ -24,3 +24,5 @@ export { ConfigShop } from './ConfigShop';
 export { Pedidos_admin } from './Pedidos_admin';
 export { Clientes } from './Clientes';
 export { AdminRangosEnvio } from './AdminRangosEnvio';
+
+export { CatalogoTable } from './CatalogoTable';
