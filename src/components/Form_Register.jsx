@@ -52,7 +52,7 @@ export const Form_Register = ({selectForm, setSelectForm}) => {
             telefono: form.telefono,
             uid: user.uid,
             roll: 'cliente',
-            status: true,
+            status: false,
           });
 
           console.log("Datos guardados en Firestore");

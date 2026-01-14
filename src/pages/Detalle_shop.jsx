@@ -273,12 +273,12 @@ export const Detalle_shop = () => {
                                             {
                                                 toggleEntrega === 'pickUp' ? (
                                                     <>
-                                                        <p style={{textAlign: 'center', marginTop: '50px'}}>Quieres recojer tu pedido en nuestra tienda, da click en "Recojer en tienda" para seguir adelante.</p>
+                                                        <p style={{textAlign: 'center', marginTop: '50px'}}>Quieres recoger tu pedido en nuestra tienda, da click en "Recoger en tienda" para seguir adelante.</p>
                                                         <div className='container_cards_pickup'>
 
                                                             <div className={`item_address ${selectEntrega === 'cerezos' ? 'actived_address': ''}`}>
                                                                 <input type='radio' name='tienda' checked={'tienda' === selectEntrega} onChange={handleChangeToggle} id='tienda'/>
-                                                                <label htmlFor='tienda'>Recojer e tienda</label>
+                                                                <label htmlFor='tienda'>Recoger en tienda</label>
                                                                 <p>Av. Pantitlán 617, La Perla, 57820 Cdad. Nezahualcóyotl, Méx.</p>
                                                             </div>
                                                         </div>
@@ -374,9 +374,9 @@ export const Detalle_shop = () => {
                                                             <img src={imgTransferencia} />
                                                             <div>
                                                                 <p>Para realizar el pago de esta manera, nos pondremos en contacto con tigo para confirmarte el monto.</p>
-                                                                <h4>Banco Afirme</h4>
-                                                                <p><strong>Cuenta:</strong> 3494938943249842389</p>
-                                                                <p><strong>CLABE:</strong> 3492390493284944321</p>
+                                                                <h4>Banco Santander</h4>
+                                                                <p><strong>Cuenta:</strong> 65509498847</p>
+                                                                <p><strong>CLABE:</strong> 014180655094988473</p>
                                                             </div>
                                                             
                                                         </div>
