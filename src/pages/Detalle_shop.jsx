@@ -279,7 +279,7 @@ export const Detalle_shop = () => {
                                                             <div className={`item_address ${selectEntrega === 'cerezos' ? 'actived_address': ''}`}>
                                                                 <input type='radio' name='tienda' checked={'tienda' === selectEntrega} onChange={handleChangeToggle} id='tienda'/>
                                                                 <label htmlFor='tienda'>Recoger en tienda</label>
-                                                                <p>Av. Pantitlán 617, La Perla, 57820 Cdad. Nezahualcóyotl, Méx.</p>
+                                                                <p>Cutberto Aroche MZ 118 LT 13, Santa Martha Acatitla, Iztapalapa, CP: 09140</p>
                                                             </div>
                                                         </div>
                                                     </>

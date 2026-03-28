@@ -50,29 +50,13 @@ export const Footer = () => {
 
   return (
     <footer>
-        {/* <div
-            className='newsletter'   
-            style={{
-                backgroundImage: `url(${fondo})`,
-                backgroundSize: "cover",
-                backgroundPosition: "center",
-                width: "100%",
-                height: "200px"
-            }}
-        >
-            <div className='content_newsletter'>
-                <h3>Recibe nuestro catálogo</h3>
-                <div>
-                    <input type='email'/>
-                    <button>Enviar</button>
-                </div>
-            </div>
 
-        </div> */}
        <div className='content_cols_footer'>
             <div className='cols_footer'>
                 <img src={logo} className='logo_footer'/>
-                <p>Av. Pantitlán 617, La Perla, 57820 Cdad. Nezahualcóyotl, Méx.</p>
+                <p>Cutberto Aroche MZ 118 Lt 13</p>
+                <p>Santa Martha Acatitla</p>
+                <p>Iztapalapa, CP: 09140</p>
                 <p><FaWhatsapp /> 55 3551 0668</p>
             </div>
             <div className='cols_footer'>
