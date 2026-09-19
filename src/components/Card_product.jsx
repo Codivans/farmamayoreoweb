@@ -10,7 +10,7 @@ export const Card_product = ({item, index}) => {
     const {usuario, estatus } = useAuth();
     
     const imagenDefault = (e) =>{
-      e.target.src =  'https://farmacias2web.com/imagenes/predeterminada.jpg' 
+      e.target.src =  'https://farmacias2web.com/mas/predeterminada.jpg' 
     }
 
     const disponibilidad = (existencia) => {
@@ -84,7 +84,7 @@ export const Card_product = ({item, index}) => {
           }  
         </p>
         <div className='card_header'>
-          <img loading="lazy" onError={imagenDefault} src={`https://farmacias2web.com/imagenes/${item.codigo}.jpg`} />
+          <img loading="lazy" onError={imagenDefault} src={`https://farmacias2web.com/mas/${item.codigo}.jpg`} />
         </div>
         <div className='card_body'>
           <Link to={`/search/laboratorio/${item.laboratorio}`} className='laboratorio_item'>{item.laboratorio}</Link>
